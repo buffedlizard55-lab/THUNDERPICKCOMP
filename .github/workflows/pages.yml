@@ -83,10 +83,22 @@ jobs:
             if [[ $restore_exit -ne 0 ]]; then
               echo "Restore failed with exit $restore_exit, dumping debug info"
               ls -R /tmp/previous-thunderpickcomp/ || true
-              cat /tmp/previous-thunderpickcomp/observations.json | head -n 20 || true
+              echo "=== published observations head ==="
+              cat /tmp/previous-thunderpickcomp/observations.json | head -n 50 || true
+              echo "=== current observations head ==="
+              cat data/observations.json | head -n 20 || true
               if [[ -d /tmp/previous-thunderpickcomp/artifact ]]; then
-                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 100 || true
+                echo "=== artifact dir ==="
+                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 200 || true
+                echo "=== artifact observations head ==="
+                cat /tmp/previous-thunderpickcomp/artifact/data/observations.json 2>/dev/null | head -n 50 || cat /tmp/previous-thunderpickcomp/artifact/observations.json 2>/dev/null | head -n 50 || true
+              else
+                echo "No artifact dir"
               fi
+              # Save debug for artifact upload
+              mkdir -p /tmp/restore-debug
+              cp -R /tmp/previous-thunderpickcomp /tmp/restore-debug/ || true
+              cp data/observations.json /tmp/restore-debug/current_observations.json || true
               exit $restore_exit
             fi
           elif [[ "$status" == "404" && ${#artifact_args[@]} -gt 0 ]]; then
@@ -96,6 +108,13 @@ jobs:
             echo "Published observations unavailable ($status). Refusing to reset history." >&2
             exit 1
           fi
+      - name: Upload restore debug on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: restore-debug-${{ github.run_id }}
+          path: /tmp/restore-debug
+          retention-days: 7
       - name: Collect read-only free public APIs (record failures, never fake zero)
         run: python3 -m scripts.collect
       - name: Apply eligible forward-only simulated outright decisions

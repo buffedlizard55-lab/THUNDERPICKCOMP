@@ -181,8 +181,12 @@ def main(argv: list[str] | None = None) -> int:
         # Also dump some context for debugging
         if published:
             print(f"published mode={published.get('mode')} last={published.get('last_attempt_utc')} events={len(published.get('events',[]))}", file=sys.stderr)
+        else:
+            print("published is None", file=sys.stderr)
         if artifact:
             print(f"artifact mode={artifact.get('mode')} last={artifact.get('last_attempt_utc')} events={len(artifact.get('events',[]))}", file=sys.stderr)
+        else:
+            print("artifact is None", file=sys.stderr)
         print(f"current mode={current.get('mode')} last={current.get('last_attempt_utc')} events={len(current.get('events',[]))}", file=sys.stderr)
         # Fallback for legacy Pages race: if current is offline and we have a live artifact/published, pick the newest live that covers current
         # This unblocks the collector when Pages briefly serves offline after a push
@@ -195,12 +199,16 @@ def main(argv: list[str] | None = None) -> int:
                     candidates.append((parse_time(obs.get("last_attempt_utc","1970-01-01T00:00:00Z")), obs, led, src))
                 except Exception as ce:
                     print(f"candidate {src} does not cover current: {ce}", file=sys.stderr)
+                    traceback.print_exc()
         if candidates:
             # Pick newest
             candidates.sort(key=lambda x: x[0], reverse=True)
             _, result, result_ledger, source = candidates[0]
             print(f"FALLBACK: picked {source} live journal despite initial failure", file=sys.stderr)
         else:
+            # Last resort: if current is offline and no live covers it, just use current (offline) to unblock, but warn
+            # This will be caught by --require-live-history if needed, but we want to see debug
+            print("No live candidate covers current, re-raising original error", file=sys.stderr)
             raise
     # Settlement history: the longest candidate that still extends the committed
     # prefix wins; divergence stops the run instead of rewriting receipts.
