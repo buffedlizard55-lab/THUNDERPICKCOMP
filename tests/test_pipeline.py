@@ -948,3 +948,48 @@ class RestoreSettlementsTests(unittest.TestCase):
             rest.restore_settlements(base, divergent)
         with self.assertRaisesRegex(rest.SourceError, "missing/rewritten"):
             rest.restore_settlements(longer, base)
+
+
+class ValidatorLiveCheckSetTests(unittest.TestCase):
+    """The post-merge-8 outage: a live run emitted the collector's 9 checks but
+    validate.py still hard-coded the old 7-source list, so every scheduled
+    publication failed validation and the feed went stale. These tests pin the
+    validator to the collector's own SOURCE_IDS so they cannot drift again."""
+
+    def live_doc(self):
+        doc = c.collect(c.empty(), c.FixtureFetcher(), NOW, TEAMS, "offline-replay")
+        doc["mode"] = "live"  # test-only: assert the live-mode completeness rule
+        return doc
+
+    def observed(self, doc):
+        v.ERRORS.clear()
+        v.check_observations(doc, TEAMS)
+        return list(v.ERRORS)
+
+    def test_live_journal_accepts_exactly_the_collector_source_set(self):
+        doc = self.live_doc()
+        self.assertEqual(len(doc["checks"]), len(c.SOURCE_IDS))
+        self.assertEqual(sorted(x["source"] for x in doc["checks"]), sorted(c.SOURCE_IDS))
+        self.assertEqual(self.observed(doc), [])
+
+    def test_live_journal_missing_one_source_check_fails(self):
+        doc = self.live_doc()
+        doc["checks"] = doc["checks"][:-1]
+        errors = self.observed(doc)
+        self.assertTrue(any("exactly one check per collected source" in e for e in errors))
+
+    def test_live_journal_unknown_source_check_fails(self):
+        doc = self.live_doc()
+        doc["checks"].append({"source": "made_up_feed", "status": "ok",
+                              "url": "https://example.com/feed", "checked_utc": c.stamp(NOW),
+                              "records_checked": 0, "scope": "test"})
+        errors = self.observed(doc)
+        self.assertTrue(any("duplicate or unknown source" in e for e in errors))
+
+    def test_validator_source_set_matches_collector_constant(self):
+        from scripts.validate import REQUIRED_SOURCES
+        self.assertEqual(tuple(sorted(REQUIRED_SOURCES)), tuple(sorted(c.SOURCE_IDS)))
+
+    def test_tracked_offline_seed_remains_valid_under_derived_set(self):
+        seed = json.loads((ROOT / "data" / "observations.json").read_text(encoding="utf-8"))
+        self.assertEqual(self.observed(seed), [])
