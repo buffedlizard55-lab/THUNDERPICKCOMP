@@ -79,6 +79,16 @@ jobs:
               --ledger /tmp/previous-thunderpickcomp/ledger.json \
               "${settlements_args[@]}" \
               "${artifact_args[@]}" --require-live-history
+            restore_exit=$?
+            if [[ $restore_exit -ne 0 ]]; then
+              echo "Restore failed with exit $restore_exit, dumping debug info"
+              ls -R /tmp/previous-thunderpickcomp/ || true
+              cat /tmp/previous-thunderpickcomp/observations.json | head -n 20 || true
+              if [[ -d /tmp/previous-thunderpickcomp/artifact ]]; then
+                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 100 || true
+              fi
+              exit $restore_exit
+            fi
           elif [[ "$status" == "404" && ${#artifact_args[@]} -gt 0 ]]; then
             echo "Published journal missing; restoring the last successful Actions checkpoint."
             python3 -m scripts.restore "${artifact_args[@]}" --require-live-history
