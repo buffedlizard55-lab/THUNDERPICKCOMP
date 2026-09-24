@@ -10,7 +10,7 @@ on:
 
 permissions:
   actions: read # download the previous successful, short-lived journal checkpoint
-  contents: read
+  contents: write # append the versioned journal-archive branch (long-term durability)
   pages: write
   id-token: write
 
@@ -65,9 +65,19 @@ jobs:
               echo "Published ledger unavailable ($ledger_status). Refusing to reset history." >&2
               exit 1
             fi
+            settlements_args=()
+            settlements_status=$(curl --silent --show-error --location --max-time 35 --retry 2 \
+              --output /tmp/previous-thunderpickcomp/settlements.json \
+              --write-out '%{http_code}' "$PAGES_BASE/data/settlements.json?run=$GITHUB_RUN_ID")
+            if [[ "$settlements_status" == "200" ]]; then
+              settlements_args=(--settlements /tmp/previous-thunderpickcomp/settlements.json)
+            else
+              echo "Published settlement journal unavailable ($settlements_status); starting from the committed/empty chain."
+            fi
             python3 -m scripts.restore \
               --observations /tmp/previous-thunderpickcomp/observations.json \
               --ledger /tmp/previous-thunderpickcomp/ledger.json \
+              "${settlements_args[@]}" \
               "${artifact_args[@]}" --require-live-history
           elif [[ "$status" == "404" && ${#artifact_args[@]} -gt 0 ]]; then
             echo "Published journal missing; restoring the last successful Actions checkpoint."
@@ -80,6 +90,8 @@ jobs:
         run: python3 -m scripts.collect
       - name: Apply eligible forward-only simulated outright decisions
         run: python3 -m scripts.competition
+      - name: Record settlement receipts and apply confirmed settlements (never assumes void)
+        run: python3 -m scripts.settle
       - name: Validate data and regression tests before publishing
         run: |
           python3 scripts/validate.py
@@ -93,6 +105,7 @@ jobs:
           path: |
             data/observations.json
             data/ledger.json
+            data/settlements.json
           retention-days: 30
       - name: Package only public site files
         run: |
@@ -110,5 +123,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v4
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Append versioned journal archive (outlives 30-day artifacts)
+        run: |
+          set -euo pipefail
+          python3 -m scripts.archive --out /tmp/journal-archive --run-id "$GITHUB_RUN_ID"
+          git config user.name "thunderpickcomp-journal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git fetch origin journal-archive 2>/dev/null || true
+          if git rev-parse --verify FETCH_HEAD 2>/dev/null; then
+            git checkout --force -B journal-archive FETCH_HEAD
+          else
+            git checkout --orphan journal-archive
+            git rm -rf --quiet . 2>/dev/null || true
+          fi
+          rm -f MANIFEST.json observations.json ledger.json settlements.json
+          cp /tmp/journal-archive/MANIFEST.json /tmp/journal-archive/observations.json \
+             /tmp/journal-archive/ledger.json /tmp/journal-archive/settlements.json .
+          git add MANIFEST.json observations.json ledger.json settlements.json
+          if git diff --cached --quiet; then
+            echo "Archive unchanged; nothing to commit."
+          else
+            git commit -m "Journal archive: run $GITHUB_RUN_ID [skip ci]"
+            git push origin journal-archive
+          fi

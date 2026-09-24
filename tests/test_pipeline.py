@@ -128,7 +128,7 @@ class CollectorTests(unittest.TestCase):
 
     def test_partial_fixture_replay_is_sourced_but_never_bets(self):
         doc = c.collect(c.empty(), c.FixtureFetcher(), NOW, TEAMS, "offline-replay")
-        self.assertEqual(len(doc["checks"]), 7)
+        self.assertEqual(len(doc["checks"]), 9)
         self.assertEqual({r["team_id"]: r["rank"] for r in doc["vrs_history"][0]["teams"]},
                          {"falcons": 3, "legacy": 6, "furia": 7, "9z": 9,
                           "aurora": 12, "betboom": 15, "parivision": 18, "virtuspro": 40})
@@ -410,3 +410,513 @@ class CompetitionTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ---------------------------------------------------------------------------
+# Match pipeline: HLTV + Liquipedia cross-check and pre-start depth gates.
+# ---------------------------------------------------------------------------
+
+def match_quote(team, price, size, mid, now=NOW, event_key="kalshi:KXCS2GAME-TEST"):
+    """Synthetic match-winner ask; exists only in test memory."""
+    q = synthetic_quote(team, price, size, mid, now)
+    q["event_key"] = event_key
+    q["market_type"] = "match winner"
+    q["market_title"] = "FURIA vs. Team Falcons"
+    return q
+
+
+def synthetic_match_obs(now=NOW, status="scheduled-confirmed", scheduled=None, pair=("furia", "falcons")):
+    """One double-sourced fixture plus a fresh pre-start two-sided book."""
+    obs = c.empty()
+    obs["mode"] = "live"
+    obs["last_attempt_utc"] = c.stamp(now)
+    obs["last_completed_utc"] = c.stamp(now)
+    scheduled = scheduled or (now + timedelta(hours=2))
+    obs["fixtures"] = [{
+        "id": "HLTV-2399999", "hltv_id": "2399999", "team_a": pair[0], "team_b": pair[1],
+        "scheduled_utc": c.stamp(scheduled), "group": "A", "stage_label": "groups",
+        "finished": False, "derived_winner": None, "series_score": None, "map_scores": [],
+        "source_url": "https://www.hltv.org/matches/2399999",
+        "liquipedia_url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "observed_utc": c.stamp(now), "status": status,
+        "result_status": "none", "hltv_verified_utc": c.stamp(now),
+        "note": "synthetic test fixture",
+    }]
+    obs["events"] = [{
+        "key": "kalshi:KXCS2GAME-TEST", "venue": "Kalshi", "id": "KXCS2GAME-TEST",
+        "title": "FURIA vs. Team Falcons", "stage": "tournament-unspecified", "status": "open",
+        "first_seen_utc": c.stamp(now), "last_seen_utc": c.stamp(now),
+        "source_url": "https://api.elections.kalshi.com/trade-api/v2/events/KXCS2GAME-TEST",
+        "review_url": "https://api.elections.kalshi.com/trade-api/v2/events/KXCS2GAME-TEST",
+    }]
+    obs["quotes"] = [match_quote("FURIA", "0.5500", "200.00", "KXCS2GAME-TEST-FURIA", now),
+                     match_quote("Team Falcons", "0.6000", "200.00", "KXCS2GAME-TEST-FAL", now)]
+    return obs, synthetic_ledger()
+
+
+STRATEGIES = json.loads((ROOT / "data" / "strategies.json").read_text())
+
+
+class MatchStrategyTests(unittest.TestCase):
+    def setUp(self):
+        self.ranks = comp.team_ranks(TEAMS)
+        self.assertEqual(self.ranks["falcons"], 4)
+        self.assertEqual(self.ranks["furia"], 8)
+
+    def entries_for(self, obs, ledger, username):
+        return [e for e in ledger["entries"] if e["username"] == username]
+
+    def test_offline_or_unconfirmed_or_conflict_never_papers(self):
+        for status, mode in (("scheduled-unconfirmed", "live"), ("scheduled-confirmed", "offline-replay"), ("conflict", "live")):
+            obs, ledger = synthetic_match_obs(status=status)
+            if mode != "live":
+                obs["mode"] = mode
+            placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+            self.assertEqual(placed, [], msg=status + "/" + mode)
+
+    def test_pre_start_double_sourced_fixture_papers_favorite_and_underdog(self):
+        obs, ledger = synthetic_match_obs()
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        users = {e["username"] for e in placed}
+        self.assertIn("sim_favorite_backer", users)
+        self.assertIn("sim_underdog_hunter", users)
+        fav = self.entries_for(obs, ledger, "sim_favorite_backer")[0]
+        under = self.entries_for(obs, ledger, "sim_underdog_hunter")[0]
+        # Falcons are the Sep-16 favorite (rank 4 < 8) and must back Falcons.
+        self.assertEqual(fav["selection"], "Team Falcons")
+        self.assertEqual(under["selection"], "FURIA")
+        self.assertEqual(fav["match_id"], "HLTV-2399999")
+        self.assertEqual(fav["stake"], "25.00")
+        self.assertEqual(under["stake"], "15.00")
+        self.assertTrue(all(e["settlement"]["result"] == "pending" for e in placed))
+        self.assertTrue(all(e["fixture"]["crosscheck"]["fixture_status"] == "scheduled-confirmed" for e in placed))
+
+    def test_insufficient_pre_start_depth_never_papers(self):
+        obs, ledger = synthetic_match_obs()
+        for q in obs["quotes"]:
+            q["ask_size"] = "1.00"  # far below stake/price contracts
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        self.assertEqual(placed, [])
+
+    def test_quote_at_or_after_start_never_papers(self):
+        obs, ledger = synthetic_match_obs()
+        late = NOW + timedelta(hours=3)  # fixture scheduled NOW+2h
+        obs["last_attempt_utc"] = obs["last_completed_utc"] = c.stamp(late)
+        for q in obs["quotes"]:
+            q["observed_utc"] = c.stamp(late)
+            q["source_updated_utc"] = c.stamp(late - timedelta(seconds=25))
+        placed = comp.apply_match_strategies(ledger, obs, late, TEAMS, STRATEGIES)
+        self.assertEqual(placed, [])
+
+    def test_ambiguous_pair_association_refuses(self):
+        obs, ledger = synthetic_match_obs()
+        extra = dict(obs["fixtures"][0])
+        extra["id"] = "HLTV-2399998"
+        extra["hltv_id"] = "2399998"
+        obs["fixtures"].append(extra)  # second fixture, same pair, inside 12h
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        self.assertEqual(placed, [])
+
+    def test_contrarian_bets_only_big_underdog_prices(self):
+        obs, ledger = synthetic_match_obs()
+        for q in obs["quotes"]:
+            if q["selection"] == "FURIA":
+                q["raw_price"] = "0.3000"  # decimal 3.33 for the underdog
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        contra = self.entries_for(obs, ledger, "sim_contrarian_cap")
+        self.assertEqual(len(contra), 1)
+        self.assertEqual(contra[0]["selection"], "FURIA")
+        self.assertEqual(contra[0]["stake"], "10.00")
+        # priced favorite-side-only books never trigger the contrarian
+        obs2, ledger2 = synthetic_match_obs()
+        for q in obs2["quotes"]:
+            q["raw_price"] = "0.6500"
+        self.assertEqual(comp.apply_match_strategies(ledger2, obs2, NOW, TEAMS, STRATEGIES),
+                         [e for e in comp.apply_match_strategies(synthetic_ledger(), obs2, NOW, TEAMS, STRATEGIES)] or [])
+        self.assertEqual(self.entries_for(obs2, ledger2, "sim_contrarian_cap"), [])
+
+    def test_value_engine_bets_only_below_heuristic_fair_minus_edge(self):
+        obs, ledger = synthetic_match_obs()
+        for q in obs["quotes"]:
+            q["raw_price"] = "0.4200" if q["selection"] == "FURIA" else "0.8000"
+        # favorite Falcons fair = min(85, 50+2.5*4)=60 -> implied 80 not <= 52; underdog fair 40 -> implied 42 not <= 32
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        self.assertEqual(self.entries_for(obs, ledger, "sim_vrs_value"), [])
+        for q in obs["quotes"]:
+            if q["selection"] == "FURIA":
+                q["raw_price"] = "0.3100"  # implied 31 <= 40-8 -> value bet on FURIA
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        value = self.entries_for(obs, ledger, "sim_vrs_value")
+        self.assertEqual(len(value), 1)
+        self.assertEqual(value[0]["selection"], "FURIA")
+
+    def test_cache_chaos_bets_only_group_openers(self):
+        obs, ledger = synthetic_match_obs()
+        placed = comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        chaos = self.entries_for(obs, ledger, "sim_cache_chaos")
+        self.assertEqual(len(chaos), 1)  # single fixture = its group's opener
+        self.assertEqual(chaos[0]["selection"], "FURIA")  # worse rank side
+        # a second fixture in the same group at the same time is not an opener
+        obs2, ledger2 = synthetic_match_obs()
+        extra = dict(obs2["fixtures"][0]); extra["id"] = "HLTV-2399997"; extra["hltv_id"] = "2399997"
+        extra["scheduled_utc"] = c.stamp(NOW + timedelta(hours=1))
+        obs2["fixtures"].append(extra)
+        placed = comp.apply_match_strategies(ledger2, obs2, NOW, TEAMS, STRATEGIES)
+        # Two same-pair fixtures inside the association window: association is
+        # ambiguous, so nothing at all may be papered.
+        self.assertEqual(placed, [])
+
+    def test_bankroll_budget_caps_pending_stakes(self):
+        obs, ledger = synthetic_match_obs()
+        # Prefill the favorite backer with 40 × 25-unit pending entries (1000 units).
+        for i in range(40):
+            ledger["entries"].append({
+                "entry_id": f"SIM-prefill-{i}", "username": "sim_favorite_backer",
+                "match_id": "TWC26-FINALS-CHAMPION", "event_key": "kalshi:X", "market": "m",
+                "selection": f"FURIA-{i}", "decimal_odds": "2", "stake": "25.00",
+                "placed_utc": c.stamp(NOW), "simulated": True, "fill_policy": "SIMULATED test",
+                "price_source": {}, "settlement": {"result": "pending", "rule": "r"},
+                "payout": None, "profit": None,
+            })
+        comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        # 40 × 25 units are already pending; one more 25 would exceed the cap.
+        self.assertEqual(len(self.entries_for(obs, ledger, "sim_favorite_backer")), 40)
+
+
+class HltvCrosscheckTests(unittest.TestCase):
+    REAL_PAGE = (ROOT / "tests" / "fixtures" / "hltv_match_2397860.html").read_text()
+
+    def test_parser_reads_only_verified_markers(self):
+        page = c.hltv_match_url("2397860") and __import__("scripts.hltv", fromlist=["parse_hltv_match"]).parse_hltv_match(self.REAL_PAGE, "2397860")
+        self.assertEqual(page["status"], "finished")
+        self.assertEqual((page["score_team1"], page["score_team2"]), (2, 0))
+        self.assertEqual(page["date_utc"], "2026-09-09")
+        self.assertEqual(page["team1"], "4914/3dmax")
+        self.assertEqual(page["team2"], "13518/acend")
+
+    def test_parser_rejects_wrong_id_and_unidentifiable_pages(self):
+        import scripts.hltv as h
+        with self.assertRaisesRegex(h.SourceError, "match id"):
+            h.parse_hltv_match(self.REAL_PAGE, "1111111")
+        with self.assertRaisesRegex(h.SourceError, "title"):
+            h.parse_hltv_match("<title>HLTV.org</title>", "2397860")
+
+    def test_liquipedia_real_dates_and_scores_parse(self):
+        wikitext = ("==Results==\n===Group Stage===\n===={{HiddenSort|Group A}}====\n"
+                    "|{{Match\n|opponent1={{TeamOpponent|3dmax}}|opponent2={{TeamOpponent|acend}}\n"
+                    "|date=October 15, 2026 - 13:15 {{Abbr/CEST}} |finished=true\n"
+                    "|map1={{Map|map=Cache|finished=true\n|t1firstside=ct|t1t=3|t1ct=10|t2t=2|t2ct=0\n|stats=237518|vod=}}\n"
+                    "|map2={{Map|map=Inferno|finished=true\n|t1firstside=t|t1t=9|t1ct=4|t2t=3|t2ct=1\n|stats=237542|vod=}}\n"
+                    "|map3={{Map|map=Ancient|finished=skip}}\n|hltv=2397860\n}}\n")
+        # 3DMAX/Acend are not finalists: the strict parser must skip this pair.
+        self.assertEqual(c.parse_liquipedia_fixtures(wikitext, TEAMS), [])
+        wikitext_finals = wikitext.replace("3dmax", "FURIA").replace("acend", "Team Falcons")
+        rows = c.parse_liquipedia_fixtures(wikitext_finals, TEAMS)
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertEqual(row["scheduled_utc"], "2026-10-15T11:15:00Z")
+        self.assertEqual(row["group"], "A")
+        self.assertTrue(row["finished"])
+        self.assertEqual(row["map_scores"], [[13, 2], [13, 4]])
+        self.assertEqual(row["derived_winner"], "team_a")
+        self.assertEqual(row["series_score"], [2, 0])
+
+    def test_liquipedia_date_without_timezone_is_never_guessed(self):
+        base = ("==Results==\n|{{Match\n|opponent1={{TeamOpponent|FURIA}}|opponent2={{TeamOpponent|Team Falcons}}\n"
+                "|date=__DATE__\n|hltv=2397860\n}}\n")
+        self.assertEqual(c.parse_liquipedia_fixtures(base.replace("__DATE__", "October 15, 2026 - 13:15"), TEAMS), [])
+        self.assertEqual(c.parse_liquipedia_fixtures(base.replace("__DATE__", "October 15, 2026"), TEAMS), [])
+        self.assertEqual(c.parse_liquipedia_fixtures(base.replace("__DATE__", "October 15, 2026 - 13:15 {{Abbr/CST}}"), TEAMS), [])
+        rows = c.parse_liquipedia_fixtures(base.replace("__DATE__", "October 14, 2026 - 13:00 {{Abbr/CEST}}"), TEAMS)
+        self.assertEqual(rows[0]["scheduled_utc"], "2026-10-14T11:00:00Z")
+
+    def test_crosscheck_confirms_then_confirms_result(self):
+        import scripts.hltv as h
+        obs, ledger = synthetic_match_obs(status="scheduled-unconfirmed")
+        # Build the HLTV page for the synthetic fixture: teams FURIA vs Team Falcons, finished 2:0 on the fixture date.
+        page = (self.REAL_PAGE.replace("3DMAX", "FURIA").replace("/team/4914/3dmax", "/team/4274/furia")
+                .replace("Acend", "Team Falcons").replace("/team/13518/acend", "/team/10568/team-falcons")
+                .replace("9th of September 2026", "24th of September 2026")
+                .replace("2397860", "2399999"))
+        fetcher = FakeFetcher({h.hltv_match_url("2399999"): page})
+        c.collect_hltv_crosscheck(obs, fetcher, NOW, TEAMS, "live")
+        fixture = obs["fixtures"][0]
+        self.assertEqual(fixture["status"], "scheduled-confirmed")
+        self.assertEqual([x for x in obs["checks"] if x["source"] == "hltv_crosscheck"][0]["status"], "ok")
+        # Now finish it on both sides and require agreement before confirming.
+        fixture["finished"] = True
+        fixture["derived_winner"] = "team_a"
+        fixture["series_score"] = [2, 0]
+        fixture["map_scores"] = [[13, 2], [13, 4]]
+        fixture["result_status"] = "liquipedia-derived-unconfirmed"
+        obs2 = copy.deepcopy(obs)
+        obs2["fixtures"][0]["status"] = "scheduled-confirmed"
+        c.collect_hltv_crosscheck(obs2, fetcher, NOW, TEAMS, "live")
+        self.assertEqual(obs2["fixtures"][0]["result_status"], "confirmed")
+        self.assertEqual(obs2["fixtures"][0]["result"]["winner"], "furia")
+        self.assertEqual(obs2["fixtures"][0]["result"]["sources"][0].startswith("https://liquipedia.net"), True)
+
+    def test_crosscheck_team_or_date_conflict_blocks_paper(self):
+        import scripts.hltv as h
+        obs, _ = synthetic_match_obs(status="scheduled-unconfirmed")
+        wrong_teams = (self.REAL_PAGE.replace("3DMAX", "Aurora").replace("/team/4914/3dmax", "/team/11039/aurora")
+                       .replace("Acend", "Team Falcons").replace("/team/13518/acend", "/team/10568/team-falcons")
+                       .replace("9th of September 2026", "24th of September 2026")
+                       .replace("2397860", "2399999"))
+        fetcher = FakeFetcher({h.hltv_match_url("2399999"): wrong_teams})
+        c.collect_hltv_crosscheck(obs, fetcher, NOW, TEAMS, "live")
+        fixture = obs["fixtures"][0]
+        self.assertEqual(fixture["status"], "conflict")
+        self.assertTrue(any(a["code"] == "crosscheck_conflict" for a in obs["alerts"]))
+        # Conflicted fixtures are ineligible for the engine.
+        placed = comp.apply_match_strategies(synthetic_ledger(), obs, NOW, TEAMS, STRATEGIES)
+        self.assertEqual(placed, [])
+
+
+class SettlementJournalTests(unittest.TestCase):
+    def settled_fixture_obs(self):
+        obs, ledger = synthetic_match_obs()
+        obs["fixtures"][0].update({
+            "finished": True, "derived_winner": "team_a", "series_score": [2, 0],
+            "result_status": "confirmed",
+            "result": {"winner": "furia", "series_score": [2, 0], "confirmed_utc": c.stamp(NOW),
+                       "sources": ["https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+                                   "https://www.hltv.org/matches/2399999"]},
+        })
+        # One paper position on FURIA (won) and one on Team Falcons (lost).
+        comp.apply_match_strategies(ledger, obs, NOW, TEAMS, STRATEGIES)
+        return obs, ledger
+
+    def kalshi_market(self, result, cents):
+        return {"ticker": "KXCS2GAME-TEST-FURIA", "status": "settled", "result": result,
+                "settlement_value_cents": cents, "title": "FURIA vs. Team Falcons",
+                "yes_sub_title": "FURIA"}
+
+    def test_chain_tampering_is_detected(self):
+        from scripts.settle import append_row, empty_journal, verify_chain
+        from scripts.collect import SourceError
+        journal = empty_journal()
+        append_row(journal, "SIM-1", "venue_resolution", c.stamp(NOW), {"a": 1})
+        append_row(journal, "SIM-1", "result_confirmation", c.stamp(NOW), {"b": 2})
+        verify_chain(journal["rows"])
+        journal["rows"][0]["observation"]["a"] = 999  # rewrite history
+        with self.assertRaisesRegex(SourceError, "chain"):
+            verify_chain(journal["rows"])
+
+    def test_agreeing_win_and_loss_settle_with_venue_and_independent_sources(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        markets = {
+            st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": self.kalshi_market("yes", 100),
+            st.KALSHI + "/markets/KXCS2GAME-TEST-FAL": {"ticker": "KXCS2GAME-TEST-FAL", "status": "settled",
+                                                        "result": "no", "settlement_value_cents": 0,
+                                                        "yes_sub_title": "Team Falcons"},
+        }
+        wikitext = "x" * 10
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        st.verify_chain(journal["rows"])
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        furia = by_sel[("sim_underdog_hunter", "FURIA")]
+        falcons = by_sel[("sim_favorite_backer", "Team Falcons")]
+        self.assertEqual(furia["settlement"]["result"], "win")
+        self.assertEqual(furia["payout"], str((Decimal("15.00") / Decimal("0.55")).quantize(Decimal("0.01"))))
+        self.assertEqual(falcons["settlement"]["result"], "loss")
+        self.assertEqual(falcons["payout"], "0.00")
+        for e in by_sel.values():
+            urls = [s["url"] for s in e["settlement"]["result_source"]]
+            self.assertTrue(any("kalshi.com" in u for u in urls))
+            self.assertTrue(any("hltv.org" in u for u in urls))
+            self.assertTrue(any("liquipedia.net" in u for u in urls))
+        kinds = [r["kind"] for r in journal["rows"]]
+        self.assertIn("venue_resolution", kinds)
+        self.assertIn("settlement_decision", kinds)
+
+    def test_fifty_fifty_settles_partial_and_never_a_refund(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": self.kalshi_market("yes", 50)}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        furia = by_sel[("sim_underdog_hunter", "FURIA")]
+        self.assertEqual(furia["settlement"]["result"], "partial")
+        self.assertEqual(furia["settlement"]["payout_fraction"], "0.5000")
+        expected = (Decimal("15.00") * Decimal("0.5") / Decimal("0.55")).quantize(Decimal("0.01"))
+        self.assertEqual(furia["payout"], str(expected))
+        self.assertEqual(furia["profit"], str(expected - Decimal("15.00")))
+        # The Falcons leg has no venue receipt yet: it must stay pending.
+        self.assertEqual(by_sel[("sim_favorite_backer", "Team Falcons")]["settlement"]["result"], "pending")
+
+    def test_venue_disagreement_with_fixture_holds_pending(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        # Venue claims Falcons won; the double-sourced fixture says FURIA won.
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA":
+                   {**self.kalshi_market("yes", 100), "yes_sub_title": "Team Falcons"}}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        self.assertEqual(by_sel[("sim_underdog_hunter", "FURIA")]["settlement"]["result"], "pending")
+        self.assertEqual(by_sel[("sim_underdog_hunter", "FURIA")]["payout"], None)
+        self.assertTrue(any(r["kind"] == "settlement_hold" for r in journal["rows"]))
+        self.assertTrue(any("venue_vs_fixtures" in r.get("conflicts", []) for r in journal["rows"]))
+
+    def test_zero_payout_on_selection_that_fixture_says_won_holds(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        # Kalshi paid the FURIA Yes at 0 cents although the confirmed result says FURIA won.
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": self.kalshi_market("yes", 0)}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        furia = by_sel[("sim_underdog_hunter", "FURIA")]
+        self.assertEqual(furia["settlement"]["result"], "pending")  # never a loss against the confirmed result
+        holds = [r for r in journal["rows"] if r["kind"] == "settlement_hold" and "venue_vs_fixtures" in r.get("conflicts", [])]
+        self.assertTrue(holds)
+        # The genuinely losing Falcons leg still has no venue receipt here: pending too.
+        self.assertEqual(by_sel[("sim_favorite_backer", "Team Falcons")]["settlement"]["result"], "pending")
+
+    def test_kalshi_wrapped_market_response_resolves(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        # Kalshi GET /markets/{ticker} returns {"market": {...}} — accept the wrapper.
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": {"market": self.kalshi_market("yes", 100)}}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        self.assertEqual(by_sel[("sim_underdog_hunter", "FURIA")]["settlement"]["result"], "win")
+
+    def test_crash_after_journal_write_reapplies_decision_without_refetch(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": self.kalshi_market("yes", 100)}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        settled = by_sel[("sim_underdog_hunter", "FURIA")]
+        # Simulate a crash between the journal write and the ledger write.
+        settled["settlement"] = {"result": "pending", "rule": settled["settlement"]["rule"]}
+        settled["payout"] = None
+        settled["profit"] = None
+        decisions = [r for r in journal["rows"] if r["kind"] == "settlement_decision"
+                     and r["entry_id"] == settled["entry_id"]]
+        self.assertEqual(len(decisions), 1)
+        # Recovery pass: an empty venue (fetch would fail) must still re-apply the receipt's decision.
+        st.settle_all(ledger, obs, journal, FakeFetcher({}))
+        recovered = by_sel[("sim_underdog_hunter", "FURIA")]
+        self.assertEqual(recovered["settlement"]["result"], "win")
+        self.assertEqual(recovered["payout"], str((Decimal("15.00") / Decimal("0.55")).quantize(Decimal("0.01"))))
+        self.assertEqual(recovered["settlement"]["settled_utc"], settled["settlement"]["settled_utc"])
+        # No duplicate decision receipt was appended for this entry.
+        self.assertEqual([r for r in journal["rows"] if r["kind"] == "settlement_decision"
+                          and r["entry_id"] == settled["entry_id"]], decisions)
+        st.verify_chain(journal["rows"])
+
+    def test_offline_run_without_positions_appends_no_wikitext_hold(self):
+        from scripts import settle as st
+        obs, ledger = synthetic_match_obs()  # fixtures only, zero paper positions
+        journal = st.empty_journal()
+        st.settle_all(ledger, obs, journal, FakeFetcher({}))  # Liquipedia unreachable
+        self.assertEqual(len(journal["rows"]), 0)
+
+    def test_offline_run_with_pending_outright_appends_one_wikitext_hold(self):
+        from scripts import settle as st
+        obs, ledger = synthetic_match_obs()
+        entry = {"entry_id": "SIM-OUT-1", "username": "sim_champ_correlation", "event_key": "twc26-champion",
+                 "match_id": "TWC26-FINALS-CHAMPION", "market": "TWC 2026 Champion", "selection": "FURIA",
+                 "stake": "50.00", "decimal_odds": "1.8182",
+                 "price_source": {"venue": "Kalshi", "market_id": "KXCS2", "raw_price": "0.55", "ask_size": "200",
+                                  "observed_utc": c.stamp(NOW), "source_updated_utc": c.stamp(NOW),
+                                  "url": st.KALSHI + "/markets/KXCS2", "event_url": "https://kalshi.com/", "quote_id": "q1"},
+                 "fill_policy": "test", "placed_utc": c.stamp(NOW),
+                 "settlement": {"result": "pending", "rule": "venue rules apply"}}
+        ledger["entries"].append(entry)
+        journal = st.empty_journal()
+        st.settle_all(ledger, obs, journal, FakeFetcher({}))
+        self.assertEqual(entry["settlement"]["result"], "pending")
+        # Two holds: one journal-wide (wikitext unavailable) + one per-entry (venue unreachable).
+        self.assertEqual([r["kind"] for r in journal["rows"]], ["settlement_hold", "settlement_hold"])
+        self.assertEqual(journal["rows"][0]["entry_id"], "journal")
+        self.assertIn("Liquipedia", journal["rows"][0]["observation"]["reason"])
+        self.assertEqual(journal["rows"][1]["entry_id"], "SIM-OUT-1")
+
+    def test_unresolved_or_canceled_venue_never_settles_and_void_is_never_assumed(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": {"ticker": "KXCS2GAME-TEST-FURIA", "status": "active"}}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        by_sel = {(e["username"], e["selection"]): e for e in ledger["entries"]}
+        self.assertEqual(by_sel[("sim_underdog_hunter", "FURIA")]["settlement"]["result"], "pending")
+        self.assertTrue(any(r["kind"] == "venue_resolution" and r["observation"] == {"resolved": False}
+                            for r in journal["rows"]))
+        self.assertTrue(any(r["kind"] == "settlement_hold" for r in journal["rows"]))
+
+    def test_validator_accepts_synthetic_chained_journal(self):
+        from scripts import settle as st
+        obs, ledger = self.settled_fixture_obs()
+        journal = st.empty_journal()
+        markets = {st.KALSHI + "/markets/KXCS2GAME-TEST-FURIA": self.kalshi_market("yes", 100)}
+        st.settle_all(ledger, obs, journal, FakeFetcher(markets))
+        errors = []
+        v.ERRORS.clear()
+        v.check_settlements(journal, ledger)
+        errors.extend(v.ERRORS)
+        self.assertEqual(errors, [])
+
+
+class ArchiveDurabilityTests(unittest.TestCase):
+    def test_manifest_records_digests_and_chain_head(self):
+        import scripts.archive as arch
+        from scripts import settle as st
+        journal = st.empty_journal()
+        st.append_row(journal, "SIM-1", "venue_resolution", c.stamp(NOW), {"x": 1})
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "snap"
+            data = Path(tmp) / "data"
+            data.mkdir(parents=True)
+            (data / "settlements.json").write_text(json.dumps(journal), encoding="utf-8")
+            real_data = arch.ROOT / "data"
+            copied = []
+            try:  # copy the tracked journal into a temp repo view
+                for name in ("observations.json", "ledger.json"):
+                    shutil2 = data / name
+                    shutil2.write_text((real_data / name).read_text(encoding="utf-8"), encoding="utf-8")
+                    copied.append(shutil2)
+                original_root = arch.ROOT
+                arch.ROOT = Path(tmp)  # archive must read from the temp view only
+                try:
+                    manifest = arch.build(out, run_id="TEST-1")
+                finally:
+                    arch.ROOT = original_root
+                self.assertEqual(set(manifest["files"]), {"observations.json", "ledger.json", "settlements.json"})
+                self.assertEqual(manifest["settlement_rows"], 1)
+                self.assertTrue(manifest["settlement_chain_head"])
+                for name, digest in manifest["files"].items():
+                    import hashlib as _h
+                    actual = _h.sha256((out / name).read_bytes()).hexdigest()
+                    self.assertEqual(digest, actual)
+                self.assertEqual(manifest["run_id"], "TEST-1")
+            finally:
+                for p in copied:
+                    p.unlink(missing_ok=True)
+
+
+class RestoreSettlementsTests(unittest.TestCase):
+    def test_longer_chain_wins_but_divergence_stops(self):
+        from scripts import settle as st
+        base = st.empty_journal()
+        st.append_row(base, "SIM-1", "venue_resolution", c.stamp(NOW), {"x": 1})
+        longer = st.empty_journal()
+        longer["rows"] = list(base["rows"])
+        longer["chain_head"] = base["chain_head"]
+        st.append_row(longer, "SIM-1", "settlement_hold", c.stamp(NOW), {"y": 2})
+        restored = rest.restore_settlements(base, longer)
+        self.assertEqual(len(restored["rows"]), 2)
+        divergent = st.empty_journal()
+        st.append_row(divergent, "SIM-1", "venue_resolution", c.stamp(NOW), {"x": 999})
+        with self.assertRaisesRegex(rest.SourceError, "diverge"):
+            rest.restore_settlements(base, divergent)
+        with self.assertRaisesRegex(rest.SourceError, "missing/rewritten"):
+            rest.restore_settlements(longer, base)

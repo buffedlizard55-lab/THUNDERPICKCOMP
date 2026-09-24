@@ -13,8 +13,10 @@ import json
 from pathlib import Path
 
 from .collect import OUTPUT, ROOT, SourceError, parse_time, verify_history
+from .settle import SETTLEMENTS_PATH, empty_journal, verify_chain
 
 LEDGER = ROOT / "data" / "ledger.json"
+SETTLEMENTS = SETTLEMENTS_PATH
 
 
 def by_id(items: list[dict], key: str, label: str) -> dict:
@@ -59,8 +61,29 @@ def restore_ledger(current: dict, published: dict) -> dict:
     if not isinstance(current.get("entries"), list) or not isinstance(published.get("entries"), list):
         raise SourceError("ledger entries missing")
     covers(current, published, "entries", "entry_id")
-    # Decisions are immutable. Settlements/corrections need a separate verified
-    # journal before the product can change a pending decision's status.
+    # Decisions are immutable. Settlements/corrections live in the chained
+    # settlements journal, which is restored with the same coverage rules.
+    return published
+
+
+def restore_settlements(current: dict, published: dict | None) -> dict:
+    """Newest chained settlement history; missing files mean the empty journal."""
+    if current is None:
+        current = empty_journal()
+    if published is None:
+        published = empty_journal()
+    verify_chain(current.get("rows", []))
+    verify_chain(published.get("rows", []))
+    for journal in (current, published):
+        if journal.get("schema_version") != 1 or not isinstance(journal.get("rows"), list):
+            raise SourceError("settlements journal has unknown schema")
+    if len(current["rows"]) > len(published["rows"]):
+        # The committed journal can only be an equal or older prefix.
+        if current["rows"] != published["rows"][:len(current["rows"])]:
+            raise SourceError("committed settlement receipts missing/rewritten in published history; STOP to review")
+        return current
+    if published["rows"][:len(current["rows"])] != current["rows"]:
+        raise SourceError("published settlement receipts diverge from the committed journal; STOP to review")
     return published
 
 
@@ -98,10 +121,14 @@ def choose_history(current: dict, ledger: dict,
     return selected, selected_ledger, source
 
 
-def artifact_json(directory: Path, name: str) -> dict:
+def artifact_json(directory: Path, name: str, *, optional: bool = False) -> dict | None:
     """Handle either artifact path layout without accepting arbitrary files."""
     paths = [directory / name, directory / "data" / name]
     found = [p for p in paths if p.is_file()]
+    if not found:
+        if optional:
+            return None  # older checkpoints predate this journal file
+        raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     if len(found) != 1:
         raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     return json.loads(found[0].read_text(encoding="utf-8"))
@@ -111,6 +138,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--observations", type=Path, help="downloaded published data/observations.json")
     parser.add_argument("--ledger", type=Path, help="downloaded published data/ledger.json")
+    parser.add_argument("--settlements", type=Path, help="downloaded published data/settlements.json (optional)")
     parser.add_argument("--artifact-dir", type=Path, help="last successful Actions journal checkpoint")
     parser.add_argument("--require-live-history", action="store_true", help="never select the pre-launch offline seed")
     args = parser.parse_args(argv)
@@ -118,18 +146,29 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--observations and --ledger must be supplied together")
     current = json.loads(OUTPUT.read_text(encoding="utf-8"))
     ledger = json.loads(LEDGER.read_text(encoding="utf-8"))
+    current_settlements = json.loads(SETTLEMENTS.read_text(encoding="utf-8")) if SETTLEMENTS.exists() else empty_journal()
     published = json.loads(args.observations.read_text(encoding="utf-8")) if args.observations else None
     old_ledger = json.loads(args.ledger.read_text(encoding="utf-8")) if args.ledger else None
+    published_settlements = json.loads(args.settlements.read_text(encoding="utf-8")) if args.settlements else None
     artifact = artifact_json(args.artifact_dir, "observations.json") if args.artifact_dir else None
     artifact_ledger = artifact_json(args.artifact_dir, "ledger.json") if args.artifact_dir else None
+    artifact_settlements = artifact_json(args.artifact_dir, "settlements.json", optional=True) if args.artifact_dir else None
     result, result_ledger, source = choose_history(
         current, ledger, published, old_ledger, artifact, artifact_ledger,
         require_live=args.require_live_history,
     )
-    # Both candidates and their coverage were checked BEFORE writing either file.
+    # Settlement history: the longest candidate that still extends the committed
+    # prefix wins; divergence stops the run instead of rewriting receipts.
+    result_settlements = current_settlements
+    for candidate in sorted((j for j in (published_settlements, artifact_settlements) if j is not None),
+                            key=lambda j: len(j.get("rows", []))):
+        result_settlements = restore_settlements(result_settlements, candidate)
+    # Both candidates and their coverage were checked BEFORE writing any file.
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     LEDGER.write_text(json.dumps(result_ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Restored {len(result['quotes'])} quote receipts and {len(result_ledger['entries'])} immutable paper decisions from {source}.")
+    SETTLEMENTS.write_text(json.dumps(result_settlements, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Restored {len(result['quotes'])} quote receipts and {len(result_ledger['entries'])} immutable paper decisions from {source}; "
+          f"{len(result_settlements['rows'])} chained settlement receipts.")
     return 0
 
 

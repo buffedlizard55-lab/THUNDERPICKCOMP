@@ -1,0 +1,19 @@
+{
+  "policy": {
+    "source_name": "HLTV.org player statistics (per-event/player pages)",
+    "source_url": "https://www.hltv.org/stats/players",
+    "metric": "rating30",
+    "window_days": 90,
+    "min_maps": 40,
+    "defined_utc": "2026-09-24T18:00:00Z",
+    "rules": [
+      "Ratings are collected ONLY from HLTV statistics pages with the retrieval UTC recorded; each row names its exact window (trailing 90 days ending at retrieval) and the maps-played denominator.",
+      "A player row is publishable only with >= 40 maps in the window; below that it is 'unavailable', not interpolated or estimated.",
+      "HLTV robots.txt disallows several /stats query-parameter URLs (startDate/endDate/maps filters); collection must respect robots.txt and, where a filtered window URL is disallowed, the window is implemented by page selection and dated retrieval instead of query parameters.",
+      "Ratings are ANALYSIS INPUTS, never facts: they are third-party performance aggregates and must not be presented as the reason any market price is 'wrong'.",
+      "No rating is published until it satisfies every rule above; this file ships empty by policy."
+    ]
+  },
+  "players": [],
+  "note": "Defined 2026-09-24 as the prerequisite for any future player-rating coverage (README coverage work). Empty by policy: no compliant collection has run yet."
+}

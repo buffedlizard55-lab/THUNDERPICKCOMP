@@ -1,0 +1,55 @@
+name: Watchdog — alert when the hourly collection stalls
+
+# GitHub Actions cron is best effort, so a missed run is otherwise invisible:
+# the journal just quietly stops refreshing. This watchdog fails LOUDLY (a red
+# scheduled-workflow run and an email to watchers) when the last successful
+# collection/Pages run is too old, or when the published journal itself is stale.
+
+on:
+  schedule:
+    - cron: "47 * * * *" # offset from the :17 collection cron
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  alert-on-stall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the last successful collection run age
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MAX_MINUTES: 100 # hourly cron + generous scheduler delay
+        run: |
+          set -euo pipefail
+          last=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/pages.yml/runs?branch=main&status=success&per_page=1" \
+            --jq '.workflow_runs[0].id // empty')
+          if [[ -z "$last" ]]; then
+            echo "::error::No successful collection/Pages run has EVER completed. The feed is not live."
+            exit 1
+          fi
+          updated=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$last" --jq '.updated_at')
+          age=$(( ($(date -u +%s) - $(date -u -d "$updated" +%s)) / 60 ))
+          echo "Last successful collection run $last finished $age minute(s) ago (limit $MAX_MINUTES)."
+          if (( age > MAX_MINUTES )); then
+            echo "::error::ALERT: hourly collection/Pages job stalled — last success $age minutes ago (run $last). Inspect https://github.com/$GITHUB_REPOSITORY/actions/workflows/pages.yml"
+            exit 1
+          fi
+      - name: Check the published journal's own freshness
+        env:
+          PAGES_URL: https://${{ github.repository_owner }}.github.io/THUNDERPICKCOMP/data/observations.json
+        run: |
+          set -euo pipefail
+          body=$(curl --silent --show-error --location --max-time 35 --retry 2 "$PAGES_URL")
+          attempt=$(BODY="$body" python3 -c 'import json, os; print(json.loads(os.environ["BODY"]).get("last_attempt_utc") or "")')
+          if [[ -z "$attempt" ]]; then
+            echo "::error::Published journal has no last_attempt_utc."; exit 1
+          fi
+          age=$(( ($(date -u +%s) - $(date -u -d "$attempt" +%s)) / 60 ))
+          echo "Published journal last attempted $age minute(s) ago."
+          if (( age > 130 )); then
+            echo "::error::ALERT: published journal is $age minutes old (attempt $attempt). The live feed is stale."
+            exit 1
+          fi

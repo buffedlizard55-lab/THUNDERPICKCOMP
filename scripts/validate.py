@@ -12,6 +12,8 @@ from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:  # allow `python3 scripts/validate.py` to import scripts.*
+    sys.path.insert(0, str(ROOT))
 DATA = ROOT / "data"
 ERRORS = []
 
@@ -234,6 +236,12 @@ def check_strategies(strats):
                 err(f"{w}: bankroll_start must be > 0")
         except (TypeError, ValueError):
             err(f"{w}: bankroll_start must be numeric")
+        if "stake_units" in s:
+            try:
+                if float(s["stake_units"]) <= 0:
+                    err(f"{w}: stake_units must be > 0 when present")
+            except (TypeError, ValueError):
+                err(f"{w}: stake_units must be numeric")
         if s.get("status") not in {"active", "paused", "retired"}:
             err(f"{w}: bad status {s.get('status')!r}")
     return users
@@ -355,19 +363,32 @@ def check_observations(obs, teams):
         for f in ("first_seen_utc", "last_seen_utc"):
             check_iso(e.get(f), w)
     seen_fixtures = set()
+    fixture_ids = set()
     for i, row in enumerate(obs["fixtures"]):
         w = f"observations.fixtures[{i}]"
         if row.get("id") in seen_fixtures or not re.fullmatch(r"HLTV-\d{6,9}", row.get("id", "")):
             err(f"{w}: duplicate/malformed HLTV match id")
         seen_fixtures.add(row.get("id"))
+        fixture_ids.add(row.get("id"))
         if row.get("team_a") not in team_ids or row.get("team_b") not in team_ids or row.get("team_a") == row.get("team_b"):
             err(f"{w}: malformed teams")
         check_iso(row.get("scheduled_utc"), w)
         check_iso(row.get("observed_utc"), w)
         for f in ("source_url", "liquipedia_url"):
             check_url(row.get(f), w)
-        if row.get("status") != "scheduled-unconfirmed":
-            err(f"{w}: fixture must be unconfirmed until independently checked")
+        if row.get("status") not in {"scheduled-unconfirmed", "scheduled-confirmed", "conflict"}:
+            err(f"{w}: fixture must be unconfirmed, double-source confirmed, or in explicit conflict")
+        if row.get("status") == "scheduled-confirmed" and not row.get("hltv_verified_utc"):
+            err(f"{w}: confirmed fixture must record its HLTV verification time")
+        if row.get("result_status") == "confirmed":
+            result = row.get("result") or {}
+            if result.get("winner") not in team_ids or not isinstance(result.get("series_score"), list):
+                err(f"{w}: confirmed result needs a finalist winner and series score")
+            check_iso(result.get("confirmed_utc"), w + ".result.confirmed_utc")
+            for u in result.get("sources") or []:
+                check_url(u, w + ".result.sources")
+        if row.get("result_status") == "conflict" and row.get("status") != "conflict":
+            err(f"{w}: result conflict must mark the whole fixture conflicted")
     ids = set()
     if mode == "offline-replay" and obs["quotes"]:
         err("observations: offline replay must not publish quotes or create bets")
@@ -579,6 +600,103 @@ def check_ledger(ledger, users, match_ids, observations, paused_users=()):
                 err("ledger: champion policy stake must be exactly 50 units per leg")
 
 
+def check_settlements(settlements, ledger):
+    """Tamper-evident settlement receipts plus ledger consistency."""
+    try:  # works as `python3 -m scripts.validate` and as `python3 scripts/validate.py`
+        from scripts.settle import verify_chain
+    except ImportError:
+        from settle import verify_chain
+    if settlements is None:
+        settled = [e for e in (ledger or {}).get("entries", []) if (e.get("settlement") or {}).get("result") not in (None, "pending")]
+        if settled:
+            err(f"settlements.json: missing while {len(settled)} ledger entries are settled")
+        return
+    if settlements.get("schema_version") != 1:
+        err("settlements: unknown schema version")
+        return
+    rows = settlements.get("rows")
+    if not isinstance(rows, list):
+        err("settlements.rows: expected array")
+        return
+    try:
+        verify_chain(rows)
+    except Exception as exc:  # chain tampering is fatal for the run
+        err(f"settlements: {exc}")
+        return
+    previous_time = ""
+    decisions = {}
+    for i, row in enumerate(rows):
+        w = f"settlements.rows[{i}]"
+        for f in ("receipt_id", "prev_hash", "hash", "recorded_utc", "observed_utc", "entry_id", "kind", "observation"):
+            if f not in row:
+                err(f"{w}: missing field {f}")
+        check_iso(row.get("recorded_utc"), w + ".recorded_utc")
+        check_iso(row.get("observed_utc"), w + ".observed_utc")
+        if row.get("recorded_utc", "") < previous_time:
+            err(f"{w}: recorded_utc moved backwards; journal must be append-only")
+        previous_time = row.get("recorded_utc", "")
+        if row.get("kind") not in {"venue_resolution", "result_confirmation", "settlement_decision", "settlement_hold"}:
+            err(f"{w}: unknown receipt kind {row.get('kind')!r}")
+        if row.get("source_url"):
+            check_url(row.get("source_url"), w)
+        if row.get("kind") == "settlement_decision":
+            if row.get("entry_id") in decisions:
+                err(f"{w}: duplicate settlement decision for {row.get('entry_id')}")
+            decisions[row.get("entry_id")] = row.get("observation") or {}
+    entry_ids = {e.get("entry_id"): e for e in (ledger or {}).get("entries", []) if isinstance(e, dict)}
+    for entry_id, observation in decisions.items():
+        entry = entry_ids.get(entry_id)
+        if not entry:
+            err(f"settlements: decision receipt for unknown ledger entry {entry_id!r}")
+            continue
+        settlement = entry.get("settlement") or {}
+        if settlement.get("result") == "pending":
+            err(f"settlements: decision receipt exists but ledger entry {entry_id} is still pending")
+        if observation.get("result") != settlement.get("result") or observation.get("payout") != str(entry.get("payout")):
+            err(f"settlements: decision receipt disagrees with ledger entry {entry_id}")
+    for e in (ledger or {}).get("entries", []):
+        result = (e.get("settlement") or {}).get("result")
+        if result not in (None, "pending") and e.get("entry_id") not in decisions:
+            err(f"settlements: settled ledger entry {e.get('entry_id')} has no settlement_decision receipt")
+
+
+def check_player_stats(stats):
+    """A dated, sourced player-stat window must exist before any rating row."""
+    if stats is None:
+        return
+    policy = stats.get("policy") or {}
+    for f in ("source_name", "source_url", "window_days", "min_maps", "metric", "defined_utc"):
+        if f not in policy:
+            err(f"player_stats.policy: missing field {f}")
+    if policy.get("source_url"):
+        check_url(policy.get("source_url"), "player_stats.policy.source_url")
+    check_iso(policy.get("defined_utc"), "player_stats.policy.defined_utc")
+    if not isinstance(policy.get("window_days"), int) or policy.get("window_days") <= 0 or policy.get("window_days") > 365:
+        err("player_stats.policy: window_days must be a positive int ≤ 365")
+    players = stats.get("players")
+    if not isinstance(players, list):
+        err("player_stats.players: expected array")
+        return
+    for i, p in enumerate(players):
+        w = f"player_stats.players[{i}]"
+        for f in ("player", "team_id", "metric", "value", "window_start_utc", "window_end_utc",
+                  "source_url", "observed_utc", "maps_played"):
+            if f not in p:
+                err(f"{w}: missing field {f}")
+        for f in ("window_start_utc", "window_end_utc", "observed_utc"):
+            check_iso(p.get(f), w + "." + f)
+        check_url(p.get("source_url"), w + ".source_url")
+        if p.get("metric") != policy.get("metric"):
+            err(f"{w}: metric must match the declared policy metric")
+        try:
+            days = (datetime.strptime(p["window_end_utc"], "%Y-%m-%dT%H:%M:%SZ") -
+                    datetime.strptime(p["window_start_utc"], "%Y-%m-%dT%H:%M:%SZ")).days
+            if days != policy.get("window_days"):
+                err(f"{w}: window length disagrees with policy")
+        except (KeyError, TypeError, ValueError):
+            err(f"{w}: invalid stat window timestamps")
+
+
 def check_html_refs():
     pages = sorted((ROOT).glob("*.html"))
     if not pages:
@@ -600,16 +718,21 @@ def main():
     ledger = load("ledger.json")
     changes = load("roster_changes.json")
     observations = load("observations.json")
+    settlements = load("settlements.json")
+    player_stats = load("player_stats.json")
 
     master_ids = check_master(master)
     check_teams(teams, master_ids)
     match_ids = check_matches(matches, master_ids)
+    fixture_ids = {f.get("id") for f in (observations or {}).get("fixtures", []) if isinstance(f, dict)}
     check_market_sources(market_sources, master_ids)
     users = check_strategies(strategies)
     check_changes(changes, teams, master_ids)
     check_observations(observations, teams)
     paused = {s["username"] for s in (strategies or []) if s.get("status") == "paused"}
-    check_ledger(ledger, users, match_ids, observations, paused)
+    check_ledger(ledger, users, match_ids | fixture_ids, observations, paused)
+    check_settlements(settlements, ledger)
+    check_player_stats(player_stats)
     check_html_refs()
 
     # Required static assets

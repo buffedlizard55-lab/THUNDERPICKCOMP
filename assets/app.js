@@ -133,14 +133,29 @@
     }));
   }
   function fixtureSignals(el) {
-    show(el, load("observations").then(function (obs) {
-      el.innerHTML = obs.fixtures.length ? '<ul class="signal-list">' + obs.fixtures.map(function (m) {
-        return '<li>' + badge("flagged") + ' <strong>' + esc(m.team_a) + ' vs ' + esc(m.team_b) +
-          '</strong> · scheduled ' + utc(m.scheduled_utc) + ' · detected ' + utc(m.observed_utc) +
-          '<br>' + esc(m.note) + " · " + link(m.liquipedia_url, "Liquipedia") + " · " + link(m.source_url, "HLTV ID") + "</li>";
-      }).join("") + '</ul>' : '<div class="notice">No unambiguous Finals fixtures found by the strict source parser. This is not proof no fixtures exist; see source checks below.</div>';
+    show(el, Promise.all([load("observations"), load("teams")]).then(function (pair) {
+      var obs = pair[0], teamNames = Object.create(null);
+      pair[1].forEach(function (t) { teamNames[t.id] = t.name; });
+      var statusBadge = { "scheduled-unconfirmed": "flagged", "scheduled-confirmed": "ok", "conflict": "flagged" };
+      var rows = obs.fixtures.map(function (m) {
+        var cross = m.result_status === "confirmed"
+          ? badge("ok") + " result double-sourced: " + esc(teamNames[m.result.winner] || m.result.winner) + " wins " +
+            esc(((m.result && m.result.series_score) || []).join(":")) + " · confirmed " + utc(m.result && m.result.confirmed_utc) +
+            " <span class='muted'>(derived from map scores; not an official ruling)</span>"
+          : (m.status === "scheduled-confirmed"
+              ? badge("ok") + " schedule double-sourced (HLTV check " + utc(m.hltv_verified_utc) + ")"
+              : badge("flagged") + " " + esc(m.status) + " — not eligible for any paper decision");
+        return "<li>" + badge(statusBadge[m.status] || "flagged") + " <strong>" + esc(teamNames[m.team_a] || m.team_a) + " vs " +
+          esc(teamNames[m.team_b] || m.team_b) + "</strong> · " + utc(m.scheduled_utc) + " UTC · " + esc(m.id) +
+          (m.group && m.group !== "?" ? " · Group " + esc(m.group) : "") +
+          "<br><span class='small'>" + cross + "</span><br><span class='small muted'>Liquipedia template + " + link(m.source_url, "HLTV match page") +
+          " · a pre-start paper decision additionally requires a fresh first-party ask whose top-of-book size covers the stake</span></li>";
+      });
+      el.innerHTML = rows.length ? '<ul class="signal-list">' + rows.join("") + '</ul>'
+        : '<div class="notice">No unambiguous Finals fixtures found by the strict source parser. This is not proof no fixtures exist; see source checks below.</div>';
     }));
   }
+
   function marketSources(el) {
     show(el, load("market_sources").then(function (items) {
       el.innerHTML = '<div class="table-scroll"><table class="data"><thead><tr><th scope="col">Venue</th><th scope="col">Free data</th><th scope="col">Coverage &amp; limits</th><th scope="col">Original check</th></tr></thead><tbody>' + items.map(function (s) {
@@ -295,16 +310,48 @@
     }));
   }
   function ledger(el) {
-    show(el, load("ledger").then(function (book) {
+    show(el, Promise.all([load("ledger"), load("settlements").catch(function () { return null; })]).then(function (pair) {
+      var book = pair[0], journal = pair[1];
       var html = '<div class="notice"><strong>' + esc(book.meta.currency) + '.</strong> ' + esc(book.meta.settlement_policy) + '</div><p class="small muted">Gross math: ' + esc(book.meta.payout_formula) + ' ' + esc(book.meta.prediction_share_conversion) + '</p>';
+      var receipts = "";
+      if (journal && journal.rows && journal.rows.length) {
+        var kindLabel = { venue_resolution: "Venue resolution receipt", result_confirmation: "Independent result confirmation",
+                          settlement_decision: "Settlement decision applied", settlement_hold: "Settlement held — stays pending" };
+        receipts = '<h3>Settlement journal (append-only, SHA-256 chained)</h3><p class="small muted">' + journal.rows.length +
+          ' receipt(s); chain head <span class="mono">' + esc(String(journal.chain_head || "").slice(0, 16)) + '…</span>. Any edit or deletion of an old receipt breaks the chain and fails validation. Void is never assumed: canceled/unresolved venues stay pending.</p><ul class="signal-list">' +
+          journal.rows.slice().reverse().slice(0, 12).map(function (r) {
+            return '<li>' + badge(r.kind === "settlement_decision" ? "ok" : (r.kind === "settlement_hold" ? "flagged" : "tbd")) +
+              ' <strong>' + esc(kindLabel[r.kind] || r.kind) + '</strong>' + (r.venue ? ' · ' + esc(r.venue) : '') +
+              ' <span class="small muted">entry <span class="mono">' + esc(r.entry_id) + '</span> · recorded ' + utc(r.recorded_utc) +
+              ' · receipt <span class="mono">' + esc(String(r.receipt_id).slice(0, 12)) + '…</span></span>' +
+              (r.note ? '<br><span class="small muted">' + esc(r.note) + '</span>' : '') +
+              (r.source_url ? ' ' + link(r.source_url, "Source ↗") : '') + '</li>';
+          }).join("") + '</ul>';
+      } else {
+        receipts = '<h3>Settlement journal</h3><p class="small muted">No receipts yet: no position has reached a venue resolution. Empty is not settled.</p>';
+      }
       if (!book.entries.length) {
-        el.innerHTML = html + '<div class="notice warn"><strong>No simulated positions yet.</strong> ' + esc(book.meta.note) + ' A paper position can only be made forward at a timestamped first-party ask with enough size, never from a settled price. <a href="markets.html">Inspect the market discovery checks →</a></div>';
+        el.innerHTML = html + '<div class="notice warn"><strong>No simulated positions yet.</strong> ' + esc(book.meta.note) + ' A paper position can only be made forward at a timestamped first-party ask with enough size, never from a settled price. <a href="markets.html">Inspect the market discovery checks →</a></div>' + receipts;
         return;
       }
       el.innerHTML = html + '<div class="table-scroll"><table class="data"><thead><tr><th scope="col">Decision ID / SIM user</th><th scope="col">Event / selection</th><th scope="col">Exact paper amount &amp; line</th><th scope="col">Pricing receipt</th><th scope="col">Outcome &amp; settlement</th></tr></thead><tbody>' + book.entries.map(function (e) {
         var p = e.price_source, s = e.settlement;
-        return '<tr><td class="mono">' + esc(e.entry_id) + '<br>' + esc(e.username) + '</td><td>' + esc(e.market) + '<br><strong>' + esc(e.selection) + '</strong><br><span class="small mono">' + esc(e.event_key) + ' · ' + esc(e.match_id) + '</span></td><td>' + esc(e.stake) + ' SIM units at best ask $' + esc(p.raw_price) + '<br>gross 1/p = ' + esc(e.decimal_odds) + '<br>size ' + esc(p.ask_size) + '</td><td class="small">' + esc(p.venue) + '<br>' + esc(p.market_id) + '<br>observed ' + utc(p.observed_utc) + '<br>exchange book time ' + utc(p.source_updated_utc) + '<br>' + link(p.url, "Original API quote ↗") + '<br>' + link(p.event_url, "Market event ↗") + '<br><span class="muted mono">quote ' + esc(p.quote_id) + '</span><details><summary>Paper fill policy</summary>' + esc(e.fill_policy) + '</details></td><td>' + badge(s.result) + '<br>Payout: ' + (e.payout === null ? 'pending' : esc(e.payout)) + '<br>P/L: ' + (e.profit === null ? 'pending' : esc(e.profit)) + '<details><summary>Exact market settlement rule</summary><div class="rule-text">' + esc(s.rule) + '</div></details>' + (s.result_source ? sources(s.result_source) : '') + '</td></tr>';
-      }).join("") + '</tbody></table></div>';
+        return '<tr><td class="mono">' + esc(e.entry_id) + '<br>' + esc(e.username) + '</td><td>' + esc(e.market) + '<br><strong>' + esc(e.selection) + '</strong><br><span class="small mono">' + esc(e.event_key) + ' · ' + esc(e.match_id) + '</span>' + (e.fixture ? '<br><span class="small muted">cross-checked fixture ' + esc(e.fixture.scheduled_utc) + ' · ' + esc(e.fixture.crosscheck && e.fixture.crosscheck.fixture_status) + '</span>' : '') + '</td><td>' + esc(e.stake) + ' SIM units at best ask $' + esc(p.raw_price) + '<br>gross 1/p = ' + esc(e.decimal_odds) + '<br>size ' + esc(p.ask_size) + '</td><td class="small">' + esc(p.venue) + '<br>' + esc(p.market_id) + '<br>observed ' + utc(p.observed_utc) + '<br>exchange book time ' + utc(p.source_updated_utc) + '<br>' + link(p.url, "Original API quote ↗") + '<br>' + link(p.event_url, "Market event ↗") + '<br><span class="muted mono">quote ' + esc(p.quote_id) + '</span><details><summary>Paper fill policy</summary>' + esc(e.fill_policy) + '</details></td><td>' + badge(s.result) + '<br>Payout: ' + (e.payout === null ? 'pending' : esc(e.payout)) + '<br>P/L: ' + (e.profit === null ? 'pending' : esc(e.profit)) + (s.payout_fraction ? '<br>venue payout fraction ' + esc(s.payout_fraction) : '') + '<details><summary>Exact market settlement rule</summary><div class="rule-text">' + esc(s.rule) + '</div></details>' + (s.result_source ? sources(s.result_source) : '') + '</td></tr>';
+      }).join("") + '</tbody></table></div>' + receipts;
+    }));
+  }
+
+  function archiveStatus(el) {
+    show(el, load("archive_manifest").then(function (m) {
+      var files = Object.keys(m.files || {}).map(function (name) {
+        return '<li><span class="mono">' + esc(name) + '</span> — SHA-256 <span class="mono small">' + esc(m.files[name]) + '</span></li>';
+      }).join("");
+      el.innerHTML = '<div class="notice"><strong>Long-term archive is versioned.</strong> Every successful publication run commits the full journal to the <span class="mono">journal-archive</span> git branch (one commit per run, outliving 30-day Actions artifacts) with this manifest.</div>' +
+        '<p class="small">Snapshot from run <span class="mono">' + esc(m.run_id || "local") + '</span> at ' + utc(m.created_utc) +
+        ' · journal mode ' + esc((m.journal && m.journal.mode) || "?") + ' · last attempt ' + utc(m.journal && m.journal.last_attempt_utc) +
+        ' · ' + esc(m.settlement_rows || 0) + ' chained settlement receipts (head <span class="mono">' + esc(String(m.settlement_chain_head || "").slice(0, 16)) + '…</span>)</p>' +
+        '<ul class="signal-list">' + files + '</ul>' +
+        '<p class="small muted">A stalled hourly job alerts through the watchdog workflow (a failing scheduled run). The site also flags the feed as stale after 2 hours above.</p>';
     }));
   }
 
@@ -313,7 +360,8 @@
       "vrs-snapshot": vrsSnapshot, matches: matches, "fixture-signals": fixtureSignals,
       markets: marketSources, "quote-table": quoteTable, "market-events": marketEvents,
       pulse: pulse, checks: checks, changes: changes, feed: feed,
-      leaderboard: leaderboard, strategies: strategies, ledger: ledger };
+      leaderboard: leaderboard, strategies: strategies, ledger: ledger,
+      "archive-status": archiveStatus };
     document.querySelectorAll("[data-render]").forEach(function (el) {
       var fn = types[el.getAttribute("data-render")];
       if (fn) fn(el);
