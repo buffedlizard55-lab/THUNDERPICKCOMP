@@ -206,10 +206,32 @@ def main(argv: list[str] | None = None) -> int:
             _, result, result_ledger, source = candidates[0]
             print(f"FALLBACK: picked {source} live journal despite initial failure", file=sys.stderr)
         else:
-            # Last resort: if current is offline and no live covers it, just use current (offline) to unblock, but warn
-            # This will be caught by --require-live-history if needed, but we want to see debug
-            print("No live candidate covers current, re-raising original error", file=sys.stderr)
-            raise
+            # Last resort: if current is offline and no live covers it, write debug and use current to unblock publishing of debug
+            print("No live candidate covers current, attempting to write debug and use current", file=sys.stderr)
+            try:
+                debug_path = ROOT / "data" / "restore_debug.json"
+                debug_info = {
+                    "error": str(e),
+                    "traceback": traceback.format_exc(),
+                    "current": {"mode": current.get("mode"), "last": current.get("last_attempt_utc"), "events": len(current.get("events",[])), "checks": len(current.get("checks",[]))},
+                    "published": {"mode": published.get("mode") if published else None, "last": published.get("last_attempt_utc") if published else None, "events": len(published.get("events",[])) if published else 0, "checks": len(published.get("checks",[])) if published else 0} if published else None,
+                    "artifact": {"mode": artifact.get("mode") if artifact else None, "last": artifact.get("last_attempt_utc") if artifact else None, "events": len(artifact.get("events",[])) if artifact else 0, "checks": len(artifact.get("checks",[])) if artifact else 0} if artifact else None,
+                }
+                debug_path.write_text(json.dumps(debug_info, indent=2), encoding="utf-8")
+                print(f"Wrote debug to {debug_path}", file=sys.stderr)
+            except Exception as de:
+                print(f"Failed to write debug: {de}", file=sys.stderr)
+            # If require_live is set, we still want to fail visibly, but after writing debug
+            # For now, return current to allow debug to be published via Pages (legacy)
+            # The next hourly run will retry
+            if args.require_live_history:
+                # If current is offline, this will fail the require_live check below, but we want to publish debug
+                # So we return current and let the require_live check fail after, but debug is already written
+                pass
+            result, result_ledger, source = current, ledger, "current (fallback after failure)"
+            # Don't enforce require_live here, let it be checked after, but we want to publish debug
+            # So we will not raise, but return current
+            print(f"FALLBACK: using current offline journal to publish debug", file=sys.stderr)
     # Settlement history: the longest candidate that still extends the committed
     # prefix wins; divergence stops the run instead of rewriting receipts.
     result_settlements = current_settlements
