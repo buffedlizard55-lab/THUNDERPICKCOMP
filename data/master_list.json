@@ -792,5 +792,535 @@
     "status": "verified",
     "flags": [],
     "notes": "Evidence of market coverage, NOT evidence of a pre-match price, a fill, or current Finals coverage."
+  },
+  {
+    "id": "ML-037",
+    "category": "tournament",
+    "claim": "Roll of honour: 2023 FaZe (beat Virtus.pro, ropz MVP) · 2024 The MongolZ (3-1 vs HEROIC, Berlin) · 2025 FURIA (3-2 reverse sweep vs NAVI)",
+    "detail": "Thunderpick's 2025 release notes FaZe won the inaugural 2023 edition over Virtus.pro (ropz MVP) and The MongolZ won 2024 3-1 over HEROIC in Berlin; FURIA's 2025 reverse sweep (ML-010) is the third entry. 2024 had 16 teams and $850k total on Nov 3, 2024; 3DMAX finished 3rd.",
+    "sources": [
+      {
+        "label": "PRNewswire — FURIA pulls off reverse sweep (2025 finals report, lists prior winners)",
+        "url": "https://www.prnewswire.com/news-releases/furia-pulls-off-the-reverse-sweep-to-win-thunderpick-world-championship-2025-302595328.html",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Insider Gaming — MongolZ wins 2024 edition",
+        "url": "https://insider-gaming.com/mongolz-wins-thunderpick-world-championship/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Esports Charts — Thunderpick WC 2024 tournament page",
+        "url": "https://escharts.com/tournaments/csgo/thunderpick-world-championship-2024-csgo",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Past winners provide context, not a prediction for 2026."
+  },
+  {
+    "id": "ML-038",
+    "category": "qualifier",
+    "claim": "2026 regional series winners: DragonClaw (EU1), M80 (NA), ShindeN (SA1), Imperial (SA2), GenOne (EU2) — none reached the Finals",
+    "detail": "HLTV lists: Europe Series 1 winner DragonClaw, North America M80, South America Series 1 ShindeN, South America Series 2 Imperial, Europe Series 2 GenOne. None of the five appears in the 8-team Malta Finals; Finals places came via 7 VRS invites + Global Qualifier (VP). NA playoffs saw only 2 of 7 series actually played (rest forfeits).",
+    "sources": [
+      {
+        "label": "HLTV — Europe Series 1 (DragonClaw winner)",
+        "url": "https://www.hltv.org/events/9171/thunderpick-world-championship-2026-europe-series-1",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — South America Series 1 (ShindeN winner)",
+        "url": "https://www.hltv.org/events/9239/thunderpick-world-championship-2026-south-america-series-1",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick WC 2026 North America (M80, forfeits noted)",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026/North_America",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Europe Series 2 (GenOne winner)",
+        "url": "https://www.hltv.org/events/9296/thunderpick-world-championship-2026-europe-series-2",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Regional series mattered for VRS points/form, not direct Finals qualification."
+  },
+  {
+    "id": "ML-039",
+    "category": "team",
+    "claim": "VRSDelivery renamed to DragonClaw on May 30, 2026 — one day before winning EU Series 1",
+    "detail": "Liquipedia documents the rename on May 30, 2026; Hotspawn's winner report calls the team 'VRSDelivery' while HLTV's prize list shows 'DragonClaw' for the same May 23-31 event. Flag: DragonClaw was later disqualified from a different event (EPL S7) pending investigation — unrelated to TWC.",
+    "sources": [
+      {
+        "label": "Liquipedia — Europe Series 1 rename note",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026/Europe/1",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Hotspawn — VRSDelivery wins EU Series 1",
+        "url": "https://www.hotspawn.com/counter-strike/news/vrsdelivery-win-thunderpick-world-championship-2026-eu-series-1",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — Europe Series 1 page (lists DragonClaw)",
+        "url": "https://www.hltv.org/events/9171/thunderpick-world-championship-2026-europe-series-1",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [
+      "Rename explains cross-source name discrepancy; not two different winners."
+    ],
+    "notes": "Later disqualification is noted to avoid confusion with TWC eligibility."
+  },
+  {
+    "id": "ML-040",
+    "category": "team",
+    "claim": "Six TWC 2026 players made HLTV Top 20 of 2025: m0NESY #4, molodoy #6, KSCERATO #9, XANTARES #14, YEKINDAR #15, NiKo #18",
+    "detail": "HLTV's Dec 2025 annual ranking final list places m0NESY 4th, molodoy 6th, KSCERATO 9th, XANTARES 14th, YEKINDAR 15th, NiKo 18th. Top three were ZywOo, donk, ropz. Falcons and FURIA each placed two in the year's top ten.",
+    "sources": [
+      {
+        "label": "HLTV — Top 20 players of 2025 final list",
+        "url": "https://www.hltv.org/news/43492/top-20-players-of-2025-final-list",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Skin.Club recap — HLTV Top 20 2025",
+        "url": "https://community.skin.club/en/news/top-20-hltv-players-of-2025",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Ranking is annual form, not a prediction for Malta; use as narrative context only."
+  },
+  {
+    "id": "ML-041",
+    "category": "team",
+    "claim": "NiKo's #18 in 2025 was his record 10th career HLTV Top 20 appearance",
+    "detail": "HLTV's player page notes this was NiKo's 10th Top 20, the most appearances of any player in the ranking's history.",
+    "sources": [
+      {
+        "label": "HLTV — Top 20 of 2025: NiKo 18th",
+        "url": "https://www.hltv.org/news/43505/top-20-players-of-2025-niko-18",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Career longevity note; not a Malta form metric."
+  },
+  {
+    "id": "ML-042",
+    "category": "team",
+    "claim": "m0NESY #4 in 2025 = 4th consecutive HLTV Top 20 (7th→4th→2nd→4th across 2022-25); 2025 was his first trophyless year",
+    "detail": "HLTV notes his placements 7 (2022), 4 (2023), 2 (2024), 4 (2025) and that 2025 was trophyless; G2 signed him from NAVI in 2022 for a reported $600k aged 16 before his Apr 2025 move to Falcons.",
+    "sources": [
+      {
+        "label": "HLTV — Top 20 of 2025: m0NESY 4th",
+        "url": "https://www.hltv.org/news/43585/top-20-players-of-2025-m0nesy-4",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Trophyless year shows ranking can persist despite team results."
+  },
+  {
+    "id": "ML-043",
+    "category": "roster",
+    "claim": "Falcons signed karrigan from FaZe on April 20, 2026; kyxsan benched same day after 3rd at IEM Rio",
+    "detail": "HLTV confirms Falcons signed Finn 'karrigan' Andersen from FaZe on Apr 20, 2026, reuniting him with NiKo (FaZe 2017-18) and coach zonic (Astralis 2016-). FaZe had just missed the Cologne Major qualifier; Falcons had finished 3rd at IEM Rio (April) before the change. kyxsan moved to Falcons bench then to Aurora IGL on Jul 8.",
+    "sources": [
+      {
+        "label": "HLTV — Falcons confirm karrigan signing (Apr 20, 2026)",
+        "url": "https://www.hltv.org/news/44428/falcons-confirm-karrigan-signing",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "TalkEsport — karrigan joins Falcons explainer",
+        "url": "https://www.talkesport.com/news/cs2/karrigan-joins-falcons/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Move happened 61 days before Falcons won Cologne Major (see ML-044)."
+  },
+  {
+    "id": "ML-044",
+    "category": "team",
+    "claim": "IEM Cologne Major 2026: Falcons 3-0 FURIA (Mirage/Anubis/Inferno 13-8 each); m0NESY MVP; zonic 6th Major as coach",
+    "detail": "ESL press release notes Falcons beat FURIA 3-0 in the Jun 21, 2026 final; all three maps 13-8; m0NESY named Major MVP; Danny 'zonic' Sørensen became first person to win six Majors (4 Astralis, 1 Vitality, 1 Falcons). Semis: FURIA 2-0 Aurora; Falcons 2-1 Spirit. NiKo's first Major came 3,067 days after Boston 2018; karrigan's 2nd.",
+    "sources": [
+      {
+        "label": "ESL/FACEIT Group — Cologne Major most-watched record + winners",
+        "url": "https://eslfaceitgroup.com/press/intel-extreme-masters-cologne-2026-major-breaks-records-as-the-most-watched-counter-strike-tournament-of-all-time/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Dust2.us — NiKo has done it, Falcons are your Cologne Major champions",
+        "url": "https://www.dust2.us/news/75245/niko-has-done-it-falcons-are-your-iem-cologne-major-champions",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Historic context for Malta favourite discussion; not a price."
+  },
+  {
+    "id": "ML-045",
+    "category": "roster",
+    "claim": "Legacy signed arT Feb 3, 2026 (lux benched Feb 2) and try Jul 11, 2026 (saadzin to Imperial)",
+    "detail": "HLTV: Legacy signed Andrei 'arT' Piovezan from Fluxo on Feb 3, 2026 after benching lux on Feb 2. On Jul 11, 2026 they signed Santino 'try' Rigal (AR) and traded Bruno 'saadzin' to Imperial; Lucas 'n1ssim' Chavez returned from bench Jul 9 after requesting it Jun 13.",
+    "sources": [
+      {
+        "label": "HLTV — Legacy sign arT (Feb 3, 2026)",
+        "url": "https://www.hltv.org/news/43812/official-legacy-sign-art",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — Legacy sign try (Jul 11, 2026)",
+        "url": "https://www.hltv.org/news/45114/official-legacy-sign-try",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — n1ssim returns to Legacy (Jul 9, 2026)",
+        "url": "https://www.hltv.org/news/45100/official-n1ssim-returns-to-legacys-active-lineup",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Shows Legacy's 2026 rebuild before becoming FISSURE Playground 3 champions."
+  },
+  {
+    "id": "ML-046",
+    "category": "roster",
+    "claim": "Aurora international rebuild July 2-8, 2026: MAJ3R steps down, Jimpphat + ash join, kyxsan arrives as IGL",
+    "detail": "HLTV rostermania: Engin 'MAJ3R' Kupeli stepped down Jul 2, 2026; Aurora benched Fabre Jun 29 and soulfly Jul 2; signed Jere 'Jimpphat' Salo and coach ash on Jul 3; signed Damjan 'kyxsan' Stoilkovski (ex-Falcons bench) as IGL on Jul 8, 2026. Core is ex-Eternal Fire roster acquired Apr 5, 2025.",
+    "sources": [
+      {
+        "label": "HLTV — MAJ3R steps down from Aurora (Jul 2, 2026)",
+        "url": "https://www.hltv.org/news/45050/maj3r-steps-down-from-aurora",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Strafe — Aurora locks in new CS2 roster with kyxsan and Jimpphat",
+        "url": "https://www.strafe.com/news/read/aurora-locks-in-new-cs2-roster-with-kyxsan-and-jimpphat/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — Summer 2026 rostermania tracker",
+        "url": "https://www.hltv.org/news/44998/summer-2026-rostermania-as-it-happened",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Least settled top-10 rebuild besides PARIVISION; explains form volatility."
+  },
+  {
+    "id": "ML-047",
+    "category": "roster",
+    "claim": "BetBoom visa chain Feb-Jul 2026: d1Ledez visa issues forced FL4MUS/zorte stand-ins; ArtFr0st loaned to 1win Aug 1",
+    "detail": "HLTV: BetBoom fielded Timur 'FL4MUS' Marev and Kirill 'zorte' Ryzhov as stand-ins on Mar 23 due to visa issues for Kirill 'd1Ledez' and Pavel 'ArtFr0st'. On Apr 9 d1Ledez returned, zorte stayed, ArtFr0st benched. On Aug 1 ArtFr0st's loan to 1win became permanent when TDK core transferred to 1win (Ax1Le permanent, BELCHONOKK loaned).",
+    "sources": [
+      {
+        "label": "HLTV — BetBoom to field FL4MUS and zorte as stand-ins (Mar 23)",
+        "url": "https://www.hltv.org/news/44170/betboom-to-field-fl4mus-and-zorte-as-stand-ins-at-upcoming-lans-due-to-visa-issues",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — d1Ledez returns, zorte stays (Apr 9)",
+        "url": "https://www.hltv.org/news/44322/d1ledez-returns-to-betbooms-starting-roster-as-zorte-stays-for-the-season-over-artfr0st",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — TDK transfer to 1win (Aug 1, 2026)",
+        "url": "https://www.hltv.org/news/45218/tdk-transfer-to-1win",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Visa context matters for Malta travel risk (see ML-049); BetBoom now at full five."
+  },
+  {
+    "id": "ML-048",
+    "category": "roster",
+    "claim": "PARIVISION three-move saga: HObbit Jun 17 → FL1T Jul 29 (reuniting Rio Major 2022 core) → HObbit re-signs Sep 17 benching slaxejezzz",
+    "detail": "HLTV: PARIVISION signed Abay 'HObbit' Khassenov Jun 17, 2026 to replace Jame's benched player; signed Vladislav 'FL1T' Shulga Jul 29 to replace HObbit (reuniting Outsider Rio 2022 winners Jame+FL1T+dastan). Sep 17 official X posts benched Vyacheslav 'slaxejezzz' Vinokurov (loan available, not for sale) and re-added HObbit permanently (ML-033/034). Four days after Sep 16 TWC field reveal.",
+    "sources": [
+      {
+        "label": "HLTV — PARIVISION replace slaxejezzz with HObbit (Sep 17, 2026)",
+        "url": "https://www.hltv.org/news/45534/parivision-replace-slaxejezzz-with-hobbit",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — PARIVISION sign FL1T to replace HObbit (Jul 29, 2026)",
+        "url": "https://www.hltv.org/news/45200/parivision-sign-fl1t-to-replace-hobbit",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "PARIVISION X — slaxejezzz benched Sep 17",
+        "url": "https://x.com/parivisiongg/status/2100555368153903362",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "PARIVISION X — HObbit returns Sep 17",
+        "url": "https://x.com/parivisiongg/status/2100555617832149185",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Most roster-volatile team in the field; market may overreact to recent change."
+  },
+  {
+    "id": "ML-049",
+    "category": "roster",
+    "claim": "Virtus.pro rebuilt Feb-Mar 2026 around academy core + mir: Perfecto/FL1T/fame out, AquaRS/F0R3VER promoted Mar 12",
+    "detail": "HLTV: After sinking to ~#100-123 VRS post-Major, Virtus.pro transfer-listed Perfecto, FL1T, fame in Feb 2026; promoted academy duo Vladislav 'AquaRS' Fokin and Pavel 'F0R3VER' Ermakhin on Mar 12; kept Timur 'FL4MUS' off main, later used; coach Andrey 'ProbLeM' Ovcharov. Mir remained.",
+    "sources": [
+      {
+        "label": "HLTV — Virtus.pro finalize roster with academy duo (Mar 12, 2026)",
+        "url": "https://www.hltv.org/news/44059/virtuspro-finalize-roster-with-academy-duo",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Insider Gaming — Virtus.pro 2026 roster rebuild",
+        "url": "https://insider-gaming.com/virtus-pro-2026-roster/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Academy project explains VRS #40 qualifier path vs top-20 invites."
+  },
+  {
+    "id": "ML-050",
+    "category": "format",
+    "claim": "Map pool history: Cache replaced Overpass in Active Duty on July 8, 2026; Anubis replaced Train Jan 22, 2026",
+    "detail": "Valve CS2 update logs: Anubis returned Jan 22, 2026 removing Train; Cache added to Active Duty Jul 8, 2026 (Season 5) removing Overpass. TWC 2026 pool (Ancient, Anubis, Cache, Dust II, Inferno, Mirage, Nuke) reflects both changes. Cache will have ~3 months pro sample by Oct 14, compressing prepared vs improviser gap — upset vector in vetoes.",
+    "sources": [
+      {
+        "label": "Valve CS2 updates page (Cache entry Jul 8, 2026)",
+        "url": "https://www.counter-strike.net/news/updates",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "VRedux CS2 map pool timeline",
+        "url": "https://vredux.com/articles/map-pool-in-cs2",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Liquipedia — Thunderpick WC 2026 map pool",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Fresh map explains limited Cache sample; IEM Cologne used prior pool."
+  },
+  {
+    "id": "ML-051",
+    "category": "format",
+    "claim": "Core-roster rule: each Finals team must keep 3/5 of Valve Aug 3, 2026 VRS snapshot roster or face technical loss — all eight comply",
+    "detail": "TWC 2026 rulebook §3.5: core of 3 required from Aug 3 VRS snapshot. Recomputed: Falcons, FURIA, Aurora, 9z, VP 5/5; Legacy (saadzin→try), BetBoom (FL4MUS→S1ren), PARIVISION (slaxejezzz→FL1T) 4/5. Each of those three can make one more change before breaching 3/5.",
+    "sources": [
+      {
+        "label": "TWC 2026 Official Rulebook (Google Drive, dated 01.07.2026)",
+        "url": "https://drive.google.com/file/d/1foK6YiQ9nvCwvfTRn9uRZbV1VEKI2Hia/view",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Valve Global VRS snapshot Aug 3, 2026",
+        "url": "https://github.com/ValveSoftware/counter-strike_regional_standings/blob/main/invitation/2026/standings_global_2026_08_03.md",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Rule matters for late stand-in risk; check §3.5 for exact wording."
+  },
+  {
+    "id": "ML-052",
+    "category": "format",
+    "claim": "TWC server & veto: MR12 $800/1:55/20s freeze/40s bomb/3x30s timeouts; MR3 OT $12,500 +1 timeout; veto A-ban B-ban A-pick B-pick A-ban B-ban decider",
+    "detail": "Rulebook §4.1 and §4.4: MR12 matches, overtime MR3 (best of 6) with $12,500 start money. Timeout counts as above. Veto: Bo3 A ban B ban A pick B pick A ban B ban → last map decider, knife for side. Bo5: A ban B ban then 4 alternating picks. Pool §4.3 lists 7 maps matching Liquipedia/HLTV event pages.",
+    "sources": [
+      {
+        "label": "TWC 2026 Official Rulebook §§4.1/4.3/4.4",
+        "url": "https://drive.google.com/file/d/1foK6YiQ9nvCwvfTRn9uRZbV1VEKI2Hia/view",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "HLTV — Thunderpick WC 2026 event page (pool/format)",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Corrects earlier unverified '$10k at Majors' OT claim; Valve Major supplemental rulebook gives no dollar figure."
+  },
+  {
+    "id": "ML-053",
+    "category": "tournament",
+    "claim": "ESL Pro League S24 Oct 3-11, 2026 in Katowice (16 teams, $1M) includes 7 of 8 TWC teams — VP excluded — final is 3 days before TWC",
+    "detail": "Liquipedia: EPL S24 Swiss then 8-team single elim, Bo5 final Oct 11. Entrants include Falcons, 9z, Legacy, FURIA, BetBoom, Aurora, PARIVISION (via Aug 3 VRS) + 4 Challenger qualifiers (1w Team, M80, ShindeN, TYLOO). VP not entered. TWC arrival Oct 12, first matches Oct 14 — fatigue and strat-hiding flag for deep EPL runners.",
+    "sources": [
+      {
+        "label": "Liquipedia — ESL Pro League Season 24",
+        "url": "https://liquipedia.net/counterstrike/ESL/Pro_League/Season_24",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "ESL — Pro League official site",
+        "url": "https://pro.eslgaming.com/csgo/proleague/",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "VP arrives rested but with less LAN practice — classic longshot fatigue narrative."
+  },
+  {
+    "id": "ML-054",
+    "category": "tournament",
+    "claim": "StarSeries Fall 2026 (Barcelona Sep 17-20, $500k): Vitality 3-1 Aurora in Bo5 final; Aurora 2nd, FURIA 3rd — and Legacy/FURIA/9z/PARIVISION early exits",
+    "detail": "HLTV: Vitality beat Aurora 3-1 (Anubis 13-4 Vitality, Inferno 13-11 Aurora, Mirage 13-4, Cache 13-7). ZywOo MVP 1.51 in final. FURIA 3rd (0-4 maps vs Vitality across two meetings). At FISSURE Playground 3 (Sep 8-13) 5 of 8 finalists played: Legacy champions, BetBoom 3rd-4th, FURIA 5th-6th, 9z/PARIVISION 9th-12th.",
+    "sources": [
+      {
+        "label": "HLTV — Vitality beat Aurora at StarSeries Fall (Sep 20, 2026)",
+        "url": "https://www.hltv.org/news/45558/vitality-beat-aurora-at-starseries-fall-for-first-title-since-may",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — StarSeries Fall event page (prizes, format)",
+        "url": "https://www.hltv.org/events/8057/starladder-starseries-fall-2026",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — FISSURE Playground 3 event page",
+        "url": "https://www.hltv.org/events/8266/fissure-playground-3",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Most recent form snapshot before TWC; recency bias risk for markets."
+  },
+  {
+    "id": "ML-055",
+    "category": "roster",
+    "claim": "FURIA calling change Sep 17, 2026: YEKINDAR hands T-side calling back to FalleN on Anubis/Cache/Ancient",
+    "detail": "HLTV interview: Mareks 'YEKINDAR' Gaļinskis said he is 'not calling anymore and hopefully not going to be in the future' and returned T-side calls on Anubis, Cache, Ancient to Gabriel 'FalleN' Toledo, citing 'too much cortisol'. FURIA again has one caller. No personnel change; most stable roster since Apr 2025.",
+    "sources": [
+      {
+        "label": "HLTV — YEKINDAR: I'm not calling anymore (Sep 17, 2026)",
+        "url": "https://www.hltv.org/news/45540/yekindar-im-not-calling-anymore-and-hopefully-im-not-going-to-be-in-the-future",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Tactical shift, not a roster move — affects in-game approach, not eligibility."
+  },
+  {
+    "id": "ML-056",
+    "category": "tournament",
+    "claim": "Org closures Sep 23, 2026: Complexity cease operations (Jason Lake out after 23 years); ODDIK pause indefinitely — scene-contraction context",
+    "detail": "HLTV Sep 23: Complexity ceased operations and Jason Lake departs after 23 years; separately ODDIK pausing esports operations. ODDIK exit thins South American scene behind 9z/Legacy. Complexity had last affected TWC-related NA field (M80's NA Series path).",
+    "sources": [
+      {
+        "label": "HLTV — Complexity ceases operations (Sep 23, 2026)",
+        "url": "https://www.hltv.org/news/45568/complexity-ceases-operations-and-jason-lake-departs-after-23-years",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — ODDIK pause esports operations (Sep 23, 2026)",
+        "url": "https://www.hltv.org/news/45569/oddik-pause-esports-operations",
+        "accessed_utc": "2026-09-24T18:30:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T18:30:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Ecosystem drama; not a direct TWC participant change but shapes SA talent pipeline."
   }
 ]

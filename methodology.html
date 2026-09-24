@@ -36,9 +36,10 @@
   <main id="main-content">
     <div class="wrap">
       <section class="card">
-        <h2>Core values</h2>
-        <p><strong>Maximize P(Win)</strong> — every decision weighs tradeoffs and picks the path that maximizes this project's chance of becoming a genuinely useful, trustworthy daily hub.</p>
-        <p><strong>Own the Outcome</strong> — we own results end to end. Gaps are stated plainly with a plan to close them; failures surface visibly instead of degrading silently into invented data.</p>
+        <h2>Core values — our decision filter</h2>
+        <p><strong>Maximize P(Win)</strong> — “Maximize the Probability of Winning”: in every tradeoff we pick the path that maximizes this project's chance of becoming a genuinely useful, trustworthy daily hub. We set aside emotion and put the project first.</p>
+        <p><strong>Own the Outcome</strong> — we own results end to end, not just our slice. When we can act, we do — without waiting for permission. Failures and successes are signals to improve. At every turn we stay accountable to the final outcome.</p>
+        <p class="small muted">These are the focal point when building, researching, suggesting upgrades, and implementing work — per the <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP#core-values--focal-point-for-every-decision">README charter</a>. The mission is to solve the manual-checking problem: a current, traceable daily feed so users don't have to manually track HLTV, Liquipedia, team feeds and markets.</p>
       </section>
       <section class="card">
         <h2>Verification rules (non-negotiable)</h2>
@@ -71,20 +72,21 @@
             <tr><td>No automatic settlements/corrections</td><td>Paper positions stay pending; no misleading realized leaderboard results.</td><td>Add append-only venue-resolution/result journal with market-specific partial/void rules and regression tests.</td></tr>
             <tr><td>Pages history is not a permanent database</td><td>On each scheduled build, prior published JSON is restored over HTTPS before appending. A missing/corrupt prior journal must block publication. Actions artifacts have limited retention; no independent durable backup yet.</td><td>Add a versioned, free, tamper-evident long-term archive of quote/decision receipts.</td></tr>
             <tr><td>Scheduled jobs are best effort</td><td>GitHub Actions may run late or fail. A website cannot promise tick-level live quotes; visible UTC age and source errors replace the word “live”.</td><td>Add failure notifications and verify scheduled deploys after merge.</td></tr>
-            <tr><td>Roster history/bench and player stats are incomplete</td><td>Two official Sep 17 PARIVISION announcements are verified; no comprehensive reserve list or player-form metrics.</td><td>Verify more primary team statements; set a dated stat-source/window policy before adding any ratings.</td></tr>
+            <tr><td>Roster history/bench and player stats are incomplete</td><td>Two Sep 17 PARIVISION primary announcements are verified; ML-043–ML-049 add nine secondary-sourced historical moves; no comprehensive reserve list or per-window player-form metrics yet.</td><td>Verify more primary team statements; set a dated stat-source/window policy before adding any ratings. Until then, check HLTV player pages by handle + date.</td></tr>
           </tbody>
         </table></div>
       </section>
       <section class="card">
         <h2>Suggested next work (priority order)</h2>
         <ol>
-          <li>Confirm the first scheduled GitHub Pages collector deployment and inspect its exact source statuses, event URLs and UTC freshness.</li>
-          <li>Build independent fixture/result verification and activate match strategies only with pre-start quote depth and source agreement.</li>
-          <li>Implement immutable venue settlement/correction records, including 50/50 outcomes and fee-aware alternatives, before crediting realized P/L.</li>
-          <li>Add durable, versioned free storage for rolling Pages quote history and automated alerts for missed runs.</li>
-          <li>Verify additional team-issued roster announcements; build source-compliant automated watch for team/coach/reserve updates.</li>
-          <li>Define a sourced player-stat window and provide sourced analysis of favorites/dark horses without treating heuristics as facts.</li>
+          <li><strong>Verify the next live collector run</strong> (hourly schedule + journal recovery). After this session's 20-entry expansion, confirm Valve/Liquipedia checks, eligible quote scope, and UTC freshness on the published site; set Pages Source to <em>GitHub Actions</em> (admin).</li>
+          <li>Build independent fixture/result verification (HLTV + Liquipedia) and activate the six paused match strategies only with pre-start quote depth and source agreement.</li>
+          <li>Implement immutable venue settlement/correction receipts, including 50/50 and void/partial cases, before crediting realized P/L.</li>
+          <li>Add durable, versioned free storage for rolling quote history and alerts when jobs stall (artifacts expire after 30 days).</li>
+          <li>Verify additional <em>primary</em> team/player announcements to promote secondary-sourced moves (ML-043–ML-049) to the primary ledger; build a source-compliant team-feed watch.</li>
+          <li>Define a dated, sourced player-stat window and expand <a href="guide.html#betting-strategies">betting-strategy research</a> with reproducible heuristics — keep analysis labeled as analysis.</li>
         </ol>
+        <p class="small muted">Update Sep 24: 56 verified master claims (20 new this session: ML-037–ML-056), reference design ported (navy+gold hero, better tables), CS2 guide now covers map-pool history, rulebook veto/OT, and four betting-strategy theses for market-experienced readers. Next session should verify the post-merge live deployment before treating the feed as recovered.</p>
       </section>
     </div>
   </main>

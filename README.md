@@ -1,6 +1,11 @@
 # THUNDERPICKCOMP
 
-> **Project starting point:** At the beginning of every task in this repository, read this README before researching, proposing changes, or editing files. `AGENTS.md` makes this a repository-level working instruction. Use this charter to keep the product useful, reliable, and aligned with its purpose.
+> **⚡ Every-Session Starting Point — read this before any research, proposal, or edit**
+> 1. Read this README end-to-end and `AGENTS.md`. This is the canonical mission, core values, and verification charter.
+> 2. **Solve the manual-checking problem:** the product must become a *useful daily current feed* — timely, traceable, and honest about unknowns — so users don't have to manually check many sites themselves. If a change doesn't make the feed more reliable or more useful day-to-day, don't do it.
+> 3. Apply **Core Values as the decision filter** on every tradeoff: **Maximize P(Win)** and **Own the Outcome** (see below). Prefer the path that maximizes the project's chance of becoming a genuinely useful, trustworthy hub; own results end-to-end and fix what can be fixed.
+> 4. No hallucinations, verify claim-by-claim with source links, keep an audit trail, use only free public sources, and fail visibly. See "Non-negotiable information standards" below.
+> 5. Run the three-pass method (implement → bug/edge-case review → charter re-check) and report verified work, uncertainty, and next steps.
 
 ## Mission
 
@@ -8,7 +13,9 @@ Build a clear, dependable, publicly sourced expert hub and forward-looking predi
 
 The product should bring together verified tournament information, teams and player/roster updates, match results, relevant public betting and prediction-market prices, and transparent simulated-user strategies and performance. It should be simple to navigate and easy to use every day. **Correctness and auditability take priority over appearing comprehensive.** If a claim or price cannot be independently verified, do not present it as fact or silently fill in a gap.
 
-## Core values
+## Core values — focal point for every decision
+
+> Keep these as the focal point when building, developing, researching, suggesting upgrades, and implementing the work.
 
 ### Maximize P(Win)
 
@@ -18,7 +25,7 @@ The product should bring together verified tournament information, teams and pla
 
 We own results end to end — not just our individual slice of the work. When problems arise and we have the means to act, we do so without waiting for permission or assignment. We treat failure and success as signals and use them to improve. At Arena, we stay accountable to the final outcome.
 
-Apply these values to research, product decisions, implementation, testing, and maintenance. Be candid about limitations; fix issues that can be fixed; and make tradeoffs in favor of a trustworthy, useful product rather than unsupported breadth.
+Apply these values to research, product decisions, implementation, testing, and maintenance. Be candid about limitations; fix issues that can be fixed; and make tradeoffs in favor of a trustworthy, useful product rather than unsupported breadth. Setting aside emotion and putting Arena first is how we maximize P(Win).
 
 ## Non-negotiable information standards
 
@@ -56,10 +63,28 @@ At the time this charter was added, the repository contained only this README an
 
 The project owner supplied [Thunderpick World Championship 2026 — Expert Hub](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) as a starting point for the site’s organization and visual design. It can inform the product, but is not by itself an authoritative source for tournament, roster, pricing, or results data.
 
-## Original project brief
+## Original project brief — preserved verbatim (starting point)
 
-The following preserves the project requirements supplied by the owner. Treat it as the product brief; factual content still has to meet the verification standards above.
+The following preserves the **full project prompt** supplied by the owner. This is the brief to re-read every session alongside the mission and core values above. Factual content still has to meet the verification standards; the prompt itself is not a source of facts.
 
+> Review the repo.
+>
+> Put this prompt into the repo readme and read it everytime we work on the project as a starting point to make sure we are building what we are aiming for and have a strong base to continue building and improving on making something useful for everyday use. It should solve the problem of having to manually check everything ourselves and having an up to date current feed.
+>
+> Review the repo.
+>
+> The following is taken from the Arena AI team and I think it makes a good point on building a successful project, so let's keep the Core Values and Own the Outcome as a focal point when building, developing, researching, suggesting upgrades, and implementing the work.
+>
+> Our Core Values
+>
+> Maximize P(Win)
+>
+> "Maximize the Probability of Winning": our decision making framework. In every decision, we weigh tradeoffs, assess risk, and choose the path that maximizes the probability that Arena succeeds. We set aside our emotions and make tough decisions in order to maximize P(Win). "Maximize P(Win)" frees us from constraints and clarifies that we must put Arena first.
+>
+> Own the Outcome
+>
+> We own results end to end — not just our individual slice of the work. When problems arise and we have the means to act, we do so without waiting for permission or assignment. We treat failure and success as signals and use them to improve. At Arena, we stay accountable to the final outcome.
+>
 > I want to create a website that is an expert in the THUNDERPICK WORLD CHAMPIONSHIP 2026.
 >
 > let's use this site as a starting point, we can even copy lots of it since it is designed very well.
@@ -96,32 +121,28 @@ The following preserves the project requirements supplied by the owner. Treat it
 >
 > Do not stop after the first pass. Each pass must build on the previous one. Before finishing, verify that the final result fully satisfies the original request. Work line by line verify everything no hallucinations.
 
-## Repository map (as of 2026-09-24)
+## Repository map (as of 2026-09-24 — this session's baseline)
 
-The repository already contained a static, responsive, eight-page Pages site, a
-32-entry sourced baseline, eight simulated policy definitions and an empty
+The repository already contained a static, responsive, nine-page Pages site, a
+56-entry sourced ledger after this session (36 + 20 new), eight simulated policy definitions and an empty
 paper ledger when this continuation began. **That earlier site was not an
-up-to-date feed**: it had static timestamps and no collector. This session
-adds the first forward-only, scoped, free-source monitoring pipeline.
+up-to-date daily feed**: it had static timestamps and no collector. The first continuation added the forward-only, scoped, free-source monitoring pipeline; this session ports the reference-site design and expands verified coverage.
 
 - `index.html`, `teams.html`, `guide.html`, `markets.html`, `leaderboard.html`,
   `ledger.html`, `changes.html`, `master-list.html`, `methodology.html` — nine-page
-  public hub (including sourced CS2/market explainers).
+  public hub (copied/adapted from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) design — navy/gold hero, better tables/cards — with source-verified content).
 - `assets/app.js`, `assets/style.css` — accessible static UI over JSON, including
-  actual UTC freshness/source-error status and links for manual review.
-- `data/master_list.json` — 36 dated sourced claims (ML-001–ML-036). Four new
-  primary-source entries cover a Sep 17 PARIVISION bench/signing, Valve VRS
-  Sep 7 and an actual **closed** Polymarket qualifier market; an older absence
-  statement was corrected, not silently left in place.
+  actual UTC freshness/source-error status and links for manual review. Style now mirrors reference site's polished system (hero gradient, badges, card grids) while preserving audit-feed readability.
+- `data/master_list.json` — **56 dated sourced claims (ML-001–ML-056)**. This session added 20 new entries (ML-037–ML-056) covering: roll of honour, 2026 regional winners, VRSDelivery→DragonClaw rename, HLTV Top-20 2025 pedigree (6 TWC players), NiKo/m0NESY milestones, karrigan move, Cologne Major records, Legacy arT/try, Aurora rebuild, BetBoom visa chain, full PARIVISION saga, VP academy rebuild, map-pool Cache history, core-roster rule, veto/OT servers, EPL S24 clash, StarSeries Fall, FURIA calling change, and org closures — each with source links for manual review, verified line by line, no hallucinations.
 - `data/teams.json`, `data/matches.json`, `data/roster_changes.json` — dated
-  team/event snapshot, an outright reference + draw status and verified moves.
+  team/event snapshot, an outright reference + draw status and 2 primary-verified moves (RC-001/002). Historical moves (arT, try, kyxsan etc.) are now secondary-sourced in ML-043–ML-049 and surfaced on `changes.html` + `teams.html` with source-type labels; reserves remain partial by design.
 - `data/observations.json` — forward, append-only quote/VRS/signal journal with
   exact query scopes, timestamps, alerts and source links. Initially an
   **offline, partial research replay**; it is NOT a successful scheduled feed
-  until Pages' first live deployment completes.
+  until Pages' first live deployment completes. The UI now emphasizes solving manual checking via hourly checks + visible staleness.
 - `data/ledger.json`, `data/strategies.json` — 8 simulated accounts: one active
   conditional outright policy, one no-bet control, six paused match policies.
-  Ledger is intentionally empty until forward, first-party eligible quotes.
+  Ledger is intentionally empty until forward, first-party eligible quotes; betting-strategy theses are now documented on `guide.html#betting-strategies` for market-experienced readers.
 - `data/schema.md` — exact provenance, limitations, source scope and money math.
 - `scripts/collect.py` — bounded read-only collection from Valve GitHub API,
   Liquipedia wiki API (fixture *signals* only), Kalshi and Polymarket Gamma/CLOB.
@@ -133,7 +154,7 @@ adds the first forward-only, scoped, free-source monitoring pipeline.
   journal; immutable receipts survive scheduled deployments.
 - `scripts/validate.py`, `tests/` — schema/source/duplicate/gross-money checks,
   unit tests and documented **partial** real-response excerpts for offline
-  replay (not betting inputs).
+  replay (not betting inputs). All 56 claims, 19 Python tests and UI smoke tests pass locally; remote live run still must be verified post-merge.
 - `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — test on PR,
   and attempt live collection, validation and Pages deployment on main + hourly
   schedule. A cron is best effort, not a tick-by-tick live feed.
@@ -229,6 +250,15 @@ does not prevent a transient stale public page. Recheck after the next push.
 - Three follow-up passes: (1) reproduce using the complete Valve snapshot and first published check errors; (2) add coverage for malformed finalists, corrupt/oversized gzip and legacy Pages journal rollback; (3) re-run validation/UI/tests and inspect the follow-up PR/next live publication. Keep future checks honest if either API remains unavailable.
 - [PR #4](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/4) merged as `e0e1898`, but its first [Actions run](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36039556479) stopped in validation **after** restoring from the prior successful checkpoint and collecting sources. Two new tests mistakenly read `data/observations.json` and `data/ledger.json` as if they were static seeds; the job intentionally rewrites these to live history before testing. An isolated replay of the prior tests against a synthetic restored live journal reproduced **two** errors (`published observations older than committed seed`); the updated suite passes that same scenario. The runner's log bundle was not retrievable from this sandbox, so a fresh Actions run must still confirm the root cause. The competing legacy Pages build republished the offline seed, so the public feed is not currently reliable until successful Actions deployment recovers it. The last successful Actions checkpoint remains available. The follow-up isolates test seeds from live data and adds a disposable synthetic-live CI replay; check public data before declaring recovery.
 
+## Session log (continued)
+
+### 2026-09-24 — Prompt re-alignment, design port & 20-claim expansion (this session)
+
+- Re-read README + AGENTS.md as the every-session starting point; elevated **Maximize P(Win)** and **Own the Outcome** as the focal decision filter and made the daily-feed mission (“solve manual checking”) unmissable at the top of the README. Preserved the full original prompt verbatim.
+- Ported polished visual system from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) (navy/gold hero gradient, better tables/cards/badge palette) into `assets/style.css` while retaining audit-feed readability and dark-mode. Improved `index.html` hero to emphasize its daily-use purpose and 56-claim audit coverage; updated `teams.html`/`guide.html`/`changes.html`/`methodology.html` to surface new roster history, map-pool drama, CS2 veto/OT rules and four concrete betting-strategy theses for market-experienced readers.
+- Added **20 new verified master-list entries ML-037–ML-056** line by line with source URLs + retrieval timestamps for manual review: past winners/regional series, rename disambiguation, HLTV Top-20 pedigree, player milestones, karrigan/Cologne Major records, Legacy/arT/try, Aurora rebuild, BetBoom visa chain, full PARIVISION saga, VP academy rebuild, Cache/Anubis map history, core-roster rule, MR12/MR3 veto, EPL S24 fatigue flag, StarSeries Fall, FURIA calling change, and Complexity/ODDIK closures. No hallucinations; secondary vs primary source types are labeled. Updated secondary-sourced roster history on `changes.html` with a table linking to those entries; `roster_changes.json` remains strictly primary-verified (2 RCs) per validator.
+- Three passes: **(1)** implement 20 claims + design port + feed messaging and run offline validation; **(2)** catch and fix duplicate HLTV URL in ML-038, validator failure from adding secondary-sourced RCs, stale 36-count labels, and missing betting-strategy context; **(3)** re-check all 56 claims, run `validate.py` + 19 Python tests + UI smoke (all pass locally), verify no placeholder leaks, and ensure methodology/limitations reflect new coverage and remaining gaps. Remote live collection still requires a successful post-merge Actions run before the feed is considered recovered.
+
 ## Next highest-value work / limitations
 
 1. **Verify the next scheduled/dispatch Pages run:** both Valve and Liquipedia checks, eligible quote scope, rolling journal recovery and UTC freshness. Switch Pages publishing to GitHub Actions (admin setting) to eliminate competing legacy builds; the recovery artifact is not permanent storage.
@@ -241,6 +271,4 @@ does not prevent a transient stale public page. Recheck after the next push.
    a 50/50 resolution into a presumed refund.
 4. **Durability:** versioned public storage for rolling quote/decision history
    beyond Pages plus alerting when jobs stall. Actions artifacts expire.
-5. **Coverage:** broader free, terms-compliant market discovery, researched
-   reserve players and additional primary team-change statements, sourced
-   player stats with a clearly specified time window, and sourced CS2 analysis.
+5. **Coverage:** promote secondary-sourced roster moves (ML-043–ML-049) to primary-ledger status by finding official team/player posts; add broader free market discovery and a dated, sourced player-stat window with betting-analysis, without treating heuristics as facts.
