@@ -9,10 +9,13 @@ This exercise does NOT fetch real sources or record any prices or decisions.
 import json
 import shutil
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:  # allow `python3 tests/smoke_live_copy.py`
+    sys.path.insert(0, str(ROOT))
 
 
 def main() -> None:
@@ -26,7 +29,19 @@ def main() -> None:
         shutil.copy2(ROOT / ".nojekyll", copy / ".nojekyll")
 
         observations = copy / "data" / "observations.json"
+        # Build the synthetic live journal WITH the real collector (offline
+        # fixture replay inside the disposable copy) so its shape always
+        # matches scripts.collect.SOURCE_IDS. Mutating the committed seed
+        # instead would silently rot whenever the collector's check set grows
+        # (this exact drift broke CI when the ninth check rule was added).
+        from scripts.collect import SOURCE_IDS
+        subprocess.run(
+            ("python3", "-m", "scripts.collect", "--fixtures", "--as-of", "2026-09-24T18:12:00Z"),
+            cwd=copy, check=True,
+        )
         doc = json.loads(observations.read_text(encoding="utf-8"))
+        if sorted(c["source"] for c in doc["checks"]) != sorted(SOURCE_IDS):
+            raise SystemExit("fixture replay did not produce one check per SOURCE_IDS; smoke test basis invalid")
         # Synthetic timestamps and mode live solely to exercise the dynamic
         # Pages test path. Keep the original repository's journal untouched.
         doc["mode"] = "live"
