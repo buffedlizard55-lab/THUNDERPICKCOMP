@@ -27,6 +27,7 @@
       <a href="guide.html">CS2 Guide</a>
       <a href="markets.html">Markets</a>
       <a href="leaderboard.html">Leaderboard</a>
+      <a href="backtest.html">Backtest</a>
       <a href="ledger.html">Ledger</a>
       <a href="changes.html">Changes</a>
       <a href="master-list.html">Master List</a>
@@ -68,10 +69,17 @@
 
       <section class="card" aria-labelledby="comp-title">
         <h2 id="comp-title">Simulated leaderboard competition <span class="badge sim">SIM</span></h2>
-        <p>Eight simulated accounts start with 1,000 units each. One price-dependent outright policy is operational, one is a no-bet control, and six match policies are paused until fixture verification and execution logic exist. If eligible asks are captured, exact paper receipts appear in the <a href="ledger.html">ledger</a>.</p>
+        <p>Eight simulated accounts start with 1,000 units each. One price-dependent outright policy is operational, one is a no-bet control, and six match policies are active with strict gates (double-sourced fixture + fresh first-party ask + depth). If eligible asks are captured, exact paper receipts appear in the <a href="ledger.html">ledger</a>.</p>
         <div data-render="leaderboard"><p class="muted">Loading standings…</p></div>
         <p class="small"><span data-ledger-meta></span></p>
-        <p><a href="leaderboard.html">Full standings &amp; strategy rules →</a></p>
+        <p><a href="leaderboard.html">Full standings &amp; strategy rules →</a> · <a href="backtest.html">Historical backtest (22 matches, 69 bets) →</a></p>
+      </section>
+
+      <section class="card" aria-labelledby="backtest-title">
+        <h2 id="backtest-title">Historical backtesting — 22 verified matches <span class="badge sim">NEW</span></h2>
+        <p>We solved the manual-checking problem for strategy research: <strong>verified historical results</strong> (HLTV/Liquipedia with source links), <strong>real market receipts</strong> where available (Polymarket closed qualifier), and <strong>MODELED odds</strong> (VRS-gap + deterministic inefficiency + 4% overround) where no free public line exists — all stored on site for future analysis.</p>
+        <div data-render="backtest-leaderboard"><p class="muted">Loading backtest leaderboard…</p></div>
+        <p class="small muted">Favorite Backer led this window (19W-3L, +22.9% ROI) — short GSL→single-elim favors favorites. Underdog strategies struggled except Aurora's 2-1 upset over Vitality. Full ledger with dates, pricing, amounts, outcome, and source links on <a href="backtest.html">Backtest page →</a></p>
       </section>
 
       <section class="card" aria-labelledby="start-title">

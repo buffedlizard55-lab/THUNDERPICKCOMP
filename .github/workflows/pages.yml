@@ -92,6 +92,8 @@ jobs:
         run: python3 -m scripts.competition
       - name: Record settlement receipts and apply confirmed settlements (never assumes void)
         run: python3 -m scripts.settle
+      - name: Generate historical backtesting leaderboard (verified matches + modeled odds where no free line)
+        run: python3 -m scripts.backtest
       - name: Validate data and regression tests before publishing
         run: |
           python3 scripts/validate.py

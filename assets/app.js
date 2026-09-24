@@ -355,13 +355,75 @@
     }));
   }
 
+  function backtestLeaderboard(el) {
+    show(el, load("backtest_results").then(function (data) {
+      var rows = data.strategies || [];
+      el.innerHTML = '<div class="table-scroll"><table class="data"><thead><tr><th scope="col">Rank</th><th scope="col">User / policy</th><th scope="col">Bets</th><th scope="col">W-L</th><th scope="col">Win%</th><th scope="col">Staked</th><th scope="col">P/L</th><th scope="col">ROI</th><th scope="col">Bankroll</th></tr></thead><tbody>' +
+        rows.map(function (r, i) {
+          var rank = i + 1;
+          return '<tr><td>#' + rank + '</td><td><span class="mono">' + esc(r.username) + '</span> ' + badge(r.status) + '<br><span class="small">' + esc(r.strategy) + '</span></td>' +
+            '<td>' + esc(r.total_bets) + '</td><td>' + esc(r.wins) + '-' + esc(r.losses) + '</td>' +
+            '<td>' + (r.win_rate === null ? '—' : fmt(r.win_rate) + '%') + '</td>' +
+            '<td>' + fmt(r.staked) + '</td>' +
+            '<td class="' + (r.profit < 0 ? 'negative' : '') + '">' + (r.profit >=0 ? '+' : '') + fmt(r.profit) + '</td>' +
+            '<td>' + (r.roi === null ? '—' : fmt(r.roi) + '%') + '</td>' +
+            '<td><strong>' + fmt(r.bankroll) + '</strong></td></tr>';
+        }).join("") + '</tbody></table></div>' +
+        '<p class="small muted">Generated ' + utc(data.meta.generated_utc) + ' · ' + esc(data.meta.matches_count) + ' matches · ' + esc(data.meta.ledger_entries) + ' simulated bets · ' + esc(data.meta.currency) + '</p>';
+      document.querySelectorAll("[data-backtest-matches]").forEach(function (e) { e.textContent = data.meta.matches_count; });
+      document.querySelectorAll("[data-backtest-bets]").forEach(function (e) { e.textContent = data.meta.ledger_entries; });
+      document.querySelectorAll("[data-backtest-meta]").forEach(function (e) { e.textContent = 'Generated ' + data.meta.generated_utc; });
+    }));
+  }
+  function backtestAnalytics(el) {
+    show(el, load("backtest_results").then(function (data) {
+      var a = data.analytics || {};
+      var vrs = a.vrs_ranks_used || {};
+      var vrsRows = Object.keys(vrs).map(function (k) { return '<li><span class="mono">' + esc(k) + '</span> VRS #' + esc(vrs[k]) + '</li>'; }).join("");
+      el.innerHTML = '<div class="grid-2"><div><h3>Coverage</h3><ul class="small"><li>Total matches: ' + esc(a.total_matches) + '</li><li>Inter-finalist: ' + esc(a.inter_finalist_matches) + '</li><li>Range: ' + utc(a.date_range && a.date_range.earliest) + ' → ' + utc(a.date_range && a.date_range.latest) + '</li></ul><h3>VRS ranks used (ML-008)</h3><ul class="small">' + vrsRows + '</ul></div>' +
+        '<div><h3>Odds policy</h3><p class="small">' + esc(a.odds_policy && a.odds_policy.description) + '</p><p class="small mono">' + esc(a.odds_policy && a.odds_policy.formula) + '</p><p class="small muted">' + esc(a.note) + '</p></div></div>';
+    }));
+  }
+  function backtestLedger(el) {
+    show(el, load("backtest_ledger").then(function (data) {
+      var entries = data.entries || [];
+      if (!entries.length) {
+        el.innerHTML = '<div class="notice">No backtest bets yet.</div>';
+        return;
+      }
+      el.innerHTML = '<div class="table-scroll"><table class="data"><thead><tr><th>Date</th><th>Match</th><th>Pick / odds / stake</th><th>Result / P/L</th><th>Reason &amp; source</th></tr></thead><tbody>' +
+        entries.slice().reverse().slice(0,100).map(function (e) {
+          return '<tr><td class="small mono">' + utc(e.date) + '<br>' + esc(e.match_id) + '</td>' +
+            '<td><strong>' + esc(e.team_a_name) + ' vs ' + esc(e.team_b_name) + '</strong><br><span class="small muted">' + esc(e.event) + ' · winner ' + esc(e.winner_name) + ' ' + esc(e.score || '') + '</span></td>' +
+            '<td><span class="mono">' + esc(e.username) + '</span><br><strong>' + esc(e.pick_name) + '</strong> @ ' + esc(e.decimal_odds) + '<br>' + esc(e.stake) + ' units · ' + badge(e.odds_type === 'MODELED' ? 'sim' : 'verified') + ' ' + esc(e.odds_type) + '<br><span class="small muted">' + esc(e.odds_detail) + '</span></td>' +
+            '<td>' + badge(e.result) + '<br><span class="' + (e.profit <0 ? 'negative' : '') + '">' + (e.profit>=0?'+':'') + fmt(e.profit) + '</span><br><span class="small">fair ' + esc(JSON.stringify(e.fair_probs)) + '<br>market ' + esc(JSON.stringify(e.market_implied)) + '</span></td>' +
+            '<td class="small">' + esc(e.reason) + '<br>' + sources(e.sources) + '</td></tr>';
+        }).join("") + '</tbody></table></div>' +
+        '<p class="small muted">Showing latest 100 of ' + entries.length + ' simulated bets. Full JSON in data/backtest_ledger.json for strategy building.</p>';
+    }));
+  }
+  function historicalMatches(el) {
+    show(el, load("historical_matches").then(function (items) {
+      el.innerHTML = '<div class="table-scroll"><table class="data"><thead><tr><th>ID / date</th><th>Event</th><th>Match</th><th>Winner / score</th><th>Sources</th></tr></thead><tbody>' +
+        items.slice().sort(function (a,b){return b.date.localeCompare(a.date);}).map(function (m) {
+          return '<tr><td class="mono">' + esc(m.id) + '<br>' + utc(m.date) + '</td>' +
+            '<td>' + esc(m.event) + '<br><span class="small muted">' + esc(m.stage) + '</span></td>' +
+            '<td><strong>' + esc(m.team_a_name || m.team_a) + ' vs ' + esc(m.team_b_name || m.team_b) + '</strong></td>' +
+            '<td>' + badge("verified") + ' <strong>' + esc(m.winner_name || m.winner) + '</strong><br>' + esc(m.score) + (m.map_scores ? '<br><span class="small">' + m.map_scores.map(function (ms){return esc(ms.join(" "));}).join(", ") + '</span>' : '') + '</td>' +
+            '<td class="small">' + sources(m.sources) + '<p class="small muted">' + esc(m.notes || '') + '</p></td></tr>';
+        }).join("") + '</tbody></table></div>';
+    }));
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var types = { "master-list": masterList, teams: teamCards, "teams-table": teamTable,
       "vrs-snapshot": vrsSnapshot, matches: matches, "fixture-signals": fixtureSignals,
       markets: marketSources, "quote-table": quoteTable, "market-events": marketEvents,
       pulse: pulse, checks: checks, changes: changes, feed: feed,
       leaderboard: leaderboard, strategies: strategies, ledger: ledger,
-      "archive-status": archiveStatus };
+      "archive-status": archiveStatus,
+      "backtest-leaderboard": backtestLeaderboard, "backtest-analytics": backtestAnalytics,
+      "backtest-ledger": backtestLedger, "historical-matches": historicalMatches };
     document.querySelectorAll("[data-render]").forEach(function (el) {
       var fn = types[el.getAttribute("data-render")];
       if (fn) fn(el);

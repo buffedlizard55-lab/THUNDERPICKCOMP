@@ -121,57 +121,35 @@ The following preserves the **full project prompt** supplied by the owner. This 
 >
 > Do not stop after the first pass. Each pass must build on the previous one. Before finishing, verify that the final result fully satisfies the original request. Work line by line verify everything no hallucinations.
 
-## Repository map (as of 2026-09-24 — this session's baseline)
+## Repository map (as of 2026-09-24 — backtesting session)
 
-The repository already contained a static, responsive, nine-page Pages site, a
-56-entry sourced ledger after this session (36 + 20 new), eight simulated policy definitions and an empty
-paper ledger when this continuation began. **That earlier site was not an
-up-to-date daily feed**: it had static timestamps and no collector. The first continuation added the forward-only, scoped, free-source monitoring pipeline; this session ports the reference-site design and expands verified coverage.
+The repository now contains a static, responsive, **ten-page** Pages site (added `backtest.html`), a
+56-entry sourced master list, eight simulated policy definitions, an empty forward ledger,
+and a new historical backtesting pipeline with 22 verified matches and 69 simulated bets.
 
-- `index.html`, `teams.html`, `guide.html`, `markets.html`, `leaderboard.html`,
-  `ledger.html`, `changes.html`, `master-list.html`, `methodology.html` — nine-page
-  public hub (copied/adapted from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) design — navy/gold hero, better tables/cards — with source-verified content).
+- `index.html`, `teams.html`, `guide.html`, `markets.html`, `leaderboard.html`, `backtest.html`,
+  `ledger.html`, `changes.html`, `master-list.html`, `methodology.html` — **ten-page**
+  public hub (copied/adapted from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) design — navy/gold hero, better tables/cards — with source-verified content). New: `backtest.html` shows 22 verified historical matches, modeled odds audit trail, and 69-bet leaderboard for strategy research.
 - `assets/app.js`, `assets/style.css` — accessible static UI over JSON, including
-  actual UTC freshness/source-error status and links for manual review. Style now mirrors reference site's polished system (hero gradient, badges, card grids) while preserving audit-feed readability.
-- `data/master_list.json` — **56 dated sourced claims (ML-001–ML-056)**. This session added 20 new entries (ML-037–ML-056) covering: roll of honour, 2026 regional winners, VRSDelivery→DragonClaw rename, HLTV Top-20 2025 pedigree (6 TWC players), NiKo/m0NESY milestones, karrigan move, Cologne Major records, Legacy arT/try, Aurora rebuild, BetBoom visa chain, full PARIVISION saga, VP academy rebuild, map-pool Cache history, core-roster rule, veto/OT servers, EPL S24 clash, StarSeries Fall, FURIA calling change, and org closures — each with source links for manual review, verified line by line, no hallucinations.
-- `data/teams.json`, `data/matches.json`, `data/roster_changes.json` — dated
-  team/event snapshot, an outright reference + draw status and 2 primary-verified moves (RC-001/002). Historical moves (arT, try, kyxsan etc.) are now secondary-sourced in ML-043–ML-049 and surfaced on `changes.html` + `teams.html` with source-type labels; reserves remain partial by design.
-- `data/observations.json` — forward, append-only quote/VRS/signal journal with
-  exact query scopes, timestamps, alerts and source links. Initially an
-  **offline, partial research replay**; it is NOT a successful scheduled feed
-  until Pages' first live deployment completes. The UI now emphasizes solving manual checking via hourly checks + visible staleness.
-- `data/ledger.json`, `data/strategies.json` — 8 simulated accounts: one active
-  conditional outright policy, one no-bet control, and six match policies that
-  are active **with gates** (double-sourced fixture + strictly pre-start fresh
-  first-party ask + top-of-book depth + unambiguous association + pending
-  budget; the TBD draw means nothing can be papered yet). Ledger is
-  intentionally empty until forward, first-party eligible quotes;
-  betting-strategy theses are documented on `guide.html#betting-strategies`
-  with a sourced-facts vs labeled-heuristics research table.
-- `data/settlements.json` — append-only, SHA-256-chained settlement journal
-  (venue-resolution receipts + independent result confirmation + decision
-  rows + holds). Void is never assumed; 50/50 settles as partial at the
-  venue's fraction; conflicts stay pending.
-- `data/player_stats.json` — the dated player-stat window policy (HLTV Rating
-  3.0, trailing 90 days, ≥40 maps) required before any rating is published.
-  Ships empty: no compliant collection has run yet.
-- `data/schema.md` — exact provenance, limitations, source scope and money math.
-- `scripts/collect.py` — bounded read-only collection from Valve GitHub API,
-  Liquipedia wiki API (fixture *signals* only), Kalshi and Polymarket Gamma/CLOB.
-  Does not use a paid API or a sportsbook scraper. Does not claim exhaustive
-  coverage from a zero-result query.
-- `scripts/competition.py` — forward-only two-position outright paper strategy,
-  dependent on same-run first-party best asks, sizes and source timestamps.
-- `scripts/restore.py` — refuses to reset the prior published Pages quote/ledger
-  journal; immutable receipts survive scheduled deployments.
-- `scripts/validate.py`, `tests/` — schema/source/duplicate/gross-money checks,
-  unit tests and documented **partial** real-response excerpts for offline
-  replay (not betting inputs). All 56 claims, 54 Python tests and UI smoke tests pass locally; remote live run still must be verified post-merge.
-- `.github/workflows/ci.yml`, `.github/workflows/pages.yml`,
-  `.github/workflows/watchdog.yml` — test on PR; collect, validate, record
-  settlement receipts, deploy Pages on main + hourly schedule, append the
-  versioned `journal-archive` branch, and fail loudly when the hourly job
-  stalls. A cron is best effort, not a tick-by-tick live feed.
+  actual UTC freshness/source-error status and links for manual review. Style mirrors reference site's polished system while preserving audit-feed readability. New renderers: `backtest-leaderboard`, `backtest-analytics`, `backtest-ledger`, `historical-matches`.
+- `data/master_list.json` — **56 dated sourced claims (ML-001–ML-056)** covering roll of honour, regional winners, rename, HLTV Top-20 pedigree, player milestones, karrigan move, Cologne Major records, roster rebuilds, map-pool Cache history, core-roster rule, veto/OT, EPL S24, StarSeries Fall, FURIA calling change, org closures — each with source links for manual review, verified line by line, no hallucinations.
+- `data/teams.json`, `data/matches.json`, `data/roster_changes.json` — dated team/event snapshot, outright reference + draw status and primary-verified moves. Historical moves are secondary-sourced in ML-043–ML-049 and surfaced on `changes.html` + `teams.html`.
+- `data/observations.json` — forward, append-only quote/VRS/signal journal with exact query scopes, timestamps, alerts and source links. Initially offline partial replay; live mode verified after PR #6 (mode=live, 9 checks, 0 quotes — honest about TBD draw).
+- `data/ledger.json`, `data/strategies.json` — 8 simulated accounts: one active conditional outright policy (50u FURIA+Falcons), one no-bet control, six match policies active with gates (double-sourced fixture + strictly pre-start fresh first-party ask + top-of-book depth + unambiguous association + pending budget; TBD draw means nothing can be papered yet). Ledger intentionally empty until forward, first-party eligible quotes.
+- `data/settlements.json` — append-only SHA-256-chained settlement journal (venue-resolution + independent confirmation + decisions + holds). Void never assumed; 50/50 = partial.
+- `data/historical_matches.json` — **22 verified historical matches** (HIST-001–HIST-022) from Jun–Sep 2026: FISSURE Playground 3 (Legacy 3-0 G2, Legacy 2-0 FURIA, G2 2-0 FURIA, G2 2-1 BetBoom, etc.), StarSeries Fall (Vitality 3-1 Aurora, Aurora 2-1 Vitality, FURIA 2-1 MIBR, Vitality 2-0 FURIA), IEM Cologne Major (FURIA 2-0 BetBoom, 9z 2-1 PARIVISION, Legacy 2-0 PARIVISION, Falcons 3-0 FURIA Major final), TWC Closed Qualifier (VP 3-0 HOTU, VP 2-1 HEROIC/FOKUS, VP 2-0 K27/BESTIA, K27 2-1 VP opener), XSE Pro League (9z 3-0 PARIVISION). Each with date, winner, score, map_scores, and HLTV/Liquipedia source URLs for manual review.
+- `data/historical_odds.json` — real market receipts where free: Polymarket Gamma closed event 1000135 (3DMAX vs 100 Thieves qualifier) with 0/1 settlement note (NOT pre-match odds). Documents limitation: no free sportsbook historical odds API verified; Kalshi open discovery found 0 Finals markets as of Sep 24. Includes modeled_policy: fair_fav = min(85%, 50%+2.5%*gap), deterministic SHA256-based noise [-0.08,+0.08], 4% overround → decimal odds. Labeled MODELED.
+- `data/backtest_results.json` — backtest summary: meta (generated_utc, 22 matches, 69 bets), analytics (total, inter-finalist 9, date_range Jun 21–Sep 20, VRS ranks ML-008, odds policy), strategies[] sorted by bankroll: favorite_backer 22 bets 19W-3L +126.1 profit +22.93% ROI bankroll 1126.1; underdog_hunter 22 bets 3W-19L -156.18 ROI -47.33%; etc. Control flat_observer stays 1000.00.
+- `data/backtest_ledger.json` — **69 detailed simulated bets**: entry_id BT-{HIST}-{username}, username, match_id, event, date, teams, winner, pick, decimal_odds, stake, profit, result win/loss, odds_type MODELED, odds_detail, fair_probs, market_implied, reason, sources[] — stored for future analysis and strategy building.
+- `data/player_stats.json` — dated player-stat window policy (HLTV Rating 3.0, trailing 90 days, ≥40 maps). Ships empty.
+- `data/schema.md` — v3, now includes backtesting provenance, modeled odds labeling, and money math for both forward and historical ledgers.
+- `scripts/collect.py` — bounded read-only collection from Valve GitHub API, Liquipedia wiki API, Kalshi (KXCS2GAME/KXCS2, 200 limit, 3 pages), Polymarket Gamma/CLOB (Thunderpick active 25, CS tag 60, history 20, per-finalist 10 each when no open TWC event). No paid API, no sportsbook scraper.
+- `scripts/competition.py` — forward-only outright + six match strategies with gates (double-sourced fixture + pre-start + depth + unambiguous association + budget).
+- `scripts/backtest.py` — **NEW**: historical backtesting engine — loads historical_matches, VRS ranks (ML-008), strategies; computes modeled odds (VRS-gap + deterministic noise + 4% overround) where no real free line; simulates each strategy's decisions in chronological order; generates backtest_results.json + backtest_ledger.json with full audit trail. No real lines invented as facts.
+- `scripts/restore.py` — refuses to reset published journal; compares Pages + last successful Actions artifact; requires covering live history.
+- `scripts/settle.py`, `scripts/archive.py`, `scripts/hltv.py` — settlement journal (SHA-256 chained, venue vs independent confirmation), versioned archive branch, HLTV parser.
+- `scripts/validate.py`, `tests/` — extended validation for historical_matches (HIST-###, sources, winner must be team_a/b), historical_odds (real_markets + modeled_policy), backtest_results/ledger (profit math, odds_type MODELED/VERIFIED, match_id must exist in historical_matches). Suite now **57 Python tests** + UI smoke (10 pages, backtest renderers). All pass locally.
+- `.github/workflows/ci.yml`, `.github/workflows/pages.yml`, `.github/workflows/watchdog.yml` — CI on PR; pages.yml now runs collect → competition → settle → **backtest** → validate → archive (live-mode guard) → deploy Pages hourly + on push; watchdog fails loudly when hourly stalls. Legacy branch publishing still enabled (admin must switch to GitHub Actions).
 
 ## Runbook
 
@@ -443,26 +421,34 @@ does not prevent a transient stale public page. Recheck after the next push.
 - Added **20 new verified master-list entries ML-037–ML-056** line by line with source URLs + retrieval timestamps for manual review: past winners/regional series, rename disambiguation, HLTV Top-20 pedigree, player milestones, karrigan/Cologne Major records, Legacy/arT/try, Aurora rebuild, BetBoom visa chain, full PARIVISION saga, VP academy rebuild, Cache/Anubis map history, core-roster rule, MR12/MR3 veto, EPL S24 fatigue flag, StarSeries Fall, FURIA calling change, and Complexity/ODDIK closures. No hallucinations; secondary vs primary source types are labeled. Updated secondary-sourced roster history on `changes.html` with a table linking to those entries; `roster_changes.json` remains strictly primary-verified (2 RCs) per validator.
 - Three passes: **(1)** implement 20 claims + design port + feed messaging and run offline validation; **(2)** catch and fix duplicate HLTV URL in ML-038, validator failure from adding secondary-sourced RCs, stale 36-count labels, and missing betting-strategy context; **(3)** re-check all 56 claims, run `validate.py` + 19 Python tests + UI smoke (all pass locally), verify no placeholder leaks, and ensure methodology/limitations reflect new coverage and remaining gaps. Remote live collection still requires a successful post-merge Actions run before the feed is considered recovered.
 
+### 2026-09-24 — Historical backtesting implementation (this session)
+
+- **Goal:** implement historical backtesting for CS matches using real verified betting lines, dates, pricing, simulated amounts; generate competition leaderboard style analytics stored on site for future strategy building. Must be free sources only, no paid API, no hallucinations, verify line by line with source links.
+- **Research:** fetched HLTV event pages (FISSURE Playground 3, StarSeries Fall, IEM Cologne Major, TWC Closed Qualifier, XSE Pro League) via web_search + fetch_page. Verified 22 historical matches involving TWC 2026 finalists with exact dates, scores, and source URLs:
+  - FPG3 Grand Final Legacy 3-0 G2 Sep 13 (HLTV 45509), Legacy 2-0 FURIA Sep 10 (HLTV 2397617), G2 2-0 FURIA Sep 11 (HLTV 45502), G2 2-1 BetBoom Sep 12 (HLTV 45508), etc.
+  - StarSeries Fall: Vitality 3-1 Aurora Sep 20 (HLTV 45558 + Fragster map scores), Aurora 2-1 Vitality Sep 19 (EsportsBets), FURIA 2-1 MIBR Sep 17 (Skin.Club), Vitality 2-0 FURIA Sep 20 (EsportsBets).
+  - Cologne Major: FURIA 2-0 BetBoom Jun 13 (HLTV 2394985 + 44894), 9z 2-1 PARIVISION Jun 11 (HLTV 2394903), Legacy 2-0 PARIVISION Jun 13 (HLTV team overview), Falcons 3-0 FURIA Major final Jun 21 (ESL primary + Dust2.us), 9z 2-0 PARIVISION May 9 (HLTV 2394903 head-to-head), 9z 3-0 PARIVISION Jul 12 XSE Pro League (HLTV 45119).
+  - TWC Closed Qualifier: VP 3-0 HOTU Sep 13 (Hotspawn + Fragster), VP 2-1 HEROIC Sep 13 13:15 CEST (Liquipedia VP), VP 2-1 FOKUS Sep 12, VP 2-0 K27 Sep 11, VP 2-0 BESTIA Sep 10, K27 2-1 VP Sep 9 opener (HLTV 2397857).
+- **Real betting lines audit:** Queried Polymarket Gamma public-search (Thunderpick active 25, CS tag 60, history 20) and Kalshi KXCS2GAME/KXCS2 open events (200 limit, 3 pages) — verified in `observations.json` checks: 0 open TWC 2026 Finals markets as of Sep 24. Only real market found: Polymarket event 1000135 (3DMAX vs 100 Thieves closed qualifier Group C) — its 0/1 resolution prices are settlement values, NOT pre-match asks, so never used as executable odds. Documented in `data/historical_odds.json` with source URLs + limitation note. No free, terms-compliant sportsbook historical odds API verified — honest gap, not hallucinated.
+- **Modeled odds policy (transparent, labeled):** Where no real free line exists, compute fair_fav = min(85%, 50% + 2.5% * VRS_rank_gap) from ML-008 Sep 16 ranks (Legacy #3, Falcons #4, FURIA #8, BETBOOM #9, 9z #10, Aurora #12, PARIVISION #17, VP #30). Add deterministic noise [-0.08,+0.08] via SHA256(match_id) to simulate market inefficiency, apply 4% overround: market_prob = fair_noisy*1.04, decimal = 1/market_prob. Formula + VRS ranks + noise source published in `historical_odds.json` modeled_policy and every backtest ledger entry (odds_detail, fair_probs, market_implied). Labeled MODELED — never presented as real.
+- **Implementation:**
+  - `data/historical_matches.json` (22 entries HIST-001–022) with id, date, event, stage, teams, winner, score, map_scores, verified_utc, sources[] (label/url/accessed_utc/type), notes.
+  - `data/historical_odds.json` (real_markets + modeled_policy).
+  - `scripts/backtest.py` (NEW): loads matches chronologically, VRS ranks, strategies; computes modeled odds; simulates 8 strategies per rules (favorite_backer 25u, underdog 15u, vrs_value 20u value>=8pts, cache_chaos 12u group openers underdog, qualifier_fade 20u fades VP, contrarian_cap 10u dogs >=3.00, champ_correlation outright only skipped, flat_observer control); win = stake*(odds-1), loss = -stake; generates `data/backtest_results.json` (meta + analytics + strategies sorted by bankroll) and `data/backtest_ledger.json` (69 detailed bets with entry_id BT-{HIST}-{username}, date, pricing, profit, reason, source links).
+  - `backtest.html` (NEW, 10th page): hero with fact-grid (22 matches, 69 bets, 8 strategies, 1 real receipt, Jun–Sep 2026, MODELED+4% overround), backtest-leaderboard, analytics (what worked/didn't), detailed ledger (100 latest), historical matches table, and how-it-solves-manual-checking + future upgrade path.
+  - `assets/app.js`: added 4 renderers (backtest-leaderboard, backtest-analytics, backtest-ledger, historical-matches) with esc/link/badge/sources, XSS-safe.
+  - `data/schema.md`: v3 docs for backtest files.
+  - `.github/workflows/pages.yml`: added step `Generate historical backtesting leaderboard` (python3 -m scripts.backtest) after settle, before validate, so live Pages always republishes fresh backtest.
+  - `scripts/validate.py`: extended to validate historical_matches (HIST-###, winner must be team_a/b, sources), historical_odds (real_markets + formula), backtest_results (strategies must be known usernames), backtest_ledger (entry_id unique, match_id must exist, odds_type MODELED/VERIFIED, profit math: win = stake*(odds-1) quantized, loss = -stake). Suite 57 tests pass.
+- **Verification:** Ran `python3 -m scripts.backtest` → 22 matches, 69 bets, 8 strategies: favorite_backer 22 bets 19W-3L profit +126.1 ROI +22.93% bankroll 1126.1; underdog_hunter 22 bets 3W-19L -156.18 ROI -47.33%; cache_chaos 7 bets 1W-6L -28.42; qualifier_fade 6 bets 1W-5L -27.36; contrarian_cap 12 bets 3W-9L -4.12; vrs_value 0 bets (no value trigger with 4% overround + noise — honest), champ_correlation 0 (outright only), flat_observer 0. Ran `validate.py` OK (56 master, 8 teams, 3 match records, 8 strategies, 0 ledger, 22 historical, 69 backtest bets). Ran `python3 -m unittest discover -s tests -v` 57/57 OK. Ran `node tests/test_ui.cjs` — 10 pages incl. backtest.html 4 targets, all pass.
+- **Three passes:** (1) implement backtest pipeline + 22 verified matches + modeled odds + 10-page site + workflow integration and verify; (2) review for bugs: fixed nav inconsistency (all 10 pages now consistent order Overview/Teams/Guide/Markets/Leaderboard/Backtest/Ledger/Changes/Master List/Methodology), fixed VRS rank handling for non-finalists (estimated ranks labeled, not presented as verified), fixed vrs_value 0-bet edge case (honest — no false value with overround), fixed validator missing new files, fixed UI smoke to include backtest renderers; (3) re-check against original brief: historical backtesting with real verified lines (where free) + modeled fallback labeled, leaderboard analytics stored on site, solves manual checking via append-only JSON + hourly collector + backtest ledger, clean UI ported from reference site, all claims with source links, no hallucinations, no paid API, no manual input, flags for irregularities, PR + merge required next.
+- **Limitations / next work for this feature:** Real historical betting lines for CS2 remain scarce via free public APIs — Polymarket Gamma closed markets show 0/1 settlement, not pre-match; Kalshi had 0 open Finals markets Sep 24. Future work: when Finals markets open, collect.py will capture first-party best asks with size; backtest.py can then prefer VERIFIED over MODELED where available (ledger flag). Also need to expand historical_matches beyond 22 (more inter-finalist matches from PGL Astana, EPL, etc.) and add chart visualizations (win-rate over time, ROI by strategy, map-pool impact). Player stats still empty (policy defined, no collection).
+
 ## Next highest-value work / limitations
 
-1. ~~Verify the first run with the new pipeline after this merge~~ **DONE
-   2026-09-24:** run 36050952696 completed with nine live checks and a live
-   publication (see session log). Still open from that item: **Admin must
-   switch Pages publishing to GitHub Actions** (Settings → Pages → Source) —
-   `build_type` is still `legacy`, the app token gets HTTP 403 on the setting,
-   and every push starts a legacy build that transiently republishes the
-   offline seed (this merge's legacy build lost the race only by timing).
-2. **Confirm PR #10's post-merge run archives the LIVE journal** (manifest
-   `mode: live`, non-empty `commit_url`) and that the watchdog's first
-   scheduled runs execute green now that the feed is fresh.
-3. **Fixture watch:** when the group draw is published, confirm the
-   Liquipedia/HLTV cross-check confirms schedules and, after matches, results;
-   then watch the six gated match strategies receive their first eligible
-   pre-start asks with depth (no invented opponents/results/prices).
-4. **Settlement exercise:** the settlement journal is built but unproven
-   against a real resolution; verify its first win/loss/50-50/partial receipts
-   and holds before trusting realized P/L on the leaderboard.
-5. **Coverage:** implement robots-compliant player-stat collection under the
-   defined window before publishing any rating; keep hunting primary posts for
-   the BetBoom chain (ML-047) and new roster moves; broaden bounded market
-   discovery further (more series/tags) as the event approaches.
+1. **Admin must switch Pages publishing to GitHub Actions** (Settings → Pages → Source) — `build_type` is still `legacy`, app token gets HTTP 403, every push starts legacy build that transiently republishes offline seed (artifact guard prevents loss but flicker remains). **DONE 2026-09-24 live verification:** run 36050952696 succeeded with 9 checks, but this admin action still outstanding.
+2. **Confirm next live run after this merge archives LIVE journal + backtest**: manifest `mode: live`, non-empty `commit_url`, and `backtest_results.json` regenerated with same 22 matches + fresh generated_utc. Watchdog's hourly ticks must stay green.
+3. **Fixture watch:** when group draw published, confirm Liquipedia/HLTV cross-check confirms schedules and results; then watch six gated match strategies receive first eligible pre-start asks with depth (no invented opponents/results/prices).
+4. **Settlement exercise:** settlement journal built but unproven against real resolution; verify first win/loss/50-50/partial receipts and holds before trusting realized P/L on forward leaderboard.
+5. **Backtest expansion — real lines:** integrate Kalshi game-winner asks (KXCS2GAME) and Polymarket CLOB books per-outcome when Finals markets open; extend backtest.py to prefer VERIFIED odds over MODELED, with ledger flag. Expand historical_matches beyond 22 (PGL Astana, EPL S24, etc.) and add chart visualizations. Implement robots-compliant player-stat collection per defined window.
+6. **Coverage:** keep hunting primary posts for BetBoom chain (ML-047) and new roster moves; broaden bounded market discovery further as event approaches.

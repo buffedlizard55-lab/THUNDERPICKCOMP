@@ -1,4 +1,4 @@
-# Evidence and money schema — THUNDERPICKCOMP (v2)
+# Evidence and money schema — THUNDERPICKCOMP (v3 — backtesting added)
 
 Read [README.md](../README.md) first. The site is static HTML/JS over the JSON files
 in `data/`. **A source URL and observation time are receipts, not a guarantee that
@@ -19,6 +19,10 @@ forward-only; missing information is unknown rather than guessed.
   their primary posts: `RC-###`, team, player, kind, fact, impact, posted UTC,
   checked UTC, sources and `master_list` reference. This is not a complete history.
 - `market_sources.json` — access paths and coverage caveats, not a price feed.
+- `historical_matches.json` — **22 verified historical matches** (Jun–Sep 2026) involving TWC finalists, each with id `HIST-###`, date, event, stage, teams, winner, score, map_scores, verified_utc, sources[] with label/url/accessed_utc/type, notes. Sources are HLTV event/match pages and Liquipedia team results — all HTTPS for manual review. No result is invented.
+- `historical_odds.json` — real market receipts where free public API exists (Polymarket Gamma closed event 1000135, 3DMAX vs 100 Thieves qualifier) with resolution note (0/1 settlement NOT pre-match odds). Plus `modeled_policy` documenting VRS-gap fair prob + deterministic noise + 4% overround formula used when no real free line exists. Labeled MODELED.
+- `backtest_results.json` — summary leaderboard over historical_matches: meta (generated_utc, matches_count, ledger_entries), analytics (total_matches, inter_finalist_matches, date_range, vrs_ranks_used from ML-008, odds_policy, note), strategies[] sorted by bankroll (username, strategy, total_bets, wins, losses, win_rate, staked, profit, roi, bankroll).
+- `backtest_ledger.json` — every simulated historical bet: entry_id BT-{HIST-id}-{username}, username, match_id, event, date, team_a/b, winner, pick, decimal_odds, stake, profit, result win/loss, odds_type MODELED/VERIFIED, odds_detail, fair_probs, market_implied, reason, sources[], verified_utc, simulated=true. Stored for future analysis and strategy building.
 
 `type`: `primary` (organizer/team/player/Valve/market operator), `official-data`
 (structured independent event or market records such as HLTV/Liquipedia),

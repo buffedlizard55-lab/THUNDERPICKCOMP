@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "note": "Historical odds from free public prediction markets. Real verified betting lines for CS2 are scarce without paid APIs or ToS-violating scraping. This file records what IS verifiable: Polymarket Gamma closed events and Kalshi historical settlements where available. For backtesting where no real line exists, modeled odds (VRS-gap + deterministic market inefficiency) are used and clearly labeled as MODELED — not real.",
+    "last_updated_utc": "2026-09-24T19:00:00Z",
+    "sources_verified": [
+      "https://gamma-api.polymarket.com/events/1000135",
+      "https://docs.polymarket.com/concepts/prices-orderbook.md",
+      "https://docs.kalshi.com/getting_started/orderbook_responses.md"
+    ],
+    "limitation": "No free, terms-compliant sportsbook historical odds API has been verified for TWC 2026 finalist matches. Polymarket closed qualifier markets show 0/1 resolution prices, NOT pre-match asks. Kalshi open-event discovery found 0 TWC 2026 Finals markets as of Sep 24 (see observations.json). Historical backtesting therefore uses MODELED odds with 4% overround and deterministic inefficiency based on match ID hash, labeled as such."
+  },
+  "real_markets": [
+    {
+      "id": "POLY-1000135",
+      "event_key": "polymarket:1000135",
+      "venue": "Polymarket (international)",
+      "title": "Counter-Strike: 3DMAX vs 100 Thieves (BO3) - Thunderpick World Championship Closed Qualifier Group C",
+      "stage": "qualifier/series",
+      "status": "closed",
+      "resolution": {
+        "market_id": "4443130",
+        "question": "Map 1 winner",
+        "outcome_prices": ["0", "1"],
+        "note": "Resolution prices 0/1 are settlement values, NOT historical pre-match odds. Never use as executable ask."
+      },
+      "source_url": "https://gamma-api.polymarket.com/events/1000135",
+      "review_url": "https://polymarket.com/event/cs2-3dmax-100t-2026-09-11",
+      "observed_utc": "2026-09-24T17:10:00Z",
+      "type": "primary"
+    }
+  ],
+  "modeled_policy": {
+    "description": "VRS-gap fair probability + deterministic market inefficiency + 4% overround",
+    "formula": "fair_fav = min(0.85, 0.50 + 0.025 * rank_gap); fair_dog = 1 - fair_fav; market_noise = deterministic hash-based offset [-0.08, +0.08] applied to favorite fair; then market_probs = [fair+noise] * 1.04 overround; decimal_odds = 1 / market_prob",
+    "vrs_ranks_source": "ML-008 (Sep 16 reveal): Legacy #3, Falcons #4, FURIA #8, BETBOOM #9, 9z #10, Aurora #12, PARIVISION #17, VP #30",
+    "label": "MODELED — not a real betting line",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  }
+}

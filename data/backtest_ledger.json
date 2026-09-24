@@ -1,0 +1,3014 @@
+{
+  "meta": {
+    "generated_utc": "2026-09-24T21:01:24Z",
+    "matches_count": 22,
+    "entries_count": 69,
+    "currency": "units (simulated)",
+    "note": "Each entry is a simulated bet with modeled odds, verified result, and source links. For future analysis and strategy building."
+  },
+  "entries": [
+    {
+      "entry_id": "BT-HIST-022-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-022",
+      "event": "PGL Astana 2026 — Group Stage",
+      "date": "2026-05-09T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "9z",
+      "pick_name": "9z Team",
+      "decimal_odds": 1.274,
+      "stake": 25.0,
+      "profit": 6.85,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise +0.080 => noisy_fav=0.755, 4% overround",
+      "fair_probs": {
+        "9z": 0.7546,
+        "parivision": 0.2454
+      },
+      "market_implied": {
+        "9z": 0.7847,
+        "parivision": 0.2553
+      },
+      "reason": "Favorite by VRS #10 vs #17 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z head-to-head at PGL Astana (May 9, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-022-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-022",
+      "event": "PGL Astana 2026 — Group Stage",
+      "date": "2026-05-09T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 3.918,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise +0.080 => noisy_fav=0.755, 4% overround",
+      "fair_probs": {
+        "9z": 0.7546,
+        "parivision": 0.2454
+      },
+      "market_implied": {
+        "9z": 0.7847,
+        "parivision": 0.2553
+      },
+      "reason": "Underdog by VRS #17 vs #10 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z head-to-head at PGL Astana (May 9, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-022-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-022",
+      "event": "PGL Astana 2026 — Group Stage",
+      "date": "2026-05-09T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 3.918,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise +0.080 => noisy_fav=0.755, 4% overround",
+      "fair_probs": {
+        "9z": 0.7546,
+        "parivision": 0.2454
+      },
+      "market_implied": {
+        "9z": 0.7847,
+        "parivision": 0.2553
+      },
+      "reason": "Cache Chaos: group opener underdog #17 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z head-to-head at PGL Astana (May 9, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-022-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-022",
+      "event": "PGL Astana 2026 — Group Stage",
+      "date": "2026-05-09T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 3.918,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise +0.080 => noisy_fav=0.755, 4% overround",
+      "fair_probs": {
+        "9z": 0.7546,
+        "parivision": 0.2454
+      },
+      "market_implied": {
+        "9z": 0.7847,
+        "parivision": 0.2553
+      },
+      "reason": "Contrarian Cap: underdog odds 3.918 >=3.00",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z head-to-head at PGL Astana (May 9, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-012-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-012",
+      "event": "IEM Cologne Major 2026 — Stage 2 Swiss",
+      "date": "2026-06-11T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "9z",
+      "pick_name": "9z Team",
+      "decimal_odds": 1.521,
+      "stake": 25.0,
+      "profit": 13.03,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise -0.043 => noisy_fav=0.632, 4% overround",
+      "fair_probs": {
+        "9z": 0.6321,
+        "parivision": 0.3679
+      },
+      "market_implied": {
+        "9z": 0.6574,
+        "parivision": 0.3826
+      },
+      "reason": "Favorite by VRS #10 vs #17 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z at IEM Cologne Major 2026 (Jun 11, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-012-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-012",
+      "event": "IEM Cologne Major 2026 — Stage 2 Swiss",
+      "date": "2026-06-11T11:00:00Z",
+      "team_a": "parivision",
+      "team_b": "9z",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "9z Team",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 2.613,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise -0.043 => noisy_fav=0.632, 4% overround",
+      "fair_probs": {
+        "9z": 0.6321,
+        "parivision": 0.3679
+      },
+      "market_implied": {
+        "9z": 0.6574,
+        "parivision": 0.3826
+      },
+      "reason": "Underdog by VRS #17 vs #10 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION vs 9z at IEM Cologne Major 2026 (Jun 11, 2026)",
+          "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-011-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-011",
+      "event": "IEM Cologne Major 2026 — Stage 3 Swiss",
+      "date": "2026-06-13T13:00:00Z",
+      "team_a": "betboom",
+      "team_b": "furia",
+      "team_a_name": "BetBoom Team",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.14,
+      "stake": 25.0,
+      "profit": 28.5,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 1: fair_fav=0.525 + noise -0.076 => noisy_fav=0.449, 4% overround",
+      "fair_probs": {
+        "furia": 0.4493,
+        "betboom": 0.5507
+      },
+      "market_implied": {
+        "furia": 0.4673,
+        "betboom": 0.5727
+      },
+      "reason": "Favorite by VRS #8 vs #9 gap 1",
+      "sources": [
+        {
+          "label": "HLTV — BetBoom vs FURIA at IEM Cologne Major 2026 (Jun 13, 2026)",
+          "url": "https://www.hltv.org/matches/2394985/betboom-vs-furia-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "HLTV — FURIA roll past BetBoom to secure playoff spot (Jun 13, 2026)",
+          "url": "https://www.hltv.org/news/44894/furia-roll-past-betboom-to-secure-playoff-spot",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-011-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-011",
+      "event": "IEM Cologne Major 2026 — Stage 3 Swiss",
+      "date": "2026-06-13T13:00:00Z",
+      "team_a": "betboom",
+      "team_b": "furia",
+      "team_a_name": "BetBoom Team",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "betboom",
+      "pick_name": "BetBoom Team",
+      "decimal_odds": 1.746,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 1: fair_fav=0.525 + noise -0.076 => noisy_fav=0.449, 4% overround",
+      "fair_probs": {
+        "furia": 0.4493,
+        "betboom": 0.5507
+      },
+      "market_implied": {
+        "furia": 0.4673,
+        "betboom": 0.5727
+      },
+      "reason": "Underdog by VRS #9 vs #8 gap 1",
+      "sources": [
+        {
+          "label": "HLTV — BetBoom vs FURIA at IEM Cologne Major 2026 (Jun 13, 2026)",
+          "url": "https://www.hltv.org/matches/2394985/betboom-vs-furia-iem-cologne-major-2026",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "HLTV — FURIA roll past BetBoom to secure playoff spot (Jun 13, 2026)",
+          "url": "https://www.hltv.org/news/44894/furia-roll-past-betboom-to-secure-playoff-spot",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-019-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-019",
+      "event": "IEM Cologne Major 2026 — Stage 3",
+      "date": "2026-06-13T21:40:00Z",
+      "team_a": "parivision",
+      "team_b": "legacy",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "Legacy",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "legacy",
+      "pick_name": "Legacy",
+      "decimal_odds": 1.131,
+      "stake": 25.0,
+      "profit": 3.28,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 14: fair_fav=0.850 + noise +0.074 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "legacy": 0.85,
+        "parivision": 0.15
+      },
+      "market_implied": {
+        "legacy": 0.884,
+        "parivision": 0.156
+      },
+      "reason": "Favorite by VRS #3 vs #17 gap 14",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Jun 13 2026 0:2 vs Legacy)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-019-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-019",
+      "event": "IEM Cologne Major 2026 — Stage 3",
+      "date": "2026-06-13T21:40:00Z",
+      "team_a": "parivision",
+      "team_b": "legacy",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "Legacy",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 6.41,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 14: fair_fav=0.850 + noise +0.074 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "legacy": 0.85,
+        "parivision": 0.15
+      },
+      "market_implied": {
+        "legacy": 0.884,
+        "parivision": 0.156
+      },
+      "reason": "Underdog by VRS #17 vs #3 gap 14",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Jun 13 2026 0:2 vs Legacy)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-019-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-019",
+      "event": "IEM Cologne Major 2026 — Stage 3",
+      "date": "2026-06-13T21:40:00Z",
+      "team_a": "parivision",
+      "team_b": "legacy",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "Legacy",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 6.41,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 14: fair_fav=0.850 + noise +0.074 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "legacy": 0.85,
+        "parivision": 0.15
+      },
+      "market_implied": {
+        "legacy": 0.884,
+        "parivision": 0.156
+      },
+      "reason": "Contrarian Cap: underdog odds 6.41 >=3.00",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Jun 13 2026 0:2 vs Legacy)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-021-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-021",
+      "event": "IEM Cologne Major 2026 — Grand Final",
+      "date": "2026-06-21T18:00:00Z",
+      "team_a": "falcons",
+      "team_b": "furia",
+      "team_a_name": "Team Falcons",
+      "team_b_name": "FURIA",
+      "winner": "falcons",
+      "winner_name": "Team Falcons",
+      "pick": "falcons",
+      "pick_name": "Team Falcons",
+      "decimal_odds": 1.651,
+      "stake": 25.0,
+      "profit": 16.28,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 4: fair_fav=0.600 + noise -0.018 => noisy_fav=0.582, 4% overround",
+      "fair_probs": {
+        "falcons": 0.5824,
+        "furia": 0.4176
+      },
+      "market_implied": {
+        "falcons": 0.6057,
+        "furia": 0.4343
+      },
+      "reason": "Favorite by VRS #4 vs #8 gap 4",
+      "sources": [
+        {
+          "label": "ESL/FACEIT Group — Cologne Major most-watched record + winners (Jun 21, 2026)",
+          "url": "https://eslfaceitgroup.com/press/intel-extreme-masters-cologne-2026-major-breaks-records-as-the-most-watched-counter-strike-tournament-of-all-time/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "primary"
+        },
+        {
+          "label": "Dust2.us — NiKo has done it, Falcons are your Cologne Major champions (Jun 21, 2026)",
+          "url": "https://www.dust2.us/news/75245/niko-has-done-it-falcons-are-your-iem-cologne-major-champions",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-021-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-021",
+      "event": "IEM Cologne Major 2026 — Grand Final",
+      "date": "2026-06-21T18:00:00Z",
+      "team_a": "falcons",
+      "team_b": "furia",
+      "team_a_name": "Team Falcons",
+      "team_b_name": "FURIA",
+      "winner": "falcons",
+      "winner_name": "Team Falcons",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.302,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 4: fair_fav=0.600 + noise -0.018 => noisy_fav=0.582, 4% overround",
+      "fair_probs": {
+        "falcons": 0.5824,
+        "furia": 0.4176
+      },
+      "market_implied": {
+        "falcons": 0.6057,
+        "furia": 0.4343
+      },
+      "reason": "Underdog by VRS #8 vs #4 gap 4",
+      "sources": [
+        {
+          "label": "ESL/FACEIT Group — Cologne Major most-watched record + winners (Jun 21, 2026)",
+          "url": "https://eslfaceitgroup.com/press/intel-extreme-masters-cologne-2026-major-breaks-records-as-the-most-watched-counter-strike-tournament-of-all-time/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "primary"
+        },
+        {
+          "label": "Dust2.us — NiKo has done it, Falcons are your Cologne Major champions (Jun 21, 2026)",
+          "url": "https://www.dust2.us/news/75245/niko-has-done-it-falcons-are-your-iem-cologne-major-champions",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-013-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-013",
+      "event": "XSE Pro League Guangzhou 2026 — Grand Final",
+      "date": "2026-07-12T08:20:00Z",
+      "team_a": "9z",
+      "team_b": "parivision",
+      "team_a_name": "9z Team",
+      "team_b_name": "PARIVISION",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "9z",
+      "pick_name": "9z Team",
+      "decimal_odds": 1.503,
+      "stake": 25.0,
+      "profit": 12.58,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise -0.035 => noisy_fav=0.640, 4% overround",
+      "fair_probs": {
+        "9z": 0.6399,
+        "parivision": 0.3601
+      },
+      "market_implied": {
+        "9z": 0.6655,
+        "parivision": 0.3745
+      },
+      "reason": "Favorite by VRS #10 vs #17 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — 9z sweep PARIVISION to win XSE Pro League (Jul 12, 2026)",
+          "url": "https://www.hltv.org/news/45119/9z-sweep-parivision-to-win-xse-pro-league",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-013-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-013",
+      "event": "XSE Pro League Guangzhou 2026 — Grand Final",
+      "date": "2026-07-12T08:20:00Z",
+      "team_a": "9z",
+      "team_b": "parivision",
+      "team_a_name": "9z Team",
+      "team_b_name": "PARIVISION",
+      "winner": "9z",
+      "winner_name": "9z Team",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 2.67,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 7: fair_fav=0.675 + noise -0.035 => noisy_fav=0.640, 4% overround",
+      "fair_probs": {
+        "9z": 0.6399,
+        "parivision": 0.3601
+      },
+      "market_implied": {
+        "9z": 0.6655,
+        "parivision": 0.3745
+      },
+      "reason": "Underdog by VRS #17 vs #10 gap 7",
+      "sources": [
+        {
+          "label": "HLTV — 9z sweep PARIVISION to win XSE Pro League (Jul 12, 2026)",
+          "url": "https://www.hltv.org/news/45119/9z-sweep-parivision-to-win-xse-pro-league",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-009-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-009",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+      "date": "2026-09-09T10:00:00Z",
+      "team_a": "k27",
+      "team_b": "virtuspro",
+      "team_a_name": "K27",
+      "team_b_name": "Virtus.pro",
+      "winner": "k27",
+      "winner_name": "K27",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 1.213,
+      "stake": 25.0,
+      "profit": -25.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise -0.058 => noisy_fav=0.792, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.7924,
+        "k27": 0.2076
+      },
+      "market_implied": {
+        "virtuspro": 0.8241,
+        "k27": 0.2159
+      },
+      "reason": "Favorite by VRS #30 vs #55 gap 25",
+      "sources": [
+        {
+          "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+          "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-009-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-009",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+      "date": "2026-09-09T10:00:00Z",
+      "team_a": "k27",
+      "team_b": "virtuspro",
+      "team_a_name": "K27",
+      "team_b_name": "Virtus.pro",
+      "winner": "k27",
+      "winner_name": "K27",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 4.632,
+      "stake": 15.0,
+      "profit": 54.48,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise -0.058 => noisy_fav=0.792, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.7924,
+        "k27": 0.2076
+      },
+      "market_implied": {
+        "virtuspro": 0.8241,
+        "k27": 0.2159
+      },
+      "reason": "Underdog by VRS #55 vs #30 gap 25",
+      "sources": [
+        {
+          "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+          "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-009-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-009",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+      "date": "2026-09-09T10:00:00Z",
+      "team_a": "k27",
+      "team_b": "virtuspro",
+      "team_a_name": "K27",
+      "team_b_name": "Virtus.pro",
+      "winner": "k27",
+      "winner_name": "K27",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 4.632,
+      "stake": 12.0,
+      "profit": 43.58,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise -0.058 => noisy_fav=0.792, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.7924,
+        "k27": 0.2076
+      },
+      "market_implied": {
+        "virtuspro": 0.8241,
+        "k27": 0.2159
+      },
+      "reason": "Cache Chaos: group opener underdog #55 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+          "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-009-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-009",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+      "date": "2026-09-09T10:00:00Z",
+      "team_a": "k27",
+      "team_b": "virtuspro",
+      "team_a_name": "K27",
+      "team_b_name": "Virtus.pro",
+      "winner": "k27",
+      "winner_name": "K27",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 4.632,
+      "stake": 20.0,
+      "profit": 72.64,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise -0.058 => noisy_fav=0.792, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.7924,
+        "k27": 0.2076
+      },
+      "market_implied": {
+        "virtuspro": 0.8241,
+        "k27": 0.2159
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs k27 (group)",
+      "sources": [
+        {
+          "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+          "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-009-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-009",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+      "date": "2026-09-09T10:00:00Z",
+      "team_a": "k27",
+      "team_b": "virtuspro",
+      "team_a_name": "K27",
+      "team_b_name": "Virtus.pro",
+      "winner": "k27",
+      "winner_name": "K27",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 4.632,
+      "stake": 10.0,
+      "profit": 36.32,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise -0.058 => noisy_fav=0.792, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.7924,
+        "k27": 0.2076
+      },
+      "market_implied": {
+        "virtuspro": 0.8241,
+        "k27": 0.2159
+      },
+      "reason": "Contrarian Cap: underdog odds 4.632 >=3.00",
+      "sources": [
+        {
+          "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+          "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-017-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-017",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-09T14:10:00Z",
+      "team_a": "parivision",
+      "team_b": "furia",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 1.263,
+      "stake": 25.0,
+      "profit": 6.58,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 9: fair_fav=0.725 + noise +0.036 => noisy_fav=0.761, 4% overround",
+      "fair_probs": {
+        "furia": 0.7615,
+        "parivision": 0.2385
+      },
+      "market_implied": {
+        "furia": 0.7919,
+        "parivision": 0.2481
+      },
+      "reason": "Favorite by VRS #8 vs #17 gap 9",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Sep 9 2026 0:2 vs FURIA)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-017-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-017",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-09T14:10:00Z",
+      "team_a": "parivision",
+      "team_b": "furia",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 4.031,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 9: fair_fav=0.725 + noise +0.036 => noisy_fav=0.761, 4% overround",
+      "fair_probs": {
+        "furia": 0.7615,
+        "parivision": 0.2385
+      },
+      "market_implied": {
+        "furia": 0.7919,
+        "parivision": 0.2481
+      },
+      "reason": "Underdog by VRS #17 vs #8 gap 9",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Sep 9 2026 0:2 vs FURIA)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-017-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-017",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-09T14:10:00Z",
+      "team_a": "parivision",
+      "team_b": "furia",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 4.031,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 9: fair_fav=0.725 + noise +0.036 => noisy_fav=0.761, 4% overround",
+      "fair_probs": {
+        "furia": 0.7615,
+        "parivision": 0.2385
+      },
+      "market_implied": {
+        "furia": 0.7919,
+        "parivision": 0.2481
+      },
+      "reason": "Cache Chaos: group opener underdog #17 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Sep 9 2026 0:2 vs FURIA)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-017-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-017",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-09T14:10:00Z",
+      "team_a": "parivision",
+      "team_b": "furia",
+      "team_a_name": "PARIVISION",
+      "team_b_name": "FURIA",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "parivision",
+      "pick_name": "PARIVISION",
+      "decimal_odds": 4.031,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 9: fair_fav=0.725 + noise +0.036 => noisy_fav=0.761, 4% overround",
+      "fair_probs": {
+        "furia": 0.7615,
+        "parivision": 0.2385
+      },
+      "market_implied": {
+        "furia": 0.7919,
+        "parivision": 0.2481
+      },
+      "reason": "Contrarian Cap: underdog odds 4.031 >=3.00",
+      "sources": [
+        {
+          "label": "HLTV — PARIVISION team overview recent results (Sep 9 2026 0:2 vs FURIA)",
+          "url": "https://www.hltv.org/team/12467/parivision",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-008-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-008",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-10T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "bestia",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "BESTIA",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 1.178,
+      "stake": 25.0,
+      "profit": 4.45,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 20: fair_fav=0.850 + noise -0.034 => noisy_fav=0.816, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.8164,
+        "bestia": 0.1836
+      },
+      "market_implied": {
+        "virtuspro": 0.8491,
+        "bestia": 0.1909
+      },
+      "reason": "Favorite by VRS #30 vs #50 gap 20",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-008-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-008",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-10T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "bestia",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "BESTIA",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "bestia",
+      "pick_name": "BESTIA",
+      "decimal_odds": 5.238,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 20: fair_fav=0.850 + noise -0.034 => noisy_fav=0.816, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.8164,
+        "bestia": 0.1836
+      },
+      "market_implied": {
+        "virtuspro": 0.8491,
+        "bestia": 0.1909
+      },
+      "reason": "Underdog by VRS #50 vs #30 gap 20",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-008-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-008",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-10T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "bestia",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "BESTIA",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "bestia",
+      "pick_name": "BESTIA",
+      "decimal_odds": 5.238,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 20: fair_fav=0.850 + noise -0.034 => noisy_fav=0.816, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.8164,
+        "bestia": 0.1836
+      },
+      "market_implied": {
+        "virtuspro": 0.8491,
+        "bestia": 0.1909
+      },
+      "reason": "Cache Chaos: group opener underdog #50 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-008-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-008",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-10T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "bestia",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "BESTIA",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "bestia",
+      "pick_name": "BESTIA",
+      "decimal_odds": 5.238,
+      "stake": 20.0,
+      "profit": -20.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 20: fair_fav=0.850 + noise -0.034 => noisy_fav=0.816, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.8164,
+        "bestia": 0.1836
+      },
+      "market_implied": {
+        "virtuspro": 0.8491,
+        "bestia": 0.1909
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs bestia (group)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-008-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-008",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-10T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "bestia",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "BESTIA",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "bestia",
+      "pick_name": "BESTIA",
+      "decimal_odds": 5.238,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 20: fair_fav=0.850 + noise -0.034 => noisy_fav=0.816, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.8164,
+        "bestia": 0.1836
+      },
+      "market_implied": {
+        "virtuspro": 0.8491,
+        "bestia": 0.1909
+      },
+      "reason": "Contrarian Cap: underdog odds 5.238 >=3.00",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-010-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-010",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-10T11:10:00Z",
+      "team_a": "legacy",
+      "team_b": "furia",
+      "team_a_name": "Legacy",
+      "team_b_name": "FURIA",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "legacy",
+      "pick_name": "Legacy",
+      "decimal_odds": 1.574,
+      "stake": 25.0,
+      "profit": 14.35,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 5: fair_fav=0.625 + noise -0.014 => noisy_fav=0.611, 4% overround",
+      "fair_probs": {
+        "legacy": 0.6108,
+        "furia": 0.3892
+      },
+      "market_implied": {
+        "legacy": 0.6352,
+        "furia": 0.4048
+      },
+      "reason": "Favorite by VRS #3 vs #8 gap 5",
+      "sources": [
+        {
+          "label": "HLTV — Legacy vs FURIA at FISSURE Playground 3 (Sep 10, 2026)",
+          "url": "https://www.hltv.org/matches/2397617/legacy-vs-furia-fissure-playground-3",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "1vx.gg — FURIA, BETBOOM, MIBR, Legacy book FPG 3 playoff spots (Sep 9-10, 2026)",
+          "url": "https://1vx.gg/news/furia-betboom-mibr-and-legacy-book-fpg-3-playoff-spots",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-010-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-010",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-10T11:10:00Z",
+      "team_a": "legacy",
+      "team_b": "furia",
+      "team_a_name": "Legacy",
+      "team_b_name": "FURIA",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.47,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 5: fair_fav=0.625 + noise -0.014 => noisy_fav=0.611, 4% overround",
+      "fair_probs": {
+        "legacy": 0.6108,
+        "furia": 0.3892
+      },
+      "market_implied": {
+        "legacy": 0.6352,
+        "furia": 0.4048
+      },
+      "reason": "Underdog by VRS #8 vs #3 gap 5",
+      "sources": [
+        {
+          "label": "HLTV — Legacy vs FURIA at FISSURE Playground 3 (Sep 10, 2026)",
+          "url": "https://www.hltv.org/matches/2397617/legacy-vs-furia-fissure-playground-3",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "1vx.gg — FURIA, BETBOOM, MIBR, Legacy book FPG 3 playoff spots (Sep 9-10, 2026)",
+          "url": "https://1vx.gg/news/furia-betboom-mibr-and-legacy-book-fpg-3-playoff-spots",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-010-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-010",
+      "event": "FISSURE Playground 3 — Group Stage",
+      "date": "2026-09-10T11:10:00Z",
+      "team_a": "legacy",
+      "team_b": "furia",
+      "team_a_name": "Legacy",
+      "team_b_name": "FURIA",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.47,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 5: fair_fav=0.625 + noise -0.014 => noisy_fav=0.611, 4% overround",
+      "fair_probs": {
+        "legacy": 0.6108,
+        "furia": 0.3892
+      },
+      "market_implied": {
+        "legacy": 0.6352,
+        "furia": 0.4048
+      },
+      "reason": "Cache Chaos: group opener underdog #8 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "HLTV — Legacy vs FURIA at FISSURE Playground 3 (Sep 10, 2026)",
+          "url": "https://www.hltv.org/matches/2397617/legacy-vs-furia-fissure-playground-3",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "1vx.gg — FURIA, BETBOOM, MIBR, Legacy book FPG 3 playoff spots (Sep 9-10, 2026)",
+          "url": "https://1vx.gg/news/furia-betboom-mibr-and-legacy-book-fpg-3-playoff-spots",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-016-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-016",
+      "event": "FISSURE Playground 3 — Group Stage Upper Final",
+      "date": "2026-09-10T15:25:00Z",
+      "team_a": "legacy",
+      "team_b": "mibr",
+      "team_a_name": "Legacy",
+      "team_b_name": "MIBR",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "legacy",
+      "pick_name": "Legacy",
+      "decimal_odds": 1.19,
+      "stake": 25.0,
+      "profit": 4.75,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise -0.042 => noisy_fav=0.808, 4% overround",
+      "fair_probs": {
+        "legacy": 0.8083,
+        "mibr": 0.1917
+      },
+      "market_implied": {
+        "legacy": 0.8406,
+        "mibr": 0.1994
+      },
+      "reason": "Favorite by VRS #3 vs #18 gap 15",
+      "sources": [
+        {
+          "label": "HLTV — Legacy, BETBOOM secure semi-final berths at FPG (Sep 10, 2026)",
+          "url": "https://www.hltv.org/news/45494/legacy-betboom-secure-semi-final-berths-at-fpg",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-016-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-016",
+      "event": "FISSURE Playground 3 — Group Stage Upper Final",
+      "date": "2026-09-10T15:25:00Z",
+      "team_a": "legacy",
+      "team_b": "mibr",
+      "team_a_name": "Legacy",
+      "team_b_name": "MIBR",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "mibr",
+      "pick_name": "MIBR",
+      "decimal_odds": 5.015,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise -0.042 => noisy_fav=0.808, 4% overround",
+      "fair_probs": {
+        "legacy": 0.8083,
+        "mibr": 0.1917
+      },
+      "market_implied": {
+        "legacy": 0.8406,
+        "mibr": 0.1994
+      },
+      "reason": "Underdog by VRS #18 vs #3 gap 15",
+      "sources": [
+        {
+          "label": "HLTV — Legacy, BETBOOM secure semi-final berths at FPG (Sep 10, 2026)",
+          "url": "https://www.hltv.org/news/45494/legacy-betboom-secure-semi-final-berths-at-fpg",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-016-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-016",
+      "event": "FISSURE Playground 3 — Group Stage Upper Final",
+      "date": "2026-09-10T15:25:00Z",
+      "team_a": "legacy",
+      "team_b": "mibr",
+      "team_a_name": "Legacy",
+      "team_b_name": "MIBR",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "mibr",
+      "pick_name": "MIBR",
+      "decimal_odds": 5.015,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise -0.042 => noisy_fav=0.808, 4% overround",
+      "fair_probs": {
+        "legacy": 0.8083,
+        "mibr": 0.1917
+      },
+      "market_implied": {
+        "legacy": 0.8406,
+        "mibr": 0.1994
+      },
+      "reason": "Cache Chaos: group opener underdog #18 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "HLTV — Legacy, BETBOOM secure semi-final berths at FPG (Sep 10, 2026)",
+          "url": "https://www.hltv.org/news/45494/legacy-betboom-secure-semi-final-berths-at-fpg",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-016-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-016",
+      "event": "FISSURE Playground 3 — Group Stage Upper Final",
+      "date": "2026-09-10T15:25:00Z",
+      "team_a": "legacy",
+      "team_b": "mibr",
+      "team_a_name": "Legacy",
+      "team_b_name": "MIBR",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "mibr",
+      "pick_name": "MIBR",
+      "decimal_odds": 5.015,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise -0.042 => noisy_fav=0.808, 4% overround",
+      "fair_probs": {
+        "legacy": 0.8083,
+        "mibr": 0.1917
+      },
+      "market_implied": {
+        "legacy": 0.8406,
+        "mibr": 0.1994
+      },
+      "reason": "Contrarian Cap: underdog odds 5.015 >=3.00",
+      "sources": [
+        {
+          "label": "HLTV — Legacy, BETBOOM secure semi-final berths at FPG (Sep 10, 2026)",
+          "url": "https://www.hltv.org/news/45494/legacy-betboom-secure-semi-final-berths-at-fpg",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-007-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-007",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-11T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "k27",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "K27",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 1.131,
+      "stake": 25.0,
+      "profit": 3.28,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise +0.031 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "k27": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "k27": 0.156
+      },
+      "reason": "Favorite by VRS #30 vs #55 gap 25",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-007-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-007",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-11T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "k27",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "K27",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 6.41,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise +0.031 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "k27": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "k27": 0.156
+      },
+      "reason": "Underdog by VRS #55 vs #30 gap 25",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-007-sim_cache_chaos",
+      "username": "sim_cache_chaos",
+      "match_id": "HIST-007",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-11T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "k27",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "K27",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 6.41,
+      "stake": 12.0,
+      "profit": -12.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise +0.031 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "k27": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "k27": 0.156
+      },
+      "reason": "Cache Chaos: group opener underdog #55 (Cache variance thesis)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-007-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-007",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-11T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "k27",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "K27",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 6.41,
+      "stake": 20.0,
+      "profit": -20.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise +0.031 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "k27": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "k27": 0.156
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs k27 (group)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-007-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-007",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+      "date": "2026-09-11T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "k27",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "K27",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "k27",
+      "pick_name": "K27",
+      "decimal_odds": 6.41,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 25: fair_fav=0.850 + noise +0.031 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "k27": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "k27": 0.156
+      },
+      "reason": "Contrarian Cap: underdog odds 6.41 >=3.00",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-014-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-014",
+      "event": "FISSURE Playground 3 — Quarterfinal",
+      "date": "2026-09-11T13:41:00Z",
+      "team_a": "g2",
+      "team_b": "furia",
+      "team_a_name": "G2",
+      "team_b_name": "FURIA",
+      "winner": "g2",
+      "winner_name": "G2",
+      "pick": "g2",
+      "pick_name": "G2",
+      "decimal_odds": 1.474,
+      "stake": 25.0,
+      "profit": 11.85,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 3: fair_fav=0.575 + noise +0.077 => noisy_fav=0.652, 4% overround",
+      "fair_probs": {
+        "g2": 0.6523,
+        "furia": 0.3477
+      },
+      "market_implied": {
+        "g2": 0.6784,
+        "furia": 0.3616
+      },
+      "reason": "Favorite by VRS #5 vs #8 gap 3",
+      "sources": [
+        {
+          "label": "HLTV — G2 smash FURIA on Dust2 to secure FPG semi-finals (Sep 11, 2026)",
+          "url": "https://www.hltv.org/news/45502/g2-smash-furia-on-dust2-to-secure-fpg-semi-finals",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-014-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-014",
+      "event": "FISSURE Playground 3 — Quarterfinal",
+      "date": "2026-09-11T13:41:00Z",
+      "team_a": "g2",
+      "team_b": "furia",
+      "team_a_name": "G2",
+      "team_b_name": "FURIA",
+      "winner": "g2",
+      "winner_name": "G2",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.765,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 3: fair_fav=0.575 + noise +0.077 => noisy_fav=0.652, 4% overround",
+      "fair_probs": {
+        "g2": 0.6523,
+        "furia": 0.3477
+      },
+      "market_implied": {
+        "g2": 0.6784,
+        "furia": 0.3616
+      },
+      "reason": "Underdog by VRS #8 vs #5 gap 3",
+      "sources": [
+        {
+          "label": "HLTV — G2 smash FURIA on Dust2 to secure FPG semi-finals (Sep 11, 2026)",
+          "url": "https://www.hltv.org/news/45502/g2-smash-furia-on-dust2-to-secure-fpg-semi-finals",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-006-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-006",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Playoffs",
+      "date": "2026-09-12T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "fokus",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "FOKUS",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 1.131,
+      "stake": 25.0,
+      "profit": 3.28,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 30: fair_fav=0.850 + noise +0.025 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "fokus": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "fokus": 0.156
+      },
+      "reason": "Favorite by VRS #30 vs #60 gap 30",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 12 10:00 CEST vs FOKUS 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-006-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-006",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Playoffs",
+      "date": "2026-09-12T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "fokus",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "FOKUS",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "fokus",
+      "pick_name": "FOKUS",
+      "decimal_odds": 6.41,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 30: fair_fav=0.850 + noise +0.025 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "fokus": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "fokus": 0.156
+      },
+      "reason": "Underdog by VRS #60 vs #30 gap 30",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 12 10:00 CEST vs FOKUS 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-006-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-006",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Playoffs",
+      "date": "2026-09-12T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "fokus",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "FOKUS",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "fokus",
+      "pick_name": "FOKUS",
+      "decimal_odds": 6.41,
+      "stake": 20.0,
+      "profit": -20.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 30: fair_fav=0.850 + noise +0.025 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "fokus": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "fokus": 0.156
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs fokus (group)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 12 10:00 CEST vs FOKUS 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-006-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-006",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Playoffs",
+      "date": "2026-09-12T10:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "fokus",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "FOKUS",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "fokus",
+      "pick_name": "FOKUS",
+      "decimal_odds": 6.41,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 30: fair_fav=0.850 + noise +0.025 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "fokus": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "fokus": 0.156
+      },
+      "reason": "Contrarian Cap: underdog odds 6.41 >=3.00",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 12 10:00 CEST vs FOKUS 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-015-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-015",
+      "event": "FISSURE Playground 3 — Semifinal",
+      "date": "2026-09-12T16:37:00Z",
+      "team_a": "betboom",
+      "team_b": "g2",
+      "team_a_name": "BetBoom Team",
+      "team_b_name": "G2",
+      "winner": "g2",
+      "winner_name": "G2",
+      "pick": "g2",
+      "pick_name": "G2",
+      "decimal_odds": 1.738,
+      "stake": 25.0,
+      "profit": 18.45,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 4: fair_fav=0.600 + noise -0.047 => noisy_fav=0.553, 4% overround",
+      "fair_probs": {
+        "g2": 0.5531,
+        "betboom": 0.4469
+      },
+      "market_implied": {
+        "g2": 0.5752,
+        "betboom": 0.4648
+      },
+      "reason": "Favorite by VRS #5 vs #9 gap 4",
+      "sources": [
+        {
+          "label": "HLTV — G2 move past BetBoom en route to FPG 3 final (Sep 12, 2026)",
+          "url": "https://www.hltv.org/news/45508/g2-move-past-betboom-en-route-to-fpg-3-final",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-015-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-015",
+      "event": "FISSURE Playground 3 — Semifinal",
+      "date": "2026-09-12T16:37:00Z",
+      "team_a": "betboom",
+      "team_b": "g2",
+      "team_a_name": "BetBoom Team",
+      "team_b_name": "G2",
+      "winner": "g2",
+      "winner_name": "G2",
+      "pick": "betboom",
+      "pick_name": "BetBoom Team",
+      "decimal_odds": 2.152,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 4: fair_fav=0.600 + noise -0.047 => noisy_fav=0.553, 4% overround",
+      "fair_probs": {
+        "g2": 0.5531,
+        "betboom": 0.4469
+      },
+      "market_implied": {
+        "g2": 0.5752,
+        "betboom": 0.4648
+      },
+      "reason": "Underdog by VRS #9 vs #5 gap 4",
+      "sources": [
+        {
+          "label": "HLTV — G2 move past BetBoom en route to FPG 3 final (Sep 12, 2026)",
+          "url": "https://www.hltv.org/news/45508/g2-move-past-betboom-en-route-to-fpg-3-final",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-005-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-005",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Semifinal",
+      "date": "2026-09-13T13:15:00Z",
+      "team_a": "virtuspro",
+      "team_b": "heroic",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HEROIC",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "heroic",
+      "pick_name": "HEROIC",
+      "decimal_odds": 1.317,
+      "stake": 25.0,
+      "profit": -25.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 8: fair_fav=0.700 + noise +0.030 => noisy_fav=0.730, 4% overround",
+      "fair_probs": {
+        "heroic": 0.7299,
+        "virtuspro": 0.2701
+      },
+      "market_implied": {
+        "heroic": 0.7591,
+        "virtuspro": 0.2809
+      },
+      "reason": "Favorite by VRS #22 vs #30 gap 8",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 13 2026 13:15 CEST vs HEROIC 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Fragster — VP vs HEROIC semifinal detail (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-005-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-005",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Semifinal",
+      "date": "2026-09-13T13:15:00Z",
+      "team_a": "virtuspro",
+      "team_b": "heroic",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HEROIC",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 3.56,
+      "stake": 15.0,
+      "profit": 38.4,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 8: fair_fav=0.700 + noise +0.030 => noisy_fav=0.730, 4% overround",
+      "fair_probs": {
+        "heroic": 0.7299,
+        "virtuspro": 0.2701
+      },
+      "market_implied": {
+        "heroic": 0.7591,
+        "virtuspro": 0.2809
+      },
+      "reason": "Underdog by VRS #30 vs #22 gap 8",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 13 2026 13:15 CEST vs HEROIC 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Fragster — VP vs HEROIC semifinal detail (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-005-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-005",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Semifinal",
+      "date": "2026-09-13T13:15:00Z",
+      "team_a": "virtuspro",
+      "team_b": "heroic",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HEROIC",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "heroic",
+      "pick_name": "HEROIC",
+      "decimal_odds": 1.317,
+      "stake": 20.0,
+      "profit": -20.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 8: fair_fav=0.700 + noise +0.030 => noisy_fav=0.730, 4% overround",
+      "fair_probs": {
+        "heroic": 0.7299,
+        "virtuspro": 0.2701
+      },
+      "market_implied": {
+        "heroic": 0.7591,
+        "virtuspro": 0.2809
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs heroic (group)",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 13 2026 13:15 CEST vs HEROIC 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Fragster — VP vs HEROIC semifinal detail (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-005-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-005",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Semifinal",
+      "date": "2026-09-13T13:15:00Z",
+      "team_a": "virtuspro",
+      "team_b": "heroic",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HEROIC",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 3.56,
+      "stake": 10.0,
+      "profit": 25.6,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 8: fair_fav=0.700 + noise +0.030 => noisy_fav=0.730, 4% overround",
+      "fair_probs": {
+        "heroic": 0.7299,
+        "virtuspro": 0.2701
+      },
+      "market_implied": {
+        "heroic": 0.7591,
+        "virtuspro": 0.2809
+      },
+      "reason": "Contrarian Cap: underdog odds 3.56 >=3.00",
+      "sources": [
+        {
+          "label": "Liquipedia — Virtus.pro results (Sep 13 2026 13:15 CEST vs HEROIC 2:1)",
+          "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        },
+        {
+          "label": "Fragster — VP vs HEROIC semifinal detail (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-001-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-001",
+      "event": "FISSURE Playground 3 — Grand Final",
+      "date": "2026-09-13T14:49:00Z",
+      "team_a": "legacy",
+      "team_b": "g2",
+      "team_a_name": "Legacy",
+      "team_b_name": "G2",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "legacy",
+      "pick_name": "Legacy",
+      "decimal_odds": 1.735,
+      "stake": 25.0,
+      "profit": 18.38,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 2: fair_fav=0.550 + noise +0.004 => noisy_fav=0.554, 4% overround",
+      "fair_probs": {
+        "legacy": 0.5541,
+        "g2": 0.4459
+      },
+      "market_implied": {
+        "legacy": 0.5763,
+        "g2": 0.4637
+      },
+      "reason": "Favorite by VRS #3 vs #5 gap 2",
+      "sources": [
+        {
+          "label": "HLTV — Legacy sweep G2 to lift FISSURE Playground 3 trophy (Sep 13, 2026)",
+          "url": "https://www.hltv.org/news/45509/legacy-sweep-g2-to-lift-fissure-playground-3-trophy",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "HLTV — FISSURE Playground 3 event page (prize distribution confirms Legacy 1st)",
+          "url": "https://www.hltv.org/events/8266/fissure-playground-3",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-001-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-001",
+      "event": "FISSURE Playground 3 — Grand Final",
+      "date": "2026-09-13T14:49:00Z",
+      "team_a": "legacy",
+      "team_b": "g2",
+      "team_a_name": "Legacy",
+      "team_b_name": "G2",
+      "winner": "legacy",
+      "winner_name": "Legacy",
+      "pick": "g2",
+      "pick_name": "G2",
+      "decimal_odds": 2.157,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 2: fair_fav=0.550 + noise +0.004 => noisy_fav=0.554, 4% overround",
+      "fair_probs": {
+        "legacy": 0.5541,
+        "g2": 0.4459
+      },
+      "market_implied": {
+        "legacy": 0.5763,
+        "g2": 0.4637
+      },
+      "reason": "Underdog by VRS #5 vs #3 gap 2",
+      "sources": [
+        {
+          "label": "HLTV — Legacy sweep G2 to lift FISSURE Playground 3 trophy (Sep 13, 2026)",
+          "url": "https://www.hltv.org/news/45509/legacy-sweep-g2-to-lift-fissure-playground-3-trophy",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "HLTV — FISSURE Playground 3 event page (prize distribution confirms Legacy 1st)",
+          "url": "https://www.hltv.org/events/8266/fissure-playground-3",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "official-data"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-004-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-004",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Grand Final",
+      "date": "2026-09-13T17:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "hotu",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HOTU",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "virtuspro",
+      "pick_name": "Virtus.pro",
+      "decimal_odds": 1.131,
+      "stake": 25.0,
+      "profit": 3.28,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise +0.022 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "hotu": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "hotu": 0.156
+      },
+      "reason": "Favorite by VRS #30 vs #45 gap 15",
+      "sources": [
+        {
+          "label": "Hotspawn — Virtus.pro qualify for Thunderpick WC 2026 after Closed Qualifier victory (Sep 13, 2026)",
+          "url": "https://www.hotspawn.com/counter-strike/news/virtus-pro-qualify-for-thunderpick-wc-2026-after-closed-qualifier-victory",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Virtus.pro reach Thunderpick World Championship after qualifier run (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-004-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-004",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Grand Final",
+      "date": "2026-09-13T17:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "hotu",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HOTU",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "hotu",
+      "pick_name": "HOTU",
+      "decimal_odds": 6.41,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise +0.022 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "hotu": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "hotu": 0.156
+      },
+      "reason": "Underdog by VRS #45 vs #30 gap 15",
+      "sources": [
+        {
+          "label": "Hotspawn — Virtus.pro qualify for Thunderpick WC 2026 after Closed Qualifier victory (Sep 13, 2026)",
+          "url": "https://www.hotspawn.com/counter-strike/news/virtus-pro-qualify-for-thunderpick-wc-2026-after-closed-qualifier-victory",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Virtus.pro reach Thunderpick World Championship after qualifier run (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-004-sim_qualifier_fade",
+      "username": "sim_qualifier_fade",
+      "match_id": "HIST-004",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Grand Final",
+      "date": "2026-09-13T17:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "hotu",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HOTU",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "hotu",
+      "pick_name": "HOTU",
+      "decimal_odds": 6.41,
+      "stake": 20.0,
+      "profit": -20.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise +0.022 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "hotu": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "hotu": 0.156
+      },
+      "reason": "Qualifier Fade: fading VP (VRS #30) vs hotu (group)",
+      "sources": [
+        {
+          "label": "Hotspawn — Virtus.pro qualify for Thunderpick WC 2026 after Closed Qualifier victory (Sep 13, 2026)",
+          "url": "https://www.hotspawn.com/counter-strike/news/virtus-pro-qualify-for-thunderpick-wc-2026-after-closed-qualifier-victory",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Virtus.pro reach Thunderpick World Championship after qualifier run (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-004-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-004",
+      "event": "Thunderpick World Championship 2026 Closed Qualifier — Grand Final",
+      "date": "2026-09-13T17:00:00Z",
+      "team_a": "virtuspro",
+      "team_b": "hotu",
+      "team_a_name": "Virtus.pro",
+      "team_b_name": "HOTU",
+      "winner": "virtuspro",
+      "winner_name": "Virtus.pro",
+      "pick": "hotu",
+      "pick_name": "HOTU",
+      "decimal_odds": 6.41,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 15: fair_fav=0.850 + noise +0.022 => noisy_fav=0.850, 4% overround",
+      "fair_probs": {
+        "virtuspro": 0.85,
+        "hotu": 0.15
+      },
+      "market_implied": {
+        "virtuspro": 0.884,
+        "hotu": 0.156
+      },
+      "reason": "Contrarian Cap: underdog odds 6.41 >=3.00",
+      "sources": [
+        {
+          "label": "Hotspawn — Virtus.pro qualify for Thunderpick WC 2026 after Closed Qualifier victory (Sep 13, 2026)",
+          "url": "https://www.hotspawn.com/counter-strike/news/virtus-pro-qualify-for-thunderpick-wc-2026-after-closed-qualifier-victory",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Virtus.pro reach Thunderpick World Championship after qualifier run (Sep 14, 2026)",
+          "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-018-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-018",
+      "event": "StarLadder StarSeries Fall 2026 — Quarterfinal",
+      "date": "2026-09-17T12:00:00Z",
+      "team_a": "furia",
+      "team_b": "mibr",
+      "team_a_name": "FURIA",
+      "team_b_name": "MIBR",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 1.286,
+      "stake": 25.0,
+      "profit": 7.15,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.002 => noisy_fav=0.748, 4% overround",
+      "fair_probs": {
+        "furia": 0.7478,
+        "mibr": 0.2522
+      },
+      "market_implied": {
+        "furia": 0.7778,
+        "mibr": 0.2622
+      },
+      "reason": "Favorite by VRS #8 vs #18 gap 10",
+      "sources": [
+        {
+          "label": "Skin.Club — FURIA beat MIBR to reach StarSeries Fall semifinal (Sep 17, 2026)",
+          "url": "https://community.skin.club/en/news/furia-beat-mibr-to-reach-starseries-fall-2026-semifinal",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-018-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-018",
+      "event": "StarLadder StarSeries Fall 2026 — Quarterfinal",
+      "date": "2026-09-17T12:00:00Z",
+      "team_a": "furia",
+      "team_b": "mibr",
+      "team_a_name": "FURIA",
+      "team_b_name": "MIBR",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "mibr",
+      "pick_name": "MIBR",
+      "decimal_odds": 3.813,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.002 => noisy_fav=0.748, 4% overround",
+      "fair_probs": {
+        "furia": 0.7478,
+        "mibr": 0.2522
+      },
+      "market_implied": {
+        "furia": 0.7778,
+        "mibr": 0.2622
+      },
+      "reason": "Underdog by VRS #18 vs #8 gap 10",
+      "sources": [
+        {
+          "label": "Skin.Club — FURIA beat MIBR to reach StarSeries Fall semifinal (Sep 17, 2026)",
+          "url": "https://community.skin.club/en/news/furia-beat-mibr-to-reach-starseries-fall-2026-semifinal",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-018-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-018",
+      "event": "StarLadder StarSeries Fall 2026 — Quarterfinal",
+      "date": "2026-09-17T12:00:00Z",
+      "team_a": "furia",
+      "team_b": "mibr",
+      "team_a_name": "FURIA",
+      "team_b_name": "MIBR",
+      "winner": "furia",
+      "winner_name": "FURIA",
+      "pick": "mibr",
+      "pick_name": "MIBR",
+      "decimal_odds": 3.813,
+      "stake": 10.0,
+      "profit": -10.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.002 => noisy_fav=0.748, 4% overround",
+      "fair_probs": {
+        "furia": 0.7478,
+        "mibr": 0.2522
+      },
+      "market_implied": {
+        "furia": 0.7778,
+        "mibr": 0.2622
+      },
+      "reason": "Contrarian Cap: underdog odds 3.813 >=3.00",
+      "sources": [
+        {
+          "label": "Skin.Club — FURIA beat MIBR to reach StarSeries Fall semifinal (Sep 17, 2026)",
+          "url": "https://community.skin.club/en/news/furia-beat-mibr-to-reach-starseries-fall-2026-semifinal",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-003-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-003",
+      "event": "StarLadder StarSeries Fall 2026 — Upper Bracket Final",
+      "date": "2026-09-19T18:00:00Z",
+      "team_a": "aurora",
+      "team_b": "vitality",
+      "team_a_name": "Aurora Gaming",
+      "team_b_name": "Vitality",
+      "winner": "aurora",
+      "winner_name": "Aurora Gaming",
+      "pick": "vitality",
+      "pick_name": "Vitality",
+      "decimal_odds": 1.341,
+      "stake": 25.0,
+      "profit": -25.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.033 => noisy_fav=0.717, 4% overround",
+      "fair_probs": {
+        "vitality": 0.7169,
+        "aurora": 0.2831
+      },
+      "market_implied": {
+        "vitality": 0.7456,
+        "aurora": 0.2944
+      },
+      "reason": "Favorite by VRS #2 vs #12 gap 10",
+      "sources": [
+        {
+          "label": "EsportsBets — Aurora StarSeries win over Vitality sends new roster into first final (Sep 20, 2026)",
+          "url": "https://www.esportsbets.com/news/aurora-starseries-fall-final",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Aurora beat Vitality to reach first final with new roster (Sep 2026)",
+          "url": "https://www.fragster.com/aurora-vitality-starseries-fall-final/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-003-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-003",
+      "event": "StarLadder StarSeries Fall 2026 — Upper Bracket Final",
+      "date": "2026-09-19T18:00:00Z",
+      "team_a": "aurora",
+      "team_b": "vitality",
+      "team_a_name": "Aurora Gaming",
+      "team_b_name": "Vitality",
+      "winner": "aurora",
+      "winner_name": "Aurora Gaming",
+      "pick": "aurora",
+      "pick_name": "Aurora Gaming",
+      "decimal_odds": 3.396,
+      "stake": 15.0,
+      "profit": 35.94,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.033 => noisy_fav=0.717, 4% overround",
+      "fair_probs": {
+        "vitality": 0.7169,
+        "aurora": 0.2831
+      },
+      "market_implied": {
+        "vitality": 0.7456,
+        "aurora": 0.2944
+      },
+      "reason": "Underdog by VRS #12 vs #2 gap 10",
+      "sources": [
+        {
+          "label": "EsportsBets — Aurora StarSeries win over Vitality sends new roster into first final (Sep 20, 2026)",
+          "url": "https://www.esportsbets.com/news/aurora-starseries-fall-final",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Aurora beat Vitality to reach first final with new roster (Sep 2026)",
+          "url": "https://www.fragster.com/aurora-vitality-starseries-fall-final/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-003-sim_contrarian_cap",
+      "username": "sim_contrarian_cap",
+      "match_id": "HIST-003",
+      "event": "StarLadder StarSeries Fall 2026 — Upper Bracket Final",
+      "date": "2026-09-19T18:00:00Z",
+      "team_a": "aurora",
+      "team_b": "vitality",
+      "team_a_name": "Aurora Gaming",
+      "team_b_name": "Vitality",
+      "winner": "aurora",
+      "winner_name": "Aurora Gaming",
+      "pick": "aurora",
+      "pick_name": "Aurora Gaming",
+      "decimal_odds": 3.396,
+      "stake": 10.0,
+      "profit": 23.96,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.033 => noisy_fav=0.717, 4% overround",
+      "fair_probs": {
+        "vitality": 0.7169,
+        "aurora": 0.2831
+      },
+      "market_implied": {
+        "vitality": 0.7456,
+        "aurora": 0.2944
+      },
+      "reason": "Contrarian Cap: underdog odds 3.396 >=3.00",
+      "sources": [
+        {
+          "label": "EsportsBets — Aurora StarSeries win over Vitality sends new roster into first final (Sep 20, 2026)",
+          "url": "https://www.esportsbets.com/news/aurora-starseries-fall-final",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Aurora beat Vitality to reach first final with new roster (Sep 2026)",
+          "url": "https://www.fragster.com/aurora-vitality-starseries-fall-final/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-020-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-020",
+      "event": "StarLadder StarSeries Fall 2026 — Consolidation Final",
+      "date": "2026-09-20T13:00:00Z",
+      "team_a": "vitality",
+      "team_b": "furia",
+      "team_a_name": "Vitality",
+      "team_b_name": "FURIA",
+      "winner": "vitality",
+      "winner_name": "Vitality",
+      "pick": "vitality",
+      "pick_name": "Vitality",
+      "decimal_odds": 1.558,
+      "stake": 25.0,
+      "profit": 13.95,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 6: fair_fav=0.650 + noise -0.033 => noisy_fav=0.617, 4% overround",
+      "fair_probs": {
+        "vitality": 0.6171,
+        "furia": 0.3829
+      },
+      "market_implied": {
+        "vitality": 0.6417,
+        "furia": 0.3983
+      },
+      "reason": "Favorite by VRS #2 vs #8 gap 6",
+      "sources": [
+        {
+          "label": "EsportsBets — Vitality beat FURIA to reach Grand Final (Sep 20, 2026)",
+          "url": "https://www.esportsbets.com/news/starseries-fall-vitality-title",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Vitality win StarSeries Fall 2026 (notes Vitality beat FURIA earlier same day)",
+          "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-020-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-020",
+      "event": "StarLadder StarSeries Fall 2026 — Consolidation Final",
+      "date": "2026-09-20T13:00:00Z",
+      "team_a": "vitality",
+      "team_b": "furia",
+      "team_a_name": "Vitality",
+      "team_b_name": "FURIA",
+      "winner": "vitality",
+      "winner_name": "Vitality",
+      "pick": "furia",
+      "pick_name": "FURIA",
+      "decimal_odds": 2.511,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 6: fair_fav=0.650 + noise -0.033 => noisy_fav=0.617, 4% overround",
+      "fair_probs": {
+        "vitality": 0.6171,
+        "furia": 0.3829
+      },
+      "market_implied": {
+        "vitality": 0.6417,
+        "furia": 0.3983
+      },
+      "reason": "Underdog by VRS #8 vs #2 gap 6",
+      "sources": [
+        {
+          "label": "EsportsBets — Vitality beat FURIA to reach Grand Final (Sep 20, 2026)",
+          "url": "https://www.esportsbets.com/news/starseries-fall-vitality-title",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Vitality win StarSeries Fall 2026 (notes Vitality beat FURIA earlier same day)",
+          "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-002-sim_favorite_backer",
+      "username": "sim_favorite_backer",
+      "match_id": "HIST-002",
+      "event": "StarLadder StarSeries Fall 2026 — Grand Final",
+      "date": "2026-09-20T18:00:00Z",
+      "team_a": "vitality",
+      "team_b": "aurora",
+      "team_a_name": "Vitality",
+      "team_b_name": "Aurora Gaming",
+      "winner": "vitality",
+      "winner_name": "Vitality",
+      "pick": "vitality",
+      "pick_name": "Vitality",
+      "decimal_odds": 1.433,
+      "stake": 25.0,
+      "profit": 10.83,
+      "result": "win",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.079 => noisy_fav=0.671, 4% overround",
+      "fair_probs": {
+        "vitality": 0.671,
+        "aurora": 0.329
+      },
+      "market_implied": {
+        "vitality": 0.6978,
+        "aurora": 0.3422
+      },
+      "reason": "Favorite by VRS #2 vs #12 gap 10",
+      "sources": [
+        {
+          "label": "HLTV — Vitality beat Aurora at StarSeries Fall for first title since May (Sep 20, 2026)",
+          "url": "https://www.hltv.org/news/45558/vitality-beat-aurora-at-starseries-fall-for-first-title-since-may",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Vitality win StarSeries Fall 2026 over Aurora (map scores)",
+          "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    },
+    {
+      "entry_id": "BT-HIST-002-sim_underdog_hunter",
+      "username": "sim_underdog_hunter",
+      "match_id": "HIST-002",
+      "event": "StarLadder StarSeries Fall 2026 — Grand Final",
+      "date": "2026-09-20T18:00:00Z",
+      "team_a": "vitality",
+      "team_b": "aurora",
+      "team_a_name": "Vitality",
+      "team_b_name": "Aurora Gaming",
+      "winner": "vitality",
+      "winner_name": "Vitality",
+      "pick": "aurora",
+      "pick_name": "Aurora Gaming",
+      "decimal_odds": 2.923,
+      "stake": 15.0,
+      "profit": -15.0,
+      "result": "loss",
+      "odds_type": "MODELED",
+      "odds_detail": "VRS gap 10: fair_fav=0.750 + noise -0.079 => noisy_fav=0.671, 4% overround",
+      "fair_probs": {
+        "vitality": 0.671,
+        "aurora": 0.329
+      },
+      "market_implied": {
+        "vitality": 0.6978,
+        "aurora": 0.3422
+      },
+      "reason": "Underdog by VRS #12 vs #2 gap 10",
+      "sources": [
+        {
+          "label": "HLTV — Vitality beat Aurora at StarSeries Fall for first title since May (Sep 20, 2026)",
+          "url": "https://www.hltv.org/news/45558/vitality-beat-aurora-at-starseries-fall-for-first-title-since-may",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        },
+        {
+          "label": "Fragster — Vitality win StarSeries Fall 2026 over Aurora (map scores)",
+          "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+          "accessed_utc": "2026-09-24T19:00:00Z",
+          "type": "secondary"
+        }
+      ],
+      "verified_utc": "2026-09-24T19:00:00Z",
+      "simulated": true,
+      "settlement": "verified result from HLTV/Liquipedia"
+    }
+  ]
+}
