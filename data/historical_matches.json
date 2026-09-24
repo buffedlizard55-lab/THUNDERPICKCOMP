@@ -1,0 +1,581 @@
+[
+  {
+    "id": "HIST-001",
+    "date": "2026-09-13T14:49:00Z",
+    "event": "FISSURE Playground 3 — Grand Final",
+    "stage": "Grand Final Bo5",
+    "team_a": "legacy",
+    "team_b": "g2",
+    "team_a_name": "Legacy",
+    "team_b_name": "G2",
+    "winner": "legacy",
+    "winner_name": "Legacy",
+    "score": "3-0",
+    "map_scores": [["13-9", "Ancient"], ["13-10", "Mirage"], ["13-4", "Dust2"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — Legacy sweep G2 to lift FISSURE Playground 3 trophy (Sep 13, 2026)",
+        "url": "https://www.hltv.org/news/45509/legacy-sweep-g2-to-lift-fissure-playground-3-trophy",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "HLTV — FISSURE Playground 3 event page (prize distribution confirms Legacy 1st)",
+        "url": "https://www.hltv.org/events/8266/fissure-playground-3",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Most recent S-Tier form: Legacy champions beating G2; latto MVP. Both finalists present in TWC 2026: Legacy is #3 VRS."
+  },
+  {
+    "id": "HIST-002",
+    "date": "2026-09-20T18:00:00Z",
+    "event": "StarLadder StarSeries Fall 2026 — Grand Final",
+    "stage": "Grand Final Bo5",
+    "team_a": "vitality",
+    "team_b": "aurora",
+    "team_a_name": "Vitality",
+    "team_b_name": "Aurora Gaming",
+    "winner": "vitality",
+    "winner_name": "Vitality",
+    "score": "3-1",
+    "map_scores": [["13-4", "Anubis"], ["11-13", "Inferno"], ["13-4", "Mirage"], ["13-7", "Cache"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — Vitality beat Aurora at StarSeries Fall for first title since May (Sep 20, 2026)",
+        "url": "https://www.hltv.org/news/45558/vitality-beat-aurora-at-starseries-fall-for-first-title-since-may",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Fragster — Vitality win StarSeries Fall 2026 over Aurora (map scores)",
+        "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Aurora 2nd place; first Grand Final for rebuilt roster (kyxsan/Jimpphat/ash). Aurora is TWC finalist #12 VRS."
+  },
+  {
+    "id": "HIST-003",
+    "date": "2026-09-19T18:00:00Z",
+    "event": "StarLadder StarSeries Fall 2026 — Upper Bracket Final",
+    "stage": "Upper Final Bo3",
+    "team_a": "aurora",
+    "team_b": "vitality",
+    "team_a_name": "Aurora Gaming",
+    "team_b_name": "Vitality",
+    "winner": "aurora",
+    "winner_name": "Aurora Gaming",
+    "score": "2-1",
+    "map_scores": [["13-7", "Anubis"], ["11-13", "Inferno"], ["13-8", "Nuke"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "EsportsBets — Aurora StarSeries win over Vitality sends new roster into first final (Sep 20, 2026)",
+        "url": "https://www.esportsbets.com/news/aurora-starseries-fall-final",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Fragster — Aurora beat Vitality to reach first final with new roster (Sep 2026)",
+        "url": "https://www.fragster.com/aurora-vitality-starseries-fall-final/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Aurora upset over world #2 Vitality; defensive structure punished Vitality T-sides. Key form indicator before TWC."
+  },
+  {
+    "id": "HIST-004",
+    "date": "2026-09-13T17:00:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Grand Final",
+    "stage": "Grand Final Bo5",
+    "team_a": "virtuspro",
+    "team_b": "hotu",
+    "team_a_name": "Virtus.pro",
+    "team_b_name": "HOTU",
+    "winner": "virtuspro",
+    "winner_name": "Virtus.pro",
+    "score": "3-0",
+    "map_scores": [["16-14", "Dust2"], ["13-6", "Anubis"], ["16-13", "Ancient"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Hotspawn — Virtus.pro qualify for Thunderpick WC 2026 after Closed Qualifier victory (Sep 13, 2026)",
+        "url": "https://www.hotspawn.com/counter-strike/news/virtus-pro-qualify-for-thunderpick-wc-2026-after-closed-qualifier-victory",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Fragster — Virtus.pro reach Thunderpick World Championship after qualifier run (Sep 14, 2026)",
+        "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "VP qualified for Malta Finals; first S-Tier LAN since IEM Chengdu 2025. VP is qualifier seed VRS #30."
+  },
+  {
+    "id": "HIST-005",
+    "date": "2026-09-13T13:15:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Semifinal",
+    "stage": "Semifinal Bo3",
+    "team_a": "virtuspro",
+    "team_b": "heroic",
+    "team_a_name": "Virtus.pro",
+    "team_b_name": "HEROIC",
+    "winner": "virtuspro",
+    "winner_name": "Virtus.pro",
+    "score": "2-1",
+    "map_scores": [["13-6", "Ancient"], ["2-13", "Dust2"], ["13-11", "Mirage"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Liquipedia — Virtus.pro results (Sep 13 2026 13:15 CEST vs HEROIC 2:1)",
+        "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Fragster — VP vs HEROIC semifinal detail (Sep 14, 2026)",
+        "url": "https://www.fragster.com/virtus-pro-thunderpick-world-championship-2026/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "VP comeback after losing Dust2 2-13; tO0RO top rated 1.25."
+  },
+  {
+    "id": "HIST-006",
+    "date": "2026-09-12T10:00:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Playoffs",
+    "stage": "Quarterfinal Bo3",
+    "team_a": "virtuspro",
+    "team_b": "fokus",
+    "team_a_name": "Virtus.pro",
+    "team_b_name": "FOKUS",
+    "winner": "virtuspro",
+    "winner_name": "Virtus.pro",
+    "score": "2-1",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Liquipedia — Virtus.pro results (Sep 12 10:00 CEST vs FOKUS 2:1)",
+        "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "VP path through qualifier after opening loss."
+  },
+  {
+    "id": "HIST-007",
+    "date": "2026-09-11T10:00:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+    "stage": "Group A Bo3",
+    "team_a": "virtuspro",
+    "team_b": "k27",
+    "team_a_name": "Virtus.pro",
+    "team_b_name": "K27",
+    "winner": "virtuspro",
+    "winner_name": "Virtus.pro",
+    "score": "2-0",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Liquipedia — Virtus.pro results (Sep 11 10:00 CEST vs K27 2:0)",
+        "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Rematch after K27 upset VP in opener."
+  },
+  {
+    "id": "HIST-008",
+    "date": "2026-09-10T10:00:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A",
+    "stage": "Group A Bo3",
+    "team_a": "virtuspro",
+    "team_b": "bestia",
+    "team_a_name": "Virtus.pro",
+    "team_b_name": "BESTIA",
+    "winner": "virtuspro",
+    "winner_name": "Virtus.pro",
+    "score": "2-0",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Liquipedia — Virtus.pro results (Sep 10 10:00 CEST vs BESTIA 2:0)",
+        "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "VP recovery win after 1-2 vs K27 opener."
+  },
+  {
+    "id": "HIST-009",
+    "date": "2026-09-09T10:00:00Z",
+    "event": "Thunderpick World Championship 2026 Closed Qualifier — Group A Opening",
+    "stage": "Group A Opening Bo3",
+    "team_a": "k27",
+    "team_b": "virtuspro",
+    "team_a_name": "K27",
+    "team_b_name": "Virtus.pro",
+    "winner": "k27",
+    "winner_name": "K27",
+    "score": "2-1",
+    "map_scores": [["13-5", "Anubis"], ["5-13", "Cache"], ["13-8", "Mirage"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — K27 vs Virtus.pro at TWC 2026 Closed Qualifier (Sep 9, 2026)",
+        "url": "https://www.hltv.org/matches/2397857/k27-vs-virtuspro-thunderpick-world-championship-2026-closed-qualifier",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Virtus.pro results (Sep 9 10:00 CEST vs K27 1:2)",
+        "url": "https://liquipedia.net/counterstrike/Virtus.pro",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Upset opener; VP had to run through lower bracket to qualify."
+  },
+  {
+    "id": "HIST-010",
+    "date": "2026-09-10T11:10:00Z",
+    "event": "FISSURE Playground 3 — Group Stage",
+    "stage": "Group B Bo3",
+    "team_a": "legacy",
+    "team_b": "furia",
+    "team_a_name": "Legacy",
+    "team_b_name": "FURIA",
+    "winner": "legacy",
+    "winner_name": "Legacy",
+    "score": "2-0",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — Legacy vs FURIA at FISSURE Playground 3 (Sep 10, 2026)",
+        "url": "https://www.hltv.org/matches/2397617/legacy-vs-furia-fissure-playground-3",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "1vx.gg — FURIA, BETBOOM, MIBR, Legacy book FPG 3 playoff spots (Sep 9-10, 2026)",
+        "url": "https://1vx.gg/news/furia-betboom-mibr-and-legacy-book-fpg-3-playoff-spots",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Inter-finalist clash: Legacy (#3 VRS) beats defending TWC champion FURIA (#8 VRS) 2-0 in groups. Both qualified to playoffs."
+  },
+  {
+    "id": "HIST-011",
+    "date": "2026-06-13T13:00:00Z",
+    "event": "IEM Cologne Major 2026 — Stage 3 Swiss",
+    "stage": "Swiss Round 3 Bo3 (2-0 teams)",
+    "team_a": "betboom",
+    "team_b": "furia",
+    "team_a_name": "BetBoom Team",
+    "team_b_name": "FURIA",
+    "winner": "furia",
+    "winner_name": "FURIA",
+    "score": "2-0",
+    "map_scores": [["13-6", "Overpass"], ["13-6", "Dust2"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — BetBoom vs FURIA at IEM Cologne Major 2026 (Jun 13, 2026)",
+        "url": "https://www.hltv.org/matches/2394985/betboom-vs-furia-iem-cologne-major-2026",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — FURIA roll past BetBoom to secure playoff spot (Jun 13, 2026)",
+        "url": "https://www.hltv.org/news/44894/furia-roll-past-betboom-to-secure-playoff-spot",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Inter-finalist: FURIA beats BetBoom 2-0 to go 3-0 into Cologne Major playoffs. FURIA eventually runner-up to Falcons."
+  },
+  {
+    "id": "HIST-012",
+    "date": "2026-06-11T11:00:00Z",
+    "event": "IEM Cologne Major 2026 — Stage 2 Swiss",
+    "stage": "Swiss Bo3",
+    "team_a": "parivision",
+    "team_b": "9z",
+    "team_a_name": "PARIVISION",
+    "team_b_name": "9z Team",
+    "winner": "9z",
+    "winner_name": "9z Team",
+    "score": "2-1",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — PARIVISION vs 9z at IEM Cologne Major 2026 (Jun 11, 2026)",
+        "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Inter-finalist: 9z beats PARIVISION 2-1 in Cologne Major Swiss. Both TWC finalists (9z #10 VRS, PARIVISION #17 VRS)."
+  },
+  {
+    "id": "HIST-013",
+    "date": "2026-07-12T08:20:00Z",
+    "event": "XSE Pro League Guangzhou 2026 — Grand Final",
+    "stage": "Grand Final Bo5",
+    "team_a": "9z",
+    "team_b": "parivision",
+    "team_a_name": "9z Team",
+    "team_b_name": "PARIVISION",
+    "winner": "9z",
+    "winner_name": "9z Team",
+    "score": "3-0",
+    "map_scores": [["13-9", "Mirage"], ["13-8", "Inferno"], ["13-5", "Dust2"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — 9z sweep PARIVISION to win XSE Pro League (Jul 12, 2026)",
+        "url": "https://www.hltv.org/news/45119/9z-sweep-parivision-to-win-xse-pro-league",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Inter-finalist rematch: 9z sweeps PARIVISION 3-0 to win first international LAN trophy in Guangzhou. $1M prize pool."
+  },
+  {
+    "id": "HIST-014",
+    "date": "2026-09-11T13:41:00Z",
+    "event": "FISSURE Playground 3 — Quarterfinal",
+    "stage": "Quarterfinal Bo3",
+    "team_a": "g2",
+    "team_b": "furia",
+    "team_a_name": "G2",
+    "team_b_name": "FURIA",
+    "winner": "g2",
+    "winner_name": "G2",
+    "score": "2-0",
+    "map_scores": [["16-14", "Ancient"], ["13-5", "Dust2"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — G2 smash FURIA on Dust2 to secure FPG semi-finals (Sep 11, 2026)",
+        "url": "https://www.hltv.org/news/45502/g2-smash-furia-on-dust2-to-secure-fpg-semi-finals",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "FURIA eliminated 5th-6th at FPG3 after 11-7 lead on Ancient slipped to OT. G2 eventual finalist vs Legacy."
+  },
+  {
+    "id": "HIST-015",
+    "date": "2026-09-12T16:37:00Z",
+    "event": "FISSURE Playground 3 — Semifinal",
+    "stage": "Semifinal Bo3",
+    "team_a": "betboom",
+    "team_b": "g2",
+    "team_a_name": "BetBoom Team",
+    "team_b_name": "G2",
+    "winner": "g2",
+    "winner_name": "G2",
+    "score": "1-2",
+    "map_scores": [["13-7", "Mirage"], ["13-16", "Anubis"], ["7-13", "Ancient"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — G2 move past BetBoom en route to FPG 3 final (Sep 12, 2026)",
+        "url": "https://www.hltv.org/news/45508/g2-move-past-betboom-en-route-to-fpg-3-final",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "BetBoom led 1-0 but lost Anubis in OT after zorte 1v3, then Ancient. BetBoom finished 3rd-4th."
+  },
+  {
+    "id": "HIST-016",
+    "date": "2026-09-10T15:25:00Z",
+    "event": "FISSURE Playground 3 — Group Stage Upper Final",
+    "stage": "Group Upper Final Bo3",
+    "team_a": "legacy",
+    "team_b": "mibr",
+    "team_a_name": "Legacy",
+    "team_b_name": "MIBR",
+    "winner": "legacy",
+    "winner_name": "Legacy",
+    "score": "2-0",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — Legacy, BETBOOM secure semi-final berths at FPG (Sep 10, 2026)",
+        "url": "https://www.hltv.org/news/45494/legacy-betboom-secure-semi-final-berths-at-fpg",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Legacy secured direct semi-final berth; latto/n1ssim 1.30+ ratings."
+  },
+  {
+    "id": "HIST-017",
+    "date": "2026-09-09T14:10:00Z",
+    "event": "FISSURE Playground 3 — Group Stage",
+    "stage": "Group B Bo3",
+    "team_a": "parivision",
+    "team_b": "furia",
+    "team_a_name": "PARIVISION",
+    "team_b_name": "FURIA",
+    "winner": "furia",
+    "winner_name": "FURIA",
+    "score": "0-2",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — PARIVISION team overview recent results (Sep 9 2026 0:2 vs FURIA)",
+        "url": "https://www.hltv.org/team/12467/parivision",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Inter-finalist group match: FURIA 2-0 PARIVISION. PARIVISION later finished 9-12th."
+  },
+  {
+    "id": "HIST-018",
+    "date": "2026-09-17T12:00:00Z",
+    "event": "StarLadder StarSeries Fall 2026 — Quarterfinal",
+    "stage": "Quarterfinal Bo3",
+    "team_a": "furia",
+    "team_b": "mibr",
+    "team_a_name": "FURIA",
+    "team_b_name": "MIBR",
+    "winner": "furia",
+    "winner_name": "FURIA",
+    "score": "2-1",
+    "map_scores": [["11-13", "Inferno"], ["13-6", "Nuke"], ["13-6", "Cache"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "Skin.Club — FURIA beat MIBR to reach StarSeries Fall semifinal (Sep 17, 2026)",
+        "url": "https://community.skin.club/en/news/furia-beat-mibr-to-reach-starseries-fall-2026-semifinal",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "KSCERATO top rated 1.30 (51-36). FURIA gained 17 VRS points to 1775."
+  },
+  {
+    "id": "HIST-019",
+    "date": "2026-06-13T21:40:00Z",
+    "event": "IEM Cologne Major 2026 — Stage 3",
+    "stage": "Swiss Bo3",
+    "team_a": "parivision",
+    "team_b": "legacy",
+    "team_a_name": "PARIVISION",
+    "team_b_name": "Legacy",
+    "winner": "legacy",
+    "winner_name": "Legacy",
+    "score": "0-2",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — PARIVISION team overview recent results (Jun 13 2026 0:2 vs Legacy)",
+        "url": "https://www.hltv.org/team/12467/parivision",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Inter-finalist: Legacy 2-0 PARIVISION in Cologne Major Stage 2/3."
+  },
+  {
+    "id": "HIST-020",
+    "date": "2026-09-20T13:00:00Z",
+    "event": "StarLadder StarSeries Fall 2026 — Consolidation Final",
+    "stage": "Lower Final Bo3",
+    "team_a": "vitality",
+    "team_b": "furia",
+    "team_a_name": "Vitality",
+    "team_b_name": "FURIA",
+    "winner": "vitality",
+    "winner_name": "Vitality",
+    "score": "2-0",
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "EsportsBets — Vitality beat FURIA to reach Grand Final (Sep 20, 2026)",
+        "url": "https://www.esportsbets.com/news/starseries-fall-vitality-title",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      },
+      {
+        "label": "Fragster — Vitality win StarSeries Fall 2026 (notes Vitality beat FURIA earlier same day)",
+        "url": "https://www.fragster.com/vitality-win-starseries-fall-2026/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Vitality swept FURIA twice in same event (upper semi and consolidation final) before beating Aurora in Grand Final."
+  },
+  {
+    "id": "HIST-021",
+    "date": "2026-06-21T18:00:00Z",
+    "event": "IEM Cologne Major 2026 — Grand Final",
+    "stage": "Grand Final Bo5",
+    "team_a": "falcons",
+    "team_b": "furia",
+    "team_a_name": "Team Falcons",
+    "team_b_name": "FURIA",
+    "winner": "falcons",
+    "winner_name": "Team Falcons",
+    "score": "3-0",
+    "map_scores": [["13-8", "Mirage"], ["13-8", "Anubis"], ["13-8", "Inferno"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "ESL/FACEIT Group — Cologne Major most-watched record + winners (Jun 21, 2026)",
+        "url": "https://eslfaceitgroup.com/press/intel-extreme-masters-cologne-2026-major-breaks-records-as-the-most-watched-counter-strike-tournament-of-all-time/",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Dust2.us — NiKo has done it, Falcons are your Cologne Major champions (Jun 21, 2026)",
+        "url": "https://www.dust2.us/news/75245/niko-has-done-it-falcons-are-your-iem-cologne-major-champions",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "notes": "Inter-finalist Major final: Falcons 3-0 FURIA, all maps 13-8. m0NESY MVP, zonic 6th Major. Key form for Malta favorites."
+  },
+  {
+    "id": "HIST-022",
+    "date": "2026-05-09T11:00:00Z",
+    "event": "PGL Astana 2026 — Group Stage",
+    "stage": "Group Bo3",
+    "team_a": "parivision",
+    "team_b": "9z",
+    "team_a_name": "PARIVISION",
+    "team_b_name": "9z Team",
+    "winner": "9z",
+    "winner_name": "9z Team",
+    "score": "0-2",
+    "map_scores": [["8-13", "Ancient"], ["6-13", "Inferno"]],
+    "verified_utc": "2026-09-24T19:00:00Z",
+    "sources": [
+      {
+        "label": "HLTV — PARIVISION vs 9z head-to-head at PGL Astana (May 9, 2026)",
+        "url": "https://www.hltv.org/matches/2394903/parivision-vs-9z-iem-cologne-major-2026",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "notes": "Earlier inter-finalist: 9z 2-0 PARIVISION at PGL Astana (Ancient 13-8, Inferno 13-6). Part of 9z's 2-0 head-to-head vs PARIVISION in that event."
+  }
+]

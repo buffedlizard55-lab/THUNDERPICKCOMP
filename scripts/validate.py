@@ -708,6 +708,136 @@ def check_player_stats(stats):
             err(f"{w}: invalid stat window timestamps")
 
 
+def check_historical_matches(items):
+    if items is None:
+        err("historical_matches.json: missing")
+        return
+    if not isinstance(items, list) or len(items) < 10:
+        err(f"historical_matches: expected >=10 entries, got {len(items) if isinstance(items, list) else type(items)}")
+        return
+    seen = set()
+    for i, m in enumerate(items):
+        w = f"historical_matches[{i}]"
+        if not isinstance(m, dict):
+            err(f"{w}: expected object")
+            continue
+        for f in ("id", "date", "event", "stage", "team_a", "team_b", "winner", "score", "sources", "verified_utc"):
+            if f not in m:
+                err(f"{w}: missing field {f}")
+        if m.get("id") in seen:
+            err(f"{w}: duplicate id {m.get('id')}")
+        seen.add(m.get("id"))
+        if m.get("id") and not re.match(r"^HIST-\d{3}$", m["id"]):
+            err(f"{w}: id must match HIST-###, got {m['id']!r}")
+        check_iso(m.get("date"), w + ".date")
+        check_iso(m.get("verified_utc"), w + ".verified_utc")
+        check_sources(m.get("sources"), w)
+        if not m.get("team_a") or not m.get("team_b") or not m.get("winner"):
+            err(f"{w}: team_a/team_b/winner required")
+        # winner must be one of the two teams
+        if m.get("winner") not in {m.get("team_a"), m.get("team_b")}:
+            err(f"{w}: winner must be team_a or team_b")
+
+def check_historical_odds(data):
+    if data is None:
+        err("historical_odds.json: missing")
+        return
+    if not isinstance(data, dict):
+        err("historical_odds: expected object")
+        return
+    meta = data.get("meta") or {}
+    if not meta.get("note"):
+        err("historical_odds.meta: missing note")
+    real = data.get("real_markets")
+    if not isinstance(real, list):
+        err("historical_odds.real_markets: expected array")
+    else:
+        for i, rm in enumerate(real):
+            w = f"historical_odds.real_markets[{i}]"
+            if not rm.get("id") or not rm.get("source_url"):
+                err(f"{w}: missing id/source_url")
+            check_url(rm.get("source_url"), w)
+            if rm.get("review_url"):
+                check_url(rm.get("review_url"), w)
+    policy = data.get("modeled_policy") or {}
+    if not policy.get("formula"):
+        err("historical_odds.modeled_policy: missing formula")
+
+def check_backtest_results(data, strategies):
+    if data is None:
+        err("backtest_results.json: missing")
+        return
+    if not isinstance(data, dict):
+        err("backtest_results: expected object")
+        return
+    meta = data.get("meta") or {}
+    for f in ("generated_utc", "matches_count", "ledger_entries"):
+        if f not in meta:
+            err(f"backtest_results.meta: missing {f}")
+    if "generated_utc" in meta:
+        check_iso(meta["generated_utc"], "backtest_results.meta.generated_utc")
+    strats = data.get("strategies")
+    if not isinstance(strats, list) or len(strats) < 1:
+        err("backtest_results.strategies: expected non-empty array")
+        return
+    strat_names = {s.get("username") for s in strategies or []}
+    for i, s in enumerate(strats):
+        w = f"backtest_results.strategies[{i}]"
+        if s.get("username") not in strat_names:
+            err(f"{w}: unknown username {s.get('username')!r}")
+        for f in ("total_bets", "wins", "losses", "profit", "bankroll"):
+            if f not in s:
+                err(f"{w}: missing field {f}")
+
+def check_backtest_ledger(data, historical_ids):
+    if data is None:
+        err("backtest_ledger.json: missing")
+        return
+    if not isinstance(data, dict):
+        err("backtest_ledger: expected object")
+        return
+    meta = data.get("meta") or {}
+    if "generated_utc" in meta:
+        check_iso(meta["generated_utc"], "backtest_ledger.meta.generated_utc")
+    entries = data.get("entries")
+    if not isinstance(entries, list):
+        err("backtest_ledger.entries: expected array")
+        return
+    seen = set()
+    for i, e in enumerate(entries):
+        w = f"backtest_ledger.entries[{i}]"
+        if not isinstance(e, dict):
+            err(f"{w}: expected object")
+            continue
+        for f in ("entry_id", "username", "match_id", "date", "team_a", "team_b", "winner", "pick", "decimal_odds", "stake", "profit", "result", "odds_type", "sources"):
+            if f not in e:
+                err(f"{w}: missing field {f}")
+        if e.get("entry_id") in seen:
+            err(f"{w}: duplicate entry_id {e.get('entry_id')}")
+        seen.add(e.get("entry_id"))
+        if e.get("match_id") not in historical_ids:
+            err(f"{w}: match_id {e.get('match_id')!r} not in historical_matches")
+        check_iso(e.get("date"), w + ".date")
+        check_sources(e.get("sources"), w, require=True)
+        if e.get("odds_type") not in {"MODELED", "VERIFIED"}:
+            err(f"{w}: odds_type must be MODELED or VERIFIED, got {e.get('odds_type')!r}")
+        if e.get("result") not in {"win", "loss"}:
+            err(f"{w}: result must be win/loss, got {e.get('result')!r}")
+        # profit math
+        try:
+            stake = Decimal(str(e.get("stake")))
+            odds = Decimal(str(e.get("decimal_odds")))
+            profit = Decimal(str(e.get("profit")))
+            if e.get("result") == "win":
+                expected = (stake * (odds - Decimal("1"))).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+                if abs(profit - expected) > Decimal("0.02"):
+                    err(f"{w}: profit {profit} does not match win math {expected}")
+            else:
+                if profit != -stake:
+                    err(f"{w}: loss profit must be -stake, got {profit} vs {-stake}")
+        except Exception:
+            err(f"{w}: invalid stake/odds/profit math")
+
 def check_html_refs():
     pages = sorted((ROOT).glob("*.html"))
     if not pages:
@@ -731,6 +861,10 @@ def main():
     observations = load("observations.json")
     settlements = load("settlements.json")
     player_stats = load("player_stats.json")
+    historical_matches = load("historical_matches.json")
+    historical_odds = load("historical_odds.json")
+    backtest_results = load("backtest_results.json")
+    backtest_ledger = load("backtest_ledger.json")
 
     master_ids = check_master(master)
     check_teams(teams, master_ids)
@@ -744,6 +878,11 @@ def main():
     check_ledger(ledger, users, match_ids | fixture_ids, observations, paused)
     check_settlements(settlements, ledger)
     check_player_stats(player_stats)
+    check_historical_matches(historical_matches)
+    check_historical_odds(historical_odds)
+    historical_ids = {m.get("id") for m in (historical_matches or []) if isinstance(m, dict) and m.get("id")}
+    check_backtest_results(backtest_results, strategies)
+    check_backtest_ledger(backtest_ledger, historical_ids)
     check_html_refs()
 
     # Required static assets
@@ -758,9 +897,10 @@ def main():
             print(" -", e)
         return 1
     n_ledger = len((ledger or {}).get("entries", []))
+    n_backtest = len((backtest_ledger or {}).get("entries", []))
     print(f"OK: {len(master or [])} master entries, {len(teams or [])} teams, "
           f"{len(matches or [])} match records, {len(strategies or [])} strategies, "
-          f"{n_ledger} ledger entries. All checks passed.")
+          f"{n_ledger} ledger entries, {len(historical_matches or [])} historical matches, {n_backtest} backtest bets. All checks passed.")
     return 0
 
 
