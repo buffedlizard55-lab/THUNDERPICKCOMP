@@ -131,6 +131,9 @@ race or make the rolling journal a durable versioned archive.
 Published `mode=offline-replay` records are PARTIAL, documented in
 `tests/fixtures/manifest.json`, and cannot cause a simulated position. Offline
 unit tests use synthetic future quotes only in test memory, never in data/.
+PR CI also validates/renders a synthetic `mode=live` journal in a disposable
+temporary copy; tests must not read the mutable published journal as their
+baseline. The CI replay does not fetch an API, create a position or publish.
 
 A UI timestamp is the last *attempt*, not necessarily a successful price query.
 Client code flags the feed as stale after 2 hours (hourly job may be delayed)

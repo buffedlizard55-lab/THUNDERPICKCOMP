@@ -21,6 +21,8 @@ jobs:
         run: |
           node --check assets/app.js
           node tests/test_ui.cjs
+      - name: Exercise post-restore live journal in a disposable synthetic copy
+        run: python3 tests/smoke_live_copy.py
       - name: Check for forbidden placeholder leaks
         run: |
           # Fail if common hallucination/placeholder markers leak into data files.
