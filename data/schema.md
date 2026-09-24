@@ -112,12 +112,21 @@ undersized asks and incorrect payout/profit.
 ## Persistence, tests and staleness
 
 Pages is deployed by GitHub Actions on pushes to `main` and hourly best-effort
-cron. Every deploy retrieves the prior published `observations.json` and
-`ledger.json` over HTTPS, checks immutable history, appends new observations,
-runs validation/tests, and deploys only on success. A missing/corrupted prior
-publication blocks all later deploys, except the **one-time bootstrap from the
-known initial main commit**. An Actions artifact is a short-lived recovery
-copy. This rolling Pages journal is **not yet permanent archival storage**.
+cron. Every run retrieves the prior public `observations.json` and `ledger.json`
+over HTTPS **and** the last successful Pages workflow's short-lived Actions
+journal artifact. It selects only the newest candidate that covers the other
+candidate's immutable quotes, VRS/fixture signals and simulated decisions as
+well as the committed seed, then validates/tests and deploys. A reverted
+`offline-replay` branch publication cannot erase a previous live journal. A
+missing Pages journal may recover from that artifact; if no valid covering
+live journal is available, or the candidates conflict, deployment stops. Only
+the first push from the pinned pre-merge `main` SHA could bootstrap from the
+seed. The artifact is a 30-day checkpoint, not permanent archival storage. GitHub Pages
+is currently configured to also build from `main` (legacy mode), which can
+transiently overwrite the live feed on a push; an admin should switch Pages'
+Build and deployment Source to **GitHub Actions**. The Actions deployment did
+succeed while legacy mode remained selected, but this does not eliminate the
+race or make the rolling journal a durable versioned archive.
 
 Published `mode=offline-replay` records are PARTIAL, documented in
 `tests/fixtures/manifest.json`, and cannot cause a simulated position. Offline

@@ -4,11 +4,15 @@ Synthetic markets below exist ONLY in test memory. They must never be published
 as real tournament matches, first-party quotes or leaderboard entries.
 """
 import copy
+import gzip
+import io
 import json
+import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
 from pathlib import Path
+from unittest.mock import patch
 from urllib.parse import urlencode
 
 from scripts import collect as c
@@ -71,7 +75,46 @@ def synthetic_docs(now=NOW):
     return obs, ledger
 
 
+class MemoryResponse:
+    """Synthetic, in-memory HTTP response; never used as a real price receipt."""
+
+    status = 200
+
+    def __init__(self, body: bytes, encoding: str = ""):
+        self.buffer = io.BytesIO(body)
+        self.headers = {"Content-Encoding": encoding} if encoding else {}
+
+    def read(self, size: int) -> bytes:
+        return self.buffer.read(size)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.buffer.close()
+
+
 class CollectorTests(unittest.TestCase):
+    def test_liquipedia_http_accepts_and_boundedly_decodes_required_gzip(self):
+        body = b'{"parse":{"wikitext":{"*":"Thunderpick World Championship 2026"}}}'
+        with patch.object(c, "urlopen", return_value=MemoryResponse(gzip.compress(body), "gzip")) as open_url:
+            decoded = c.Fetcher().get(c.LIQUIPEDIA_API)
+        self.assertEqual(decoded["parse"]["wikitext"]["*"], "Thunderpick World Championship 2026")
+        req = open_url.call_args.args[0]
+        self.assertEqual(req.get_header("Accept-encoding"), "gzip")
+        self.assertIn("/issues", req.get_header("User-agent"))
+        with patch.object(c, "urlopen", return_value=MemoryResponse(body)):
+            self.assertEqual(c.Fetcher().get(c.LIQUIPEDIA_API), decoded)
+        with patch.object(c, "urlopen", return_value=MemoryResponse(b"not gzip", "gzip")):
+            with self.assertRaisesRegex(c.SourceError, "invalid gzip"):
+                c.Fetcher().get(c.LIQUIPEDIA_API)
+        with patch.object(c, "urlopen", return_value=MemoryResponse(gzip.compress(b"X" * 4_000_001), "gzip")):
+            with self.assertRaisesRegex(c.SourceError, "decompressed response exceeds 4MB"):
+                c.Fetcher().get(c.LIQUIPEDIA_API)
+        with patch.object(c, "urlopen", return_value=MemoryResponse(body, "br")):
+            with self.assertRaisesRegex(c.SourceError, "unsupported content encoding"):
+                c.Fetcher().get(c.LIQUIPEDIA_API)
+
     def test_partial_fixture_replay_is_sourced_but_never_bets(self):
         doc = c.collect(c.empty(), c.FixtureFetcher(), NOW, TEAMS, "offline-replay")
         self.assertEqual(len(doc["checks"]), 7)
@@ -96,6 +139,19 @@ class CollectorTests(unittest.TestCase):
             c.parse_vrs(sample, "2026-08-03", TEAMS)
         with self.assertRaisesRegex(c.SourceError, "date"):
             c.parse_vrs(sample, "2026-09-07", TEAMS)
+
+    def test_vrs_ignores_nonfinalist_roster_rows_but_rejects_bad_finalists(self):
+        sample = (c.FIXTURES / "vrs_global_2026_09_07.md").read_text()
+        self.assertIn("Just Players         | h1te, sm3t, Something, sstiNiX", sample)
+        self.assertIn("Just Players         | em0k1d, rexxie, Something, spirit, sstiNiX", sample)
+        self.assertEqual(len(c.parse_vrs(sample, "2026-09-07", TEAMS)), 8)
+        falcons = next(line for line in sample.splitlines() if "| Falcons " in line)
+        with self.assertRaisesRegex(c.SourceError, "duplicate or malformed finalist"):
+            c.parse_vrs(sample + "\n" + falcons, "2026-09-07", TEAMS)
+        with self.assertRaisesRegex(c.SourceError, "duplicate or malformed finalist"):
+            c.parse_vrs(sample.replace("karrigan, kyousuke, m0NESY, NiKo, TeSeS", "karrigan, kyousuke, m0NESY, NiKo"), "2026-09-07", TEAMS)
+        with self.assertRaisesRegex(c.SourceError, "malformed Valve VRS row"):
+            c.parse_vrs(sample.replace("|   1881 | Falcons", "|   N/A | Falcons"), "2026-09-07", TEAMS)
 
     def test_verified_qualifier_market_not_usable_for_backfill(self):
         fixture = json.loads((c.FIXTURES / "polymarket_event_twc26_qualifier_closed.json").read_text())
@@ -265,6 +321,80 @@ class CompetitionTests(unittest.TestCase):
         newer_ledger = {"meta": {"simulated": True}, "entries": []}
         with self.assertRaisesRegex(c.SourceError, "missing/rewrote"):
             rest.restore_ledger(original_ledger, newer_ledger)
+
+    def test_legacy_pages_seed_cannot_erase_last_successful_journal(self):
+        seed = json.loads((ROOT / "data" / "observations.json").read_text())
+        seed_ledger = json.loads((ROOT / "data" / "ledger.json").read_text())
+        # Synthetic decision lives only in memory, not in published data.
+        paper, later_ledger = synthetic_docs()
+        comp.apply_outright(later_ledger, paper, NOW)
+        checkpoint = copy.deepcopy(seed)
+        checkpoint["mode"] = "live"
+        checkpoint["last_attempt_utc"] = c.stamp(NOW + timedelta(minutes=1))
+        checkpoint["events"] += paper["events"]
+        checkpoint["quotes"] += paper["quotes"]
+        selected, selected_ledger, source = rest.choose_history(
+            seed, seed_ledger, seed, seed_ledger, checkpoint, later_ledger, require_live=True)
+        self.assertEqual((source, len(selected["quotes"]), len(selected_ledger["entries"])),
+                         ("Actions checkpoint", 2, 2))
+        self.assertEqual(rest.choose_history(seed, seed_ledger, None, None,
+                                             checkpoint, later_ledger, require_live=True)[2],
+                         "Actions checkpoint")
+        with self.assertRaisesRegex(c.SourceError, "reverted to offline"):
+            rest.choose_history(seed, seed_ledger, seed, seed_ledger, None, None, require_live=True)
+        with self.assertRaisesRegex(c.SourceError, "no published or successful"):
+            rest.choose_history(seed, seed_ledger, None, None, None, None, require_live=True)
+        # A newer Pages journal covering both prior quotes and positions wins.
+        newer = copy.deepcopy(checkpoint)
+        newer["last_attempt_utc"] = c.stamp(NOW + timedelta(minutes=2))
+        newer["quotes"].append(synthetic_quote("FURIA", "0.49", "100", "TEST-NEW"))
+        self.assertEqual(rest.choose_history(seed, seed_ledger, newer, later_ledger,
+                                             checkpoint, later_ledger, require_live=True)[2], "Pages")
+        # A newer timestamp with a missing receipt/decision is *not* acceptable.
+        newer["quotes"].pop()
+        newer["quotes"].pop()
+        with self.assertRaisesRegex(c.SourceError, "missing/rewrote"):
+            rest.choose_history(seed, seed_ledger, newer, later_ledger,
+                                checkpoint, later_ledger, require_live=True)
+        damaged_ledger = copy.deepcopy(later_ledger)
+        damaged_ledger["entries"].pop()
+        with self.assertRaisesRegex(c.SourceError, "missing/rewrote"):
+            rest.choose_history(seed, seed_ledger, checkpoint, damaged_ledger,
+                                checkpoint, later_ledger, require_live=True)
+
+    def test_actions_artifact_path_layout_requires_exactly_one_record(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "data").mkdir()
+            payload = {"entries": []}
+            (root / "data" / "ledger.json").write_text(json.dumps(payload))
+            self.assertEqual(rest.artifact_json(root, "ledger.json"), payload)
+            (root / "ledger.json").write_text(json.dumps(payload))
+            with self.assertRaisesRegex(c.SourceError, "exactly one"):
+                rest.artifact_json(root, "ledger.json")
+
+    def test_restore_cli_uses_checkpoint_when_pages_reverts_to_offline_seed(self):
+        seed = json.loads((ROOT / "data" / "observations.json").read_text())
+        seed_ledger = json.loads((ROOT / "data" / "ledger.json").read_text())
+        newer = copy.deepcopy(seed)
+        newer["mode"] = "live"
+        newer["last_attempt_utc"] = c.stamp(NOW + timedelta(minutes=1))
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            checkpoint = root / "artifact"
+            checkpoint.mkdir()
+            observation = root / "observations.json"
+            ledger = root / "ledger.json"
+            observation.write_text(json.dumps(seed))
+            ledger.write_text(json.dumps(seed_ledger))
+            (checkpoint / "observations.json").write_text(json.dumps(newer))
+            (checkpoint / "ledger.json").write_text(json.dumps(seed_ledger))
+            with patch.object(rest, "OUTPUT", observation), patch.object(rest, "LEDGER", ledger):
+                self.assertEqual(rest.main(["--observations", str(observation),
+                                            "--ledger", str(ledger), "--artifact-dir", str(checkpoint),
+                                            "--require-live-history"]), 0)
+            self.assertEqual(json.loads(observation.read_text())["mode"], "live")
+            self.assertEqual(json.loads(ledger.read_text())["entries"], [])
 
 
 if __name__ == "__main__":
