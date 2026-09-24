@@ -49,6 +49,40 @@ MAX_MARKETS = 120  # bounded parsing; fail visibly instead of silently dropping 
 MAX_QUOTE_AGE = timedelta(minutes=10)
 POLY_TEAM_SEARCH = POLY + "/public-search?limit_per_type=10&events_status=active&q="
 POLY_TEAM_LIMIT = 10  # bounded first page per finalist team name
+
+
+def _finalist_search_names() -> list[str]:
+    """Bounded per-team market-search queries derived from data/teams.json.
+
+    Each finalist contributes its committed display name plus, when different,
+    a short form with the "Team "/" Team" or " Gaming" org affix removed,
+    because prediction-market titles use the short form ("Falcons",
+    "Aurora", "BetBoom") rather than the registered org name. The result is a
+    small literal list so the per-team discovery pass stays bounded (at most
+    13 first-page searches, and it runs only when the keyed searches found no
+    open TWC 2026 event)."""
+    try:
+        names = [str(t.get("name") or "").strip()
+                 for t in json.loads(TEAMS_FILE.read_text(encoding="utf-8"))]
+    except (OSError, ValueError):
+        names = []
+    out: list[str] = []
+    for name in names:
+        if name and name not in out:
+            out.append(name)
+        short = name
+        if short.startswith("Team "):
+            short = short[len("Team "):]
+        if short.endswith(" Team"):
+            short = short[: -len(" Team")]
+        if short.endswith(" Gaming"):
+            short = short[: -len(" Gaming")]
+        if short and short != name and short not in out:
+            out.append(short)
+    return out or ["FURIA", "Falcons", "Legacy", "Aurora", "BetBoom", "9z", "PARIVISION", "Virtus.pro"]
+
+
+TEAM_NAMES = _finalist_search_names()
 HLTV_MATCH_PATTERN = re.compile(r"^https://www\.hltv\.org/matches/\d{6,9}/?$")
 HLTV_MAX_FETCHES = 8  # bounded per run; robots.txt disallows /matches?* listings only
 SOURCE_IDS = ("valve_vrs", "liquipedia_fixtures", "hltv_crosscheck", "polymarket_search", "polymarket_tag",
