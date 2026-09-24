@@ -572,13 +572,15 @@ does not prevent a transient stale public page. Recheck after the next push.
   hourly candle closes of the best bid/ask. **Order-book depth at the time is not published**, so fills
   assume full size at the ask. The 50u stake cap keeps simulated sizes small.
 - **Kalshi coverage starts 2026-03-31.** Older date-only markets cannot be timed without look-ahead.
-  Markets usually open less than 24h before the match, so T-24h quotes exist for only ~39% of lines.
+  Markets usually open less than 24h before the match, so T-24h quotes exist for only 1,631 of 4,227 lines (38.6%).
 - **Team identity:** names are normalised by spelling only. Renamed or rebranded rosters count as new
   teams for Elo, form and head-to-head.
 - **Tier** is a keyword heuristic on competition names, not an official tier. Polymarket
   `eventMetadata.leagueTier` is a possible upgrade.
-- **Duplicate markets:** the same match listed on both venues is merged by teams and start within ±2h;
-  unmatched duplicates are simulated separately.
+- **Duplicate markets:** lines for the same team pair starting within ±4h are merged into one match.
+  A second market on the same venue is dropped and flagged `duplicate_same_venue_market`. More than one
+  candidate on the other venue is flagged `ambiguous_cross_venue_link` and left unlinked. A genuine
+  rematch within 4h would be wrongly merged; this is rare but possible.
 - **Statistics:** about 1,000 strategies are tested at once. Read p-values against the multiple-testing
   block in `analytics.json`, not individually.
 - **Forward competition:** TWC 2026 Finals markets were not yet open on 2026-09-24. The forward
