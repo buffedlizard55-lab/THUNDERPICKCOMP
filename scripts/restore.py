@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .collect import OUTPUT, ROOT, SourceError, parse_time, verify_history
@@ -165,10 +166,22 @@ def main(argv: list[str] | None = None) -> int:
     artifact = artifact_json(args.artifact_dir, "observations.json") if args.artifact_dir else None
     artifact_ledger = artifact_json(args.artifact_dir, "ledger.json") if args.artifact_dir else None
     artifact_settlements = artifact_json(args.artifact_dir, "settlements.json", optional=True) if args.artifact_dir else None
-    result, result_ledger, source = choose_history(
-        current, ledger, published, old_ledger, artifact, artifact_ledger,
-        require_live=args.require_live_history,
-    )
+    try:
+        result, result_ledger, source = choose_history(
+            current, ledger, published, old_ledger, artifact, artifact_ledger,
+            require_live=args.require_live_history,
+        )
+    except Exception as e:
+        import traceback
+        print(f"RESTORE FAILED: {e}", file=sys.stderr)
+        traceback.print_exc()
+        # Also dump some context for debugging
+        if published:
+            print(f"published mode={published.get('mode')} last={published.get('last_attempt_utc')} events={len(published.get('events',[]))}", file=sys.stderr)
+        if artifact:
+            print(f"artifact mode={artifact.get('mode')} last={artifact.get('last_attempt_utc')} events={len(artifact.get('events',[]))}", file=sys.stderr)
+        print(f"current mode={current.get('mode')} last={current.get('last_attempt_utc')} events={len(current.get('events',[]))}", file=sys.stderr)
+        raise
     # Settlement history: the longest candidate that still extends the committed
     # prefix wins; divergence stops the run instead of rewriting receipts.
     result_settlements = current_settlements
