@@ -155,11 +155,13 @@ The following preserves the **full project prompt** supplied by the owner. This 
 
 The repository now contains a static, responsive, **ten-page** Pages site (added `backtest.html`), a
 56-entry sourced master list, eight simulated policy definitions, an empty forward ledger,
-and a new historical backtesting pipeline with 22 verified matches and 69 simulated bets.
+a **real-line strategy lab** (`data/lab/`: thousands of settled CS2 match lines with hourly Kalshi
+bid/ask and Polymarket reference prices, 1,447 simulated strategies, receipts re-derived from the
+venues by an automated audit), and the older 22-match **modeled** backtest kept for reference.
 
 - `index.html`, `teams.html`, `guide.html`, `markets.html`, `leaderboard.html`, `backtest.html`,
   `ledger.html`, `changes.html`, `master-list.html`, `methodology.html` — **ten-page**
-  public hub (copied/adapted from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) design — navy/gold hero, better tables/cards — with source-verified content). New: `backtest.html` shows 22 verified historical matches, modeled odds audit trail, and 69-bet leaderboard for strategy research.
+  public hub (copied/adapted from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) design — navy/gold hero, better tables/cards — with source-verified content). `backtest.html` shows the real-line strategy lab (leaderboard, analytics, per-bet receipts); the older 22-match modeled backtest sits in a collapsed legacy section.
 - `assets/app.js`, `assets/style.css` — accessible static UI over JSON, including
   actual UTC freshness/source-error status and links for manual review. Style mirrors reference site's polished system while preserving audit-feed readability. New renderers: `backtest-leaderboard`, `backtest-analytics`, `backtest-ledger`, `historical-matches`.
 - `data/master_list.json` — **56 dated sourced claims (ML-001–ML-056)** covering roll of honour, regional winners, rename, HLTV Top-20 pedigree, player milestones, karrigan move, Cologne Major records, roster rebuilds, map-pool Cache history, core-roster rule, veto/OT, EPL S24, StarSeries Fall, FURIA calling change, org closures — each with source links for manual review, verified line by line, no hallucinations.
@@ -505,11 +507,80 @@ does not prevent a transient stale public page. Recheck after the next push.
 - **Three passes:** (1) implement backtest pipeline + 22 verified matches + modeled odds + 10-page site + workflow integration and verify; (2) review for bugs: fixed nav inconsistency (all 10 pages now consistent order Overview/Teams/Guide/Markets/Leaderboard/Backtest/Ledger/Changes/Master List/Methodology), fixed VRS rank handling for non-finalists (estimated ranks labeled, not presented as verified), fixed vrs_value 0-bet edge case (honest — no false value with overround), fixed validator missing new files, fixed UI smoke to include backtest renderers; (3) re-check against original brief: historical backtesting with real verified lines (where free) + modeled fallback labeled, leaderboard analytics stored on site, solves manual checking via append-only JSON + hourly collector + backtest ledger, clean UI ported from reference site, all claims with source links, no hallucinations, no paid API, no manual input, flags for irregularities, PR + merge required next.
 - **Limitations / next work for this feature:** Real historical betting lines for CS2 remain scarce via free public APIs — Polymarket Gamma closed markets show 0/1 settlement, not pre-match; Kalshi had 0 open Finals markets Sep 24. Future work: when Finals markets open, collect.py will capture first-party best asks with size; backtest.py can then prefer VERIFIED over MODELED where available (ledger flag). Also need to expand historical_matches beyond 22 (more inter-finalist matches from PGL Astana, EPL, etc.) and add chart visualizations (win-rate over time, ROI by strategy, map-pool impact). Player stats still empty (policy defined, no collection).
 
+### 2026-09-24 — Real-line strategy lab (supersedes the "no free historical lines" finding above)
+
+- **Correction:** the previous entry concluded that free historical CS2 lines were scarce. That was wrong.
+  Kalshi publishes every settled `KXCS2GAME` market with hourly bid/ask candles, free and without login
+  (`/historical/markets` before the `/historical/cutoff` date, `/markets?status=settled` after it).
+  Polymarket publishes CS2 moneyline price history (`clob…/prices-history`). The modeled backtest is
+  now a collapsed legacy section.
+- **First real backfill** (Actions run 36062609731, commit cef0005): 6,100 Kalshi events listed;
+  **4,227 lines stored** with scheduled starts from 2026-03-31 to 2026-09-24; 1,873 excluded, each
+  with a written reason.
+  - 1,105 excluded because pre-April rules give only a date, so no look-ahead-free cutoff exists. They
+    stay excluded, and start times are never estimated from `close_time`.
+  - 298 were fair-price ("scalar") settlements of cancelled or forfeited matches, and ~60 failed to
+    parse because the competition name contained a colon. Both are fixed in aa2ede2 and retried
+    automatically.
+- **Receipt audit:** 40 random stored lines were re-derived from Kalshi by the runner: **40/40 exact**.
+  Two more were checked by hand this session against the venue URLs (MEIA NOITE–paiN Academy T-1h
+  ask 0.59 / bid 0.56 / vol 16.47; HyperSpirit–UPGRADE settlement 0.0000 → UPGRADE). Both match.
+- **Polymarket:** run 36062609731 stored 0 Polymarket lines because Gamma returns HTTP 422 past
+  offset 2000. The listing now walks 3-day `end_date` windows and splits busy windows (aa2ede2, tested).
+- **Real-data lab result (Kalshi only, 4,095 matches, 1,447 strategies):**
+  - 956 strategies qualified (≥30 bets). Only 12 reached p<0.05, against ~48 expected by chance, and
+    **none survive Bonferroni**.
+  - The top 20 by in-sample ROI averaged +6.2% in-sample but **−5.8% out of sample**.
+  - Coin-flip controls lost 6–17%; `no_bet` stayed at exactly 1,000u.
+  - Conclusion so far: no strategy has shown a durable edge over Kalshi prices after fees. Treat any
+    leaderboard leader as a hypothesis to test forward, never as a proven system (Maximize P(Win)).
+  - Distinct bet-selection sets: 446 with Kalshi only. Polymarket-venue, `best`-venue and best-of
+    format strategies only diverge once Polymarket lines land.
+- **Restore incident root cause:** the Pages archive step switched the build tree to `journal-archive`
+  and back. That reverted the journal to the offline seed before packaging, and the next restore
+  trusted it. Now:
+  - the archive is committed from a separate worktree;
+  - a live-mode guard refuses to package the seed;
+  - `restore.py` repairs every candidate, never falls back to the seed, and exits non-zero otherwise.
+
+  A dry run against the real archive repairs exactly the 19 reset `first_seen` keys.
+- **Pipeline safety observed on real data:** run 36064277801 stopped at "Validate before committing"
+  because two lines legitimately had no price URLs (markets opened after the scheduled start). Nothing
+  was committed. The validator now accepts that case only when the line is flagged `no_prestart_quotes`.
+
 ## Next highest-value work / limitations
 
-1. **Admin must switch Pages publishing to GitHub Actions** (Settings → Pages → Source) — `build_type` is still `legacy`, app token gets HTTP 403, every push starts legacy build that transiently republishes offline seed (artifact guard prevents loss but flicker remains). **DONE 2026-09-24 live verification:** run 36050952696 succeeded with 9 checks, but this admin action still outstanding.
-2. **Confirm next live run after this merge archives LIVE journal + backtest**: manifest `mode: live`, non-empty `commit_url`, and `backtest_results.json` regenerated with same 22 matches + fresh generated_utc. Watchdog's hourly ticks must stay green.
-3. **Fixture watch:** when group draw published, confirm Liquipedia/HLTV cross-check confirms schedules and results; then watch six gated match strategies receive first eligible pre-start asks with depth (no invented opponents/results/prices).
-4. **Settlement exercise:** settlement journal built but unproven against real resolution; verify first win/loss/50-50/partial receipts and holds before trusting realized P/L on forward leaderboard.
-5. **Backtest expansion — real lines:** integrate Kalshi game-winner asks (KXCS2GAME) and Polymarket CLOB books per-outcome when Finals markets open; extend backtest.py to prefer VERIFIED odds over MODELED, with ledger flag. Expand historical_matches beyond 22 (PGL Astana, EPL S24, etc.) and add chart visualizations. Implement robots-compliant player-stat collection per defined window.
-6. **Coverage:** keep hunting primary posts for BetBoom chain (ML-047) and new roster moves; broaden bounded market discovery further as event approaches.
+1. **Confirm the Polymarket backfill.** Check `data/lab/lines_meta.json` coverage: Polymarket
+   `lines_stored` > 0, no `truncated` windows, and that `audit.json` shows 0 mismatches. It needs roughly
+   2 CLOB requests per market, so the daily 05:41 UTC cron (or manual dispatches) may take several runs
+   to finish; `pending_after_run` shows the backlog.
+2. **Admin action: switch Pages Source to "GitHub Actions"** (Settings → Pages). Legacy branch
+   publishing is still active; the app token cannot change it (HTTP 403).
+3. **Verify the first hourly Pages run after merge:**
+   - restore picks `journal-archive` and applies the 19 `first_seen` repairs;
+   - the manifest shows `mode: live`;
+   - the lab page shows real data.
+4. **Distinctness:** once Polymarket lands, re-read `analytics.json → distinctness`. If there are
+   still fewer than 1,000 unique bet-selection sets, add families. Each new family needs a look-ahead
+   test and must keep the ≥100 floor.
+5. **Forward-test the leaders.** Freeze the current top strategies by train-period ROI and score them
+   only on matches settled after the freeze. That is the honest test the in-sample leaderboard cannot give.
+
+**Known limitations**
+
+- **Polymarket prices are reference prices** (last or mid), not executable asks. Kalshi quotes are
+  hourly candle closes of the best bid/ask. **Order-book depth at the time is not published**, so fills
+  assume full size at the ask. The 50u stake cap keeps simulated sizes small.
+- **Kalshi coverage starts 2026-03-31.** Older date-only markets cannot be timed without look-ahead.
+  Markets usually open less than 24h before the match, so T-24h quotes exist for only ~39% of lines.
+- **Team identity:** names are normalised by spelling only. Renamed or rebranded rosters count as new
+  teams for Elo, form and head-to-head.
+- **Tier** is a keyword heuristic on competition names, not an official tier. Polymarket
+  `eventMetadata.leagueTier` is a possible upgrade.
+- **Duplicate markets:** the same match listed on both venues is merged by teams and start within ±2h;
+  unmatched duplicates are simulated separately.
+- **Statistics:** about 1,000 strategies are tested at once. Read p-values against the multiple-testing
+  block in `analytics.json`, not individually.
+- **Forward competition:** TWC 2026 Finals markets were not yet open on 2026-09-24. The forward
+  leaderboard stays empty until real pre-start asks exist; the lab is historical research, not a feed
+  of current picks.
