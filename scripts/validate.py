@@ -38,6 +38,15 @@ URL = re.compile(r"^https://\S+$")
 TYPES = {"primary", "official-data", "secondary"}
 STATUSES = {"verified", "flagged", "unverified", "stale"}
 
+# The live collector's exact check list is the single source of truth. A live
+# journal must report one check per collected source — no fewer (a silently
+# skipped source would fake coverage) and no more (an unknown source would
+# bypass this validator's per-check rules).
+try:  # works as `python3 scripts/validate.py` and as `python3 -m scripts.validate`
+    from scripts.collect import SOURCE_IDS as REQUIRED_SOURCES
+except ImportError:
+    from collect import SOURCE_IDS as REQUIRED_SOURCES
+
 
 def check_iso(value, where):
     if not isinstance(value, str) or not ISO.match(value):
@@ -294,17 +303,19 @@ def check_observations(obs, teams):
         if not isinstance(obs.get(field), list):
             err(f"observations.{field}: expected array")
             return set()
-    if mode == "live" and len(obs["checks"]) != 7:
-        err("observations: live run must report every one of seven source checks")
+    if mode == "live":
+        seen_live = [c.get("source") for c in obs["checks"]
+                     if isinstance(c, dict) and isinstance(c.get("source"), str)]
+        if len(obs["checks"]) != len(REQUIRED_SOURCES) or sorted(seen_live) != sorted(REQUIRED_SOURCES):
+            err(f"observations: live run must report exactly one check per collected source "
+                f"{', '.join(REQUIRED_SOURCES)} (got {len(obs['checks'])} checks)")
     checked = set()
     for i, c in enumerate(obs["checks"]):
         w = f"observations.checks[{i}]"
         if not isinstance(c, dict):
             err(f"{w}: expected object")
             continue
-        if c.get("source") in checked or c.get("source") not in {
-                "valve_vrs", "liquipedia_fixtures", "polymarket_search", "polymarket_tag",
-                "polymarket_history", "kalshi_game", "kalshi_outright"}:
+        if c.get("source") in checked or c.get("source") not in set(REQUIRED_SOURCES):
             err(f"{w}: duplicate or unknown source")
         checked.add(c.get("source"))
         if c.get("status") not in {"ok", "partial", "error"}:

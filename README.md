@@ -166,7 +166,7 @@ up-to-date daily feed**: it had static timestamps and no collector. The first co
   journal; immutable receipts survive scheduled deployments.
 - `scripts/validate.py`, `tests/` — schema/source/duplicate/gross-money checks,
   unit tests and documented **partial** real-response excerpts for offline
-  replay (not betting inputs). All 56 claims, 19 Python tests and UI smoke tests pass locally; remote live run still must be verified post-merge.
+  replay (not betting inputs). All 56 claims, 54 Python tests and UI smoke tests pass locally; remote live run still must be verified post-merge.
 - `.github/workflows/ci.yml`, `.github/workflows/pages.yml`,
   `.github/workflows/watchdog.yml` — test on PR; collect, validate, record
   settlement receipts, deploy Pages on main + hourly schedule, append the
@@ -270,6 +270,46 @@ does not prevent a transient stale public page. Recheck after the next push.
 - [PR #4](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/4) merged as `e0e1898`, but its first [Actions run](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36039556479) stopped in validation **after** restoring from the prior successful checkpoint and collecting sources. Two new tests mistakenly read `data/observations.json` and `data/ledger.json` as if they were static seeds; the job intentionally rewrites these to live history before testing. An isolated replay of the prior tests against a synthetic restored live journal reproduced **two** errors (`published observations older than committed seed`); the updated suite passes that same scenario. The runner's log bundle was not retrievable from this sandbox, so a fresh Actions run must still confirm the root cause. The competing legacy Pages build republished the offline seed, so the public feed is not currently reliable until successful Actions deployment recovers it. The last successful Actions checkpoint remains available. The follow-up isolates test seeds from live data and adds a disposable synthetic-live CI replay; check public data before declaring recovery.
 
 ## Session log (continued)
+
+### 2026-09-24 — Live-feed outage fix: validator/collector check-set drift (this session)
+
+- **Found the feed down.** Since PR #7's merge every scheduled/hourly
+  "Collect verified sources and deploy Pages" run failed: PR #7 added two
+  collector checks (`hltv_crosscheck`, `polymarket_teams` — 9 total) but
+  `validate.py` still hard-coded the old 7-source whitelist and demanded
+  `len(checks) == 7` in live mode. Run [36048834856](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36048834856)
+  (PR #8's merge) therefore died in "Validate data and regression tests before
+  publishing", and no run of the new pipeline has ever succeeded — the
+  `journal-archive` branch still does not exist and the published feed remained
+  the transient legacy-seed copy. The PR suite could not catch it because the
+  tracked seed is `mode=offline-replay`, where the live-only completeness rule
+  never fires. Diagnosed from the Actions job step list + a local reproduction
+  (sandbox log/artifact downloads are egress-blocked); reproduction showed the
+  exact three errors the live 9-check document produces.
+- **Fix:** `validate.py` now imports the collector's `SOURCE_IDS` as the single
+  source of truth (`REQUIRED_SOURCES`) and requires a live journal to report
+  exactly one check per collected source — no fewer (silently skipped sources
+  would fake coverage), no more (unknown sources would bypass per-check rules).
+  The per-check whitelist is derived from the same constant so collector and
+  validator cannot drift again. `None`/missing `source` keys produce clean
+  validation errors, not crashes.
+- **Regression tests (5 new, suite 54):** a live 9-check document validates;
+  a live document missing one check fails; an unknown extra check fails; the
+  validator set equals the collector constant; the tracked 7-check offline seed
+  still validates. One drafted test expectation was itself wrong (asserted
+  alphabetical check order) and was corrected to order-independent comparison.
+- **Also fixed:** stale "19 Python tests" count in the repository map (now 54).
+- Passes: (1) reproduce → fix → targeted tests; (2) edge-case review (None
+  source key crash fixed), full suite 54/54, validator, UI smoke, fixture
+  replay, badge/count cross-check (index 56/3 = actual statuses; roster_changes
+  9; live doc composition restore→collect→settle re-traced); (3) charter
+  re-check against the original brief. **Live verification is the remaining
+  gate:** the fix counts only when the first post-merge Actions run completes
+  with 9 checks, publishes `mode=live`, appends the first `journal-archive`
+  commit, and the watchdog stays/calms green. Watchdog's first-ever scheduled
+  runs also still need confirming (registered ~19:15Z, no tick recorded yet).
+
+
 
 ### 2026-09-24 — Post-merge-6 live verification, match pipeline, settlement journal, durability, coverage (this session)
 
