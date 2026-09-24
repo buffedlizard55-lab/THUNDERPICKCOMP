@@ -1,0 +1,122 @@
+[
+  {
+    "username": "sim_favorite_backer",
+    "simulated": true,
+    "strategy": "Favorite Backer",
+    "description": "Backs the higher-ranked side (by Sep 16 Global VRS snapshot) in every Finals match at the best verified price available, flat 25 units per bet.",
+    "rules": [
+      "Eligible: every TWC 2026 Finals match with a verified moneyline/match-winner price.",
+      "Pick: team with the better (lower) Sep-16 Global VRS rank; ties = no bet.",
+      "Stake: flat 25.00 units. Max one position per match.",
+      "Price: must be captured with ticker/market id + observed_utc before first map starts; otherwise no bet.",
+      "Settlement: per market rule + HLTV/Liquipedia result cross-check."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Pre-event: no verified prices exist, so no bets placed."
+  },
+  {
+    "username": "sim_underdog_hunter",
+    "simulated": true,
+    "strategy": "Underdog Hunter",
+    "description": "Backs the lower-ranked side (by Sep 16 Global VRS snapshot) in every Finals match, flat 15 units per bet. Profits if underdogs overperform.",
+    "rules": [
+      "Eligible: every TWC 2026 Finals match with a verified match-winner price.",
+      "Pick: team with the worse (higher) Sep-16 Global VRS rank; ties = no bet.",
+      "Stake: flat 15.00 units. Max one position per match.",
+      "Price: must be captured with ticker/market id + observed_utc before first map starts; otherwise no bet.",
+      "Settlement: per market rule + HLTV/Liquipedia result cross-check."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Pre-event: no verified prices exist, so no bets placed."
+  },
+  {
+    "username": "sim_vrs_value",
+    "simulated": true,
+    "strategy": "VRS Value",
+    "description": "Bets only when the market price implies a win chance at least 8 points below a VRS-gap heuristic: favorite fair = 50% + 2.5% per VRS-rank gap (capped 85%). Stakes 20 units.",
+    "rules": [
+      "Fair(favorite) = min(85%, 50% + 2.5% * (underdog_vrs - favorite_vrs)). Fair(underdog) = 1 - fair(favorite).",
+      "Bet the side whose market-implied probability is >= 8.0 points below its fair value.",
+      "Implied probability from decimal odds = 1 / decimal_odds; from prediction shares = share price.",
+      "Stake: flat 20.00 units. Max one position per match; no bet if neither side clears the edge bar.",
+      "Price + settlement rules identical to sim_favorite_backer."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Heuristic is transparent but unproven; labeled analysis, not fact."
+  },
+  {
+    "username": "sim_cache_chaos",
+    "simulated": true,
+    "strategy": "Cache Chaos",
+    "description": "Targets variance from the 7-map pool: backs underdogs ONLY in group-stage openers (unpredictable vetoes), 12 units flat. Skips playoffs.",
+    "rules": [
+      "Eligible: group-stage opening matches only (4 matches expected).",
+      "Pick: worse Sep-16 VRS rank in each opener.",
+      "Stake: flat 12.00 units. No playoff bets by design.",
+      "Price + settlement rules identical to sim_favorite_backer."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Thesis: new-map veto variance favors dogs early. Unproven; labeled analysis."
+  },
+  {
+    "username": "sim_qualifier_fade",
+    "simulated": true,
+    "strategy": "Qualifier Fade",
+    "description": "Fades Virtus.pro (the qualifier seed, VRS #30) in every VP group match: backs VP's opponent, 20 units flat.",
+    "rules": [
+      "Eligible: group-stage matches involving Virtus.pro with a verified price.",
+      "Pick: VP's opponent.",
+      "Stake: flat 20.00 units. No bets once VP is eliminated or in playoffs involving VP.",
+      "Price + settlement rules identical to sim_favorite_backer."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Pre-event: no verified prices exist, so no bets placed."
+  },
+  {
+    "username": "sim_champ_correlation",
+    "simulated": true,
+    "strategy": "Champion Correlation",
+    "description": "Outright-only: splits 100 units across FURIA (defending champions) and Falcons (other top-five side) tournament-winner prices 50/50, if verified outright prices exist before the event.",
+    "rules": [
+      "Eligible: verified tournament-winner (outright) market only, captured before Oct 14.",
+      "Stake: 50.00 units on FURIA + 50.00 units on Falcons. No match bets.",
+      "If no verified outright market exists, places nothing (does not substitute match bets).",
+      "Settlement: per outright market rule + official final result."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Pre-event: no verified outright market, so no bets placed."
+  },
+  {
+    "username": "sim_flat_observer",
+    "simulated": true,
+    "strategy": "Flat Observer (control)",
+    "description": "Control account: never bets. Exists to prove the leaderboard math (stays at 1000.00) and to benchmark activity vs inactivity.",
+    "rules": [
+      "Places zero bets for the entire event.",
+      "Expected final bankroll: exactly 1000.00."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "If this account ever moves, the settlement code has a bug."
+  },
+  {
+    "username": "sim_contrarian_cap",
+    "simulated": true,
+    "strategy": "Contrarian Cap",
+    "description": "Bets underdogs only when their decimal odds are >= 3.00 (implied <= 33.3%), 10 units flat. Skips short-priced dogs.",
+    "rules": [
+      "Eligible: any Finals match where the worse-VRS side is priced >= 3.00 decimal (or <= 0.333 share).",
+      "Pick: that underdog. Stake: flat 10.00 units. Max one position per match.",
+      "Price + settlement rules identical to sim_favorite_backer."
+    ],
+    "bankroll_start": 1000.0,
+    "status": "active",
+    "notes": "Pre-event: no verified prices exist, so no bets placed."
+  }
+]

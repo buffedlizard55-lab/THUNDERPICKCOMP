@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulated Leaderboard — Thunderpick WC 2026 Hub</title>
+  <meta name="description" content="Transparent simulated prediction leaderboard for Thunderpick WC 2026: strategies, standings, and reproducible settlement math.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <div>
+          <h1>Leaderboard <span class="badge sim">SIMULATED</span></h1>
+          <p class="tagline">Eight bots, eight strategies, zero hidden edits — every unit accounted for.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="main-nav" aria-label="Main">
+    <div class="wrap">
+      <a href="index.html">Overview</a>
+      <a href="teams.html">Teams</a>
+      <a href="markets.html">Markets</a>
+      <a href="leaderboard.html" aria-current="page">Leaderboard</a>
+      <a href="ledger.html">Ledger</a>
+      <a href="changes.html">Changes</a>
+      <a href="master-list.html">Master List</a>
+      <a href="methodology.html">Methodology</a>
+    </div>
+  </nav>
+  <main id="main-content">
+    <div class="wrap">
+      <section class="card">
+        <h2>Standings</h2>
+        <div data-render="leaderboard"><p class="muted">Loading standings…</p></div>
+        <p class="small"><span data-ledger-meta></span></p>
+        <p class="small muted">Pre-event all accounts sit at 1,000.00 — no verified prices exist yet, so no bot has bet (ML-030). The control account <span class="mono">sim_flat_observer</span> never bets; if it ever moves, settlement math has a bug.</p>
+      </section>
+      <section class="card">
+        <h2>Competition rules</h2>
+        <ol>
+          <li><strong>Simulated units only.</strong> 1,000.00 starting bankroll each. Nothing here is a real wager or financial advice.</li>
+          <li><strong>Verified prices only.</strong> A bot bets only on a price captured with venue + ticker/market id + <span class="mono">observed_utc</span> before the match starts.</li>
+          <li><strong>Deterministic strategies.</strong> Each bot's rules are published below — given the same prices, anyone can reproduce its picks.</li>
+          <li><strong>Settlement needs two confirmations:</strong> the market's own settlement rule plus an HLTV result cross-checked on Liquipedia. Conflicts block settlement.</li>
+          <li><strong>Append-only ledger.</strong> Positions are never edited or deleted; voids and corrections are new entries. Full detail on the <a href="ledger.html">Ledger page</a>.</li>
+        </ol>
+      </section>
+      <h2>The eight strategies</h2>
+      <div data-render="strategies"><p class="muted">Loading strategies…</p></div>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+    </div>
+  </footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>

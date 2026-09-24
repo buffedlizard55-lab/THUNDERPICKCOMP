@@ -1,0 +1,58 @@
+[
+  {
+    "id": "kalshi",
+    "name": "Kalshi",
+    "kind": "prediction market (CFTC-regulated exchange)",
+    "url": "https://kalshi.com/",
+    "docs_url": "https://docs.kalshi.com/llms.txt",
+    "access": "Free public REST + WebSocket market data without authentication (per official 'Quick Start: Market Data'). No paid API or subscription required to read markets, orderbooks, trades, candlesticks.",
+    "coverage": "CS2/esports markets exist on the platform in principle; NO Thunderpick World Championship 2026-specific market has been verified as of 2026-09-24T05:00:00Z.",
+    "poll_plan": "Query Get Series List / Get Markets for esports series; record ticker, yes/no price, volume, observed_utc for any TWC 2026 market found. Record explicit 'none found' snapshots so absence is auditable.",
+    "last_checked_utc": "2026-09-24T05:00:00Z",
+    "status": "verified-access / coverage-unverified",
+    "master_list": "ML-028",
+    "notes": "Respect Kalshi rate limits and terms. Prices are market prices in cents that settle at $1/$0 — not decimal odds; conversion must be shown in the ledger."
+  },
+  {
+    "id": "polymarket",
+    "name": "Polymarket",
+    "kind": "prediction market",
+    "url": "https://polymarket.com/",
+    "docs_url": "https://docs.polymarket.com/llms.txt",
+    "access": "Free public REST market-data API (discover markets, market details, prices and order books, analytics, real-time data). No paid API or subscription required to read markets.",
+    "coverage": "CS2/esports markets exist on the platform in principle; NO Thunderpick World Championship 2026-specific market has been verified as of 2026-09-24T05:00:00Z.",
+    "poll_plan": "Query the public market-data endpoints for TWC 2026 events; record event/market id, outcome prices, volume, observed_utc for any TWC 2026 market found. Record explicit 'none found' snapshots so absence is auditable.",
+    "last_checked_utc": "2026-09-24T05:00:00Z",
+    "status": "verified-access / coverage-unverified",
+    "master_list": "ML-029",
+    "notes": "Outcome-share prices settle at $1/$0 — not decimal odds; conversion must be shown in the ledger. Polymarket US and international rulebooks differ; record which venue a price came from."
+  },
+  {
+    "id": "hltv-results",
+    "name": "HLTV.org event + match pages",
+    "kind": "official results record (settlement source)",
+    "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+    "docs_url": null,
+    "access": "Free public web pages. No API; read match pages line by line. Respect robots/rate limits; HLTV pages are the settlement reference for match outcomes, not for prices.",
+    "coverage": "TWC 2026 Finals event page + per-match pages once fixtures exist. Group draw TBD as of 2026-09-24.",
+    "poll_plan": "After the draw: capture each fixture (teams, stage, BoX, scheduled time). After each match: capture final score + map scores from the match page before settling any ledger entry.",
+    "last_checked_utc": "2026-09-24T05:00:00Z",
+    "status": "verified-access",
+    "master_list": "ML-031",
+    "notes": "Settlement requires the result AND the market's own settlement rule; a result alone never settles a price bet."
+  },
+  {
+    "id": "liquipedia-results",
+    "name": "Liquipedia tournament page",
+    "kind": "official results record (secondary settlement cross-check)",
+    "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+    "docs_url": null,
+    "access": "Free public wiki pages (APIs available under wiki terms). Cross-check for HLTV results; conflicts must be flagged, never averaged.",
+    "coverage": "TWC 2026 Finals page: format, prize, participants, results sections. Results TBD as of 2026-09-24.",
+    "poll_plan": "Mirror the HLTV capture; any score disagreement blocks settlement until resolved.",
+    "last_checked_utc": "2026-09-24T05:00:00Z",
+    "status": "verified-access",
+    "master_list": "ML-031",
+    "notes": "None."
+  }
+]

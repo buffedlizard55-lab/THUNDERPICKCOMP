@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Methodology &amp; Limitations — Thunderpick WC 2026 Hub</title>
+  <meta name="description" content="How this project verifies facts, settles simulated bets, and what it cannot do yet.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <div>
+          <h1>Methodology &amp; Limitations</h1>
+          <p class="tagline">How verification works here — and what still blocks a complete product.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="main-nav" aria-label="Main">
+    <div class="wrap">
+      <a href="index.html">Overview</a>
+      <a href="teams.html">Teams</a>
+      <a href="markets.html">Markets</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="ledger.html">Ledger</a>
+      <a href="changes.html">Changes</a>
+      <a href="master-list.html">Master List</a>
+      <a href="methodology.html" aria-current="page">Methodology</a>
+    </div>
+  </nav>
+  <main id="main-content">
+    <div class="wrap">
+      <section class="card">
+        <h2>Core values</h2>
+        <p><strong>Maximize P(Win)</strong> — every decision weighs tradeoffs and picks the path that maximizes this project's chance of becoming a genuinely useful, trustworthy daily hub.</p>
+        <p><strong>Own the Outcome</strong> — we own results end to end. Gaps are stated plainly with a plan to close them; failures surface visibly instead of degrading silently into invented data.</p>
+      </section>
+      <section class="card">
+        <h2>Verification rules (non-negotiable)</h2>
+        <ol>
+          <li><strong>No hallucinations.</strong> Teams, rosters, odds, prices, results, stats, dates — if it can't be checked against a source, it's <em>unknown/TBD</em>.</li>
+          <li><strong>Claim by claim.</strong> Every material statement links to the source it was checked against, with a retrieval timestamp. A search snippet is not verification.</li>
+          <li><strong>Primary sources first:</strong> organizer releases, teams/players, Valve, exchange APIs — then HLTV/Liquipedia structured records, then reputable press with attribution.</li>
+          <li><strong>Fact vs analysis.</strong> Verified facts, calculations, model heuristics and simulated outputs are labeled as such. Strategy theses are testable rules, not punditry.</li>
+          <li><strong>Free public sources only.</strong> No paid API or subscription. Source terms, rate limits and attribution requirements are respected.</li>
+          <li><strong>Fail visibly.</strong> Missing feeds, stale prices and conflicts are shown as flags — never smoothed over.</li>
+        </ol>
+      </section>
+      <section class="card">
+        <h2>Settlement &amp; reproducibility</h2>
+        <ul>
+          <li>Leaderboard math: <span class="mono">profit = payout − stake</span>; win → <span class="mono">stake × decimal_odds</span>; loss → 0; void → stake. Bankroll = start + Σ profit. Recomputed live from <span class="mono">data/ledger.json</span> on the <a href="leaderboard.html">Leaderboard page</a>.</li>
+          <li>Prediction shares (0–1, settle $1/$0) convert via <span class="mono">decimal_odds = 1 / share_price</span>; raw price + venue are always kept.</li>
+          <li>Settlement requires the market's own rule plus an HLTV result cross-checked on Liquipedia. Conflicts block settlement.</li>
+          <li><span class="mono">scripts/validate.py</span> re-checks schemas, provenance, references and all money math on every change (CI).</li>
+        </ul>
+      </section>
+      <section class="card">
+        <h2>Limitations &amp; what blocks us</h2>
+        <div class="table-scroll"><table class="data">
+          <thead><tr><th>Limitation</th><th>Impact</th><th>Plan</th></tr></thead>
+          <tbody>
+            <tr><td>No verified TWC 2026 prices yet</td><td>Ledger empty; competition can't start for real.</td><td>Poll Kalshi/Polymarket free APIs for event markets; capture first prices with full provenance.</td></tr>
+            <tr><td>Group draw TBD</td><td>No fixtures, no match-level markets to track.</td><td>Watch HLTV/Liquipedia event pages; record draw the day it publishes.</td></tr>
+            <tr><td>No free sportsbook odds API</td><td>Traditional book lines unavailable without scraping (terms issues).</td><td>Prediction markets first; add books only via terms-compliant capture.</td></tr>
+            <tr><td>Roster history unverified</td><td>Change tracker has baseline only, no history.</td><td>Verify each 2026 move from its announcement, one by one.</td></tr>
+            <tr><td>No player stats pipeline</td><td>Ratings/form absent from team pages.</td><td>Define a per-stat source policy (HLTV player pages) before recording any number.</td></tr>
+            <tr><td>Manual refresh</td><td>Data updates only when a session runs.</td><td>Scheduled CI freshness checks + visible staleness badges (badges exist; scheduler is next).</td></tr>
+          </tbody>
+        </table></div>
+      </section>
+      <section class="card">
+        <h2>Suggested next work (priority order)</h2>
+        <ol>
+          <li>Run the first market-discovery pass on Kalshi + Polymarket free APIs; record TWC 2026 markets or auditable “none found” snapshots.</li>
+          <li>Verify roster-move history for the eight finalists, one announcement at a time; backfill the change tracker.</li>
+          <li>Record the group draw + fixtures the day they publish; open the first ledger entries if prices exist.</li>
+          <li>Add scheduled freshness checks (CI cron) that flag stale ranks/prices automatically.</li>
+          <li>Define and verify a minimal player-stats policy (which stats, which source, which window).</li>
+          <li>Publish short verified explainers (VRS invites/seeding, GSL format math, map-pool veto basics) — each claim sourced before it ships.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+    </div>
+  </footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>

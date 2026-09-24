@@ -1,0 +1,21 @@
+name: Validate data + site
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate JSON data and site wiring
+        run: python3 scripts/validate.py
+      - name: Check for forbidden placeholder leaks
+        run: |
+          # Fail if common hallucination/placeholder markers leak into data files.
+          ! grep -rniE "lorem ipsum|TODO: (add|verify)|FIXME|xxx" data/ || (echo "placeholder text in data/" && exit 1)

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "TWC26-GROUPS-DRAW",
+    "event": "Thunderpick World Championship 2026 — Finals",
+    "stage": "Group draw",
+    "team_a": null,
+    "team_b": null,
+    "scheduled_utc": null,
+    "score": null,
+    "status": "tbd",
+    "detail": "Group A/B composition is TBD on both HLTV and Liquipedia as of Sep 24, 2026. No Finals fixture can be recorded until the draw is published.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "master_list": "ML-031"
+  },
+  {
+    "id": "TWC26Q-FINAL-STANDINGS",
+    "event": "Thunderpick World Championship 2026 — Closed Qualifier",
+    "stage": "Final standings",
+    "team_a": null,
+    "team_b": null,
+    "scheduled_utc": null,
+    "score": null,
+    "status": "final",
+    "detail": "Final placements: 1st Virtus.pro (qualified), 2nd HOTU, 3-4th HEROIC + BBL, 5-8th 1win + 100 Thieves + Wildcard + FOKUS, 9-12th Ninjas in Pyjamas + 3DMAX + Nemesis + K27, 13-16th incl. INFINITE + Acend (two 13-16th slots unconfirmed). Event ran Sep 9-13, 2026, online (Europe), 16 teams, prize = Finals spot.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 Closed Qualifier",
+        "url": "https://www.hltv.org/events/9308/thunderpick-world-championship-2026-closed-qualifier",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "master_list": "ML-018"
+  }
+]

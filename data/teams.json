@@ -1,0 +1,422 @@
+[
+  {
+    "id": "furia",
+    "name": "FURIA",
+    "nation": "BR",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 8,
+    "hltv_rank_observed": 4,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "FalleN",
+        "nation": "BR"
+      },
+      {
+        "handle": "yuurih",
+        "nation": "BR"
+      },
+      {
+        "handle": "YEKINDAR",
+        "nation": "LV"
+      },
+      {
+        "handle": "KSCERATO",
+        "nation": "BR"
+      },
+      {
+        "handle": "molodoy",
+        "nation": "KZ"
+      }
+    ],
+    "coach": {
+      "handle": "sidde",
+      "nation": "BR"
+    },
+    "note": "Defending champions (won 2025).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-020"
+  },
+  {
+    "id": "falcons",
+    "name": "Team Falcons",
+    "nation": "EU",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 4,
+    "hltv_rank_observed": 5,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "karrigan",
+        "nation": "DK"
+      },
+      {
+        "handle": "NiKo",
+        "nation": "BA"
+      },
+      {
+        "handle": "TeSeS",
+        "nation": "DK"
+      },
+      {
+        "handle": "m0NESY",
+        "nation": "RU"
+      },
+      {
+        "handle": "kyousuke",
+        "nation": "RU"
+      }
+    ],
+    "coach": {
+      "handle": "zonic",
+      "nation": "DK"
+    },
+    "note": "One of two top-five sides in the field (HLTV, Sep 16).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-021"
+  },
+  {
+    "id": "legacy",
+    "name": "Legacy",
+    "nation": "BR",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 3,
+    "hltv_rank_observed": 6,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "arT",
+        "nation": "BR"
+      },
+      {
+        "handle": "dumau",
+        "nation": "BR"
+      },
+      {
+        "handle": "latto",
+        "nation": "BR"
+      },
+      {
+        "handle": "n1ssim",
+        "nation": "BR"
+      },
+      {
+        "handle": "try",
+        "nation": "AR"
+      }
+    ],
+    "coach": {
+      "handle": "adrrr",
+      "nation": "BR"
+    },
+    "note": "FISSURE Playground 3 champions (per HLTV, Sep 16).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [
+      "Coach spelling variance: HLTV 'adrrr' vs Liquipedia 'adr'."
+    ],
+    "master_list": "ML-022"
+  },
+  {
+    "id": "aurora",
+    "name": "Aurora Gaming",
+    "nation": "TR",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 12,
+    "hltv_rank_observed": 9,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "XANTARES",
+        "nation": "TR"
+      },
+      {
+        "handle": "woxic",
+        "nation": "TR"
+      },
+      {
+        "handle": "Jimpphat",
+        "nation": "FI"
+      },
+      {
+        "handle": "kyxsan",
+        "nation": "MK"
+      },
+      {
+        "handle": "Wicadia",
+        "nation": "TR"
+      }
+    ],
+    "coach": {
+      "handle": "ash",
+      "nation": "GB"
+    },
+    "note": "Top-10 representation in the field (HLTV, Sep 16).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-023"
+  },
+  {
+    "id": "betboom",
+    "name": "BetBoom Team",
+    "nation": "RU",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 9,
+    "hltv_rank_observed": 15,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "Boombl4",
+        "nation": "RU"
+      },
+      {
+        "handle": "zorte",
+        "nation": "RU"
+      },
+      {
+        "handle": "S1ren",
+        "nation": "RU"
+      },
+      {
+        "handle": "d1Ledez",
+        "nation": "RU"
+      },
+      {
+        "handle": "Magnojez",
+        "nation": "RU"
+      }
+    ],
+    "coach": {
+      "handle": "Fierce",
+      "nation": "RU"
+    },
+    "note": "None.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-024"
+  },
+  {
+    "id": "9z",
+    "name": "9z Team",
+    "nation": "SAM",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 10,
+    "hltv_rank_observed": 16,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "max",
+        "nation": "UY"
+      },
+      {
+        "handle": "dgt",
+        "nation": "UY"
+      },
+      {
+        "handle": "meyern",
+        "nation": "AR"
+      },
+      {
+        "handle": "luchov",
+        "nation": "AR"
+      },
+      {
+        "handle": "HUASOPEEK",
+        "nation": "CL"
+      }
+    ],
+    "coach": {
+      "handle": "BIT",
+      "nation": "BR"
+    },
+    "note": "None.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-025"
+  },
+  {
+    "id": "parivision",
+    "name": "PARIVISION",
+    "nation": "RU",
+    "route": "VRS invite",
+    "vrs_rank_2026_09_16": 17,
+    "hltv_rank_observed": 19,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "HObbit",
+        "nation": "KZ"
+      },
+      {
+        "handle": "FL1T",
+        "nation": "RU"
+      },
+      {
+        "handle": "Jame",
+        "nation": "RU"
+      },
+      {
+        "handle": "xiELO",
+        "nation": "RU"
+      },
+      {
+        "handle": "zweih",
+        "nation": "RU"
+      }
+    ],
+    "coach": {
+      "handle": "dastan",
+      "nation": "KZ"
+    },
+    "note": "None.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-026"
+  },
+  {
+    "id": "virtuspro",
+    "name": "Virtus.pro",
+    "nation": "RU",
+    "route": "Closed Qualifier winner",
+    "vrs_rank_2026_09_16": 30,
+    "hltv_rank_observed": 50,
+    "hltv_rank_observed_utc": "2026-09-24T05:00:00Z",
+    "roster": [
+      {
+        "handle": "mir",
+        "nation": "RU"
+      },
+      {
+        "handle": "b1st",
+        "nation": "RU",
+        "real_name": "Vladimir Krasikov"
+      },
+      {
+        "handle": "F0R3VER",
+        "nation": "KZ"
+      },
+      {
+        "handle": "AquaRS",
+        "nation": "RU"
+      },
+      {
+        "handle": "tO0RO",
+        "nation": "RU",
+        "real_name": "Vadim Arkov"
+      }
+    ],
+    "coach": {
+      "handle": "ProbLeM",
+      "nation": "RU"
+    },
+    "note": "Won the closed qualifier; first big international LAN since IEM Chengdu 2025.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "flags": [],
+    "master_list": "ML-027"
+  }
+]
