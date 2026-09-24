@@ -25,6 +25,18 @@ TEAMS = json.loads((ROOT / "data" / "teams.json").read_text())
 NOW = datetime(2026, 9, 24, 17, 10, tzinfo=timezone.utc)
 
 
+def synthetic_ledger():
+    """Stable test-only baseline, independent of the workflow's mutable live files."""
+    return {"meta": {"simulated": True, "currency": "synthetic test units",
+                     "settlement_policy": "Synthetic fixtures never settle.",
+                     "last_updated_utc": c.stamp(NOW)}, "entries": []}
+
+
+def offline_seed():
+    """Partial recorded fixture replay; not the dynamically restored site journal."""
+    return c.collect(c.empty(), c.FixtureFetcher(), NOW, TEAMS, "offline-replay")
+
+
 class FakeFetcher:
     def __init__(self, mapping):
         self.mapping = mapping
@@ -71,8 +83,7 @@ def synthetic_docs(now=NOW):
     }]
     obs["quotes"] = [synthetic_quote("FURIA", "0.5000", "100.00", "TEST-FURIA", now),
                      synthetic_quote("Falcons", "0.6000", "100.00", "TEST-FALCONS", now)]
-    ledger = json.loads((ROOT / "data" / "ledger.json").read_text())
-    return obs, ledger
+    return obs, synthetic_ledger()
 
 
 class MemoryResponse:
@@ -323,8 +334,8 @@ class CompetitionTests(unittest.TestCase):
             rest.restore_ledger(original_ledger, newer_ledger)
 
     def test_legacy_pages_seed_cannot_erase_last_successful_journal(self):
-        seed = json.loads((ROOT / "data" / "observations.json").read_text())
-        seed_ledger = json.loads((ROOT / "data" / "ledger.json").read_text())
+        seed = offline_seed()
+        seed_ledger = synthetic_ledger()
         # Synthetic decision lives only in memory, not in published data.
         paper, later_ledger = synthetic_docs()
         comp.apply_outright(later_ledger, paper, NOW)
@@ -374,8 +385,8 @@ class CompetitionTests(unittest.TestCase):
                 rest.artifact_json(root, "ledger.json")
 
     def test_restore_cli_uses_checkpoint_when_pages_reverts_to_offline_seed(self):
-        seed = json.loads((ROOT / "data" / "observations.json").read_text())
-        seed_ledger = json.loads((ROOT / "data" / "ledger.json").read_text())
+        seed = offline_seed()
+        seed_ledger = synthetic_ledger()
         newer = copy.deepcopy(seed)
         newer["mode"] = "live"
         newer["last_attempt_utc"] = c.stamp(NOW + timedelta(minutes=1))
