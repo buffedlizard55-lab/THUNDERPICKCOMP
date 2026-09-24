@@ -141,8 +141,11 @@ def artifact_json(directory: Path, name: str, *, optional: bool = False) -> dict
     if not found:
         if optional:
             return None  # older checkpoints predate this journal file
+        print(f"DEBUG: artifact dir {directory} missing {name}, checked {paths}", file=sys.stderr)
+        print(f"DEBUG: dir contents: {list(directory.rglob('*'))}", file=sys.stderr)
         raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     if len(found) != 1:
+        print(f"DEBUG: artifact dir {directory} has duplicate {name}: {found}", file=sys.stderr)
         raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     return json.loads(found[0].read_text(encoding="utf-8"))
 
