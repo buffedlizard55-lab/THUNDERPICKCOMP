@@ -850,7 +850,7 @@ def check_html_refs():
             err(f"{p.name}: missing assets/style.css reference")
 
 
-def check_lab(lab_dir=None, allow_synthetic=False):
+def check_lab(lab_dir=None, allow_synthetic=False, receipts_only=False):
     """Real-line strategy lab: receipts (append-only shards) and the derived leaderboard/ledgers.
 
     Receipts: known venue, allowlisted source URLs, no quote after its checkpoint (no look-ahead) or
@@ -903,6 +903,8 @@ def check_lab(lab_dir=None, allow_synthetic=False):
                 for f in ("ask", "bid", "p"):
                     if q.get(f) is not None and not (0 <= float(q[f]) <= 1):
                         err(f"{w} {label}: {f} {q[f]} outside [0,1]")
+    if receipts_only:
+        return
     board_path = lab_dir / "leaderboard.json"
     if not board_path.exists():
         return
@@ -956,6 +958,12 @@ def check_lab(lab_dir=None, allow_synthetic=False):
 
 
 def main():
+    if "--lab-receipts-only" in sys.argv[1:]:
+        check_lab(receipts_only=True)
+        for e in ERRORS:
+            print(" -", e)
+        print(f"lab receipts: {'VALIDATION FAILED: %d error(s)' % len(ERRORS) if ERRORS else 'OK'}")
+        return 1 if ERRORS else 0
     master = load("master_list.json")
     teams = load("teams.json")
     matches = load("matches.json")

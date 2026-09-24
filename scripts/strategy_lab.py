@@ -62,6 +62,12 @@ def r4(x: float) -> float:
     return round(x + 0.0, 4)
 
 
+def r6(x: float) -> float:
+    """Ledger precision. Costs/payouts carry 4 decimals and Polymarket fees 5, so sums at 6 are exact;
+    rounding the running cash to 4 made it drift away from the sum of per-bet P&L (run 36066736198)."""
+    return round(x + 0.0, 6)
+
+
 def ts(value: str) -> int:
     return int(parse_iso(value).timestamp())
 
@@ -621,9 +627,9 @@ def simulate(s: dict, matches: list[dict], elo: dict) -> tuple[list[list], dict]
         nonlocal cash, locked
         while open_pos and open_pos[0][0] <= t:
             _, idx, payout = heapq.heappop(open_pos)
-            cash = r4(cash + payout)
-            locked = r4(locked - bets[idx][6] - bets[idx][7])
-            bets[idx][-1] = r4(cash + locked)  # equity (open positions at cost) after this settlement
+            cash = r6(cash + payout)
+            locked = r6(locked - bets[idx][6] - bets[idx][7])
+            bets[idx][-1] = r6(cash + locked)  # equity (open positions at cost) after this settlement
             curve.append(bets[idx][-1])
 
     for m in ordered:
@@ -643,10 +649,10 @@ def simulate(s: dict, matches: list[dict], elo: dict) -> tuple[list[list], dict]
         if cost + fee > cash + 1e-9:
             skipped += 1
             continue
-        cash = r4(cash - cost - fee)
-        locked = r4(locked + cost + fee)
+        cash = r6(cash - cost - fee)
+        locked = r6(locked + cost + fee)
         payout = r4(contracts * q["settle"])
-        pnl = r4(payout - cost - fee)
+        pnl = r6(payout - cost - fee)
         # [match_idx, venue, side, quote_t, price, contracts, cost, fee, settle, payout, pnl, model, equity]
         bets.append([m["idx"], q["venue"][0], side, q["t"], q["buy"], contracts, cost, fee, q["settle"], payout, pnl,
                      None if model is None else round(model, 4), None])
@@ -759,9 +765,8 @@ def group_summary(rows: list[dict], key) -> list[dict]:
     return out
 
 
-def run(lab: Path) -> dict:
-    store = load_store(lab)
-    lines = store["lines"]
+def prepare(lines: list[dict]) -> tuple[list[dict], list[dict], dict]:
+    """Matches with their pre-decision quote cache, irregularities, and walk-forward model tables."""
     matches, irregular = build_matches(lines)
     for i, m in enumerate(matches):
         m["idx"] = i
@@ -780,6 +785,13 @@ def run(lab: Path) -> dict:
         m["_q"] = cache
     elo = elo_tables(matches)
     elo["form"] = form_tables(matches)
+    return matches, irregular, elo
+
+
+def run(lab: Path) -> dict:
+    store = load_store(lab)
+    lines = store["lines"]
+    matches, irregular, elo = prepare(lines)
     closing = closing_prices(matches)
     strategies = strategy_universe()
     cutoffs = sorted(m["cutoff"] for m in matches)

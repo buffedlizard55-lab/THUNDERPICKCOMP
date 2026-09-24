@@ -48,28 +48,54 @@ jobs:
           set +e
           python3 -m scripts.historical_lines --audit 40
           echo "status=$?" >> "$GITHUB_OUTPUT"
+      # Receipts are raw venue data and are validated on their own. The leaderboard is derived from them
+      # and is rebuilt on every Pages deploy, so a derived-output failure must not discard a long
+      # collection run (run 36066736198 lost 7,667 valid Polymarket receipts that way). If the derived
+      # outputs fail, only the receipts are committed and the job still fails visibly below.
+      - name: Validate receipts (raw venue lines; must pass to commit anything)
+        run: python3 scripts/validate.py --lab-receipts-only
       - name: Rebuild strategy lab leaderboard + analytics
+        id: lab
+        continue-on-error: true
         run: |
           if [[ -f scripts/strategy_lab.py ]]; then python3 -m scripts.strategy_lab; fi
-      - name: Validate before committing
+      - name: Validate derived outputs, the full site and the test suite
+        id: derived
+        if: steps.lab.outcome == 'success'
+        continue-on-error: true
         run: |
           python3 scripts/validate.py
           python3 -m unittest discover -s tests
       - name: Commit receipts to the triggering branch
+        env:
+          DERIVED_OK: ${{ steps.lab.outcome == 'success' && steps.derived.outcome == 'success' }}
         run: |
           set -euo pipefail
           git config user.name "thunderpickcomp-lines-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/lab
+          msg="data(lab): historical CS2 lines + strategy lab, run $GITHUB_RUN_ID [skip ci]"
+          if [[ "$DERIVED_OK" != "true" ]]; then
+            echo "::warning::Derived lab outputs failed; committing receipts only. The leaderboard keeps its last valid version."
+            for f in leaderboard.json analytics.json strategies.json; do
+              git checkout -q HEAD -- "data/lab/$f" 2>/dev/null || rm -f "data/lab/$f"
+            done
+            msg="data(lab): receipts only (derived outputs failed validation), run $GITHUB_RUN_ID [skip ci]"
+          fi
+          git add -A data/lab
           if git diff --cached --quiet; then
             echo "No new receipts."
           else
-            git commit -m "data(lab): historical CS2 lines + strategy lab, run $GITHUB_RUN_ID [skip ci]"
+            git commit -m "$msg"
             for i in 1 2 3; do
               git pull --rebase origin "$GITHUB_REF_NAME" && git push origin "HEAD:$GITHUB_REF_NAME" && break
               sleep 5
             done
           fi
+      - name: Fail visibly if the derived outputs or the test suite failed
+        if: steps.lab.outcome != 'success' || steps.derived.outcome != 'success'
+        run: |
+          echo "Strategy lab rebuild or validation failed; receipts were committed, derived outputs were not." >&2
+          exit 1
       - name: Fail visibly if the receipt audit found a mismatch
         if: steps.audit.outputs.status != '0'
         run: |

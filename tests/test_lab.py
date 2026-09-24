@@ -187,6 +187,30 @@ class LabMathTests(unittest.TestCase):
         self.assertTrue(all(s["username"].startswith("sim_") for s in a))
 
 
+class LedgerArithmeticTests(unittest.TestCase):
+    """Regression for Actions run 36066736198: cash rounded to 4 decimals drifted from start + sum(P&L)
+    by more than 0.01 on long Polymarket runs (fees carry 5 decimals)."""
+
+    def test_final_bankroll_equals_start_plus_pnl_exactly(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            make(Path(tmp), n=1800, seed=36066736198, teams=16)
+            matches, _, elo = lab.prepare(hl.load_store(Path(tmp))["lines"])
+        picked = [s for s in lab.strategy_universe()
+                  if s["params"]["venue"] in ("polymarket", "best") and s["family"] in ("price_band", "coin_flip", "control_coin_flip")]
+        self.assertGreater(len(picked), 50)
+        checked = 0
+        for s in picked:
+            bets, info = lab.simulate(s, matches, elo)
+            if not bets:
+                continue
+            checked += 1
+            self.assertAlmostEqual(lab.START_BANKROLL + sum(b[10] for b in bets), info["final"], delta=1e-6, msg=s["id"])
+            m = lab.metrics(bets, matches, {}, info["final"], info["curve"])
+            self.assertLessEqual(abs(lab.START_BANKROLL + m["pnl"] - m["final_bankroll"]), 2e-4, s["id"])
+            self.assertGreaterEqual(info["final"], 0)
+        self.assertGreater(checked, 50)
+
+
 class LabRunTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -296,6 +320,18 @@ class LabRunTests(unittest.TestCase):
         v.ERRORS.clear()
         v.check_lab(self.dir, allow_synthetic=True)
         self.assertTrue(any("look-ahead" in e for e in v.ERRORS))
+        board = self.dir / "leaderboard.json"
+        board_saved = board.read_text()
+        board.write_text("{not json")  # a broken derived output must not hide a bad receipt ...
+        v.ERRORS.clear()
+        v.check_lab(self.dir, allow_synthetic=True, receipts_only=True)
+        self.assertTrue(any("look-ahead" in e for e in v.ERRORS))
+        shard.write_text(saved)
+        v.ERRORS.clear()
+        v.check_lab(self.dir, allow_synthetic=True, receipts_only=True)
+        self.assertEqual(v.ERRORS, [])  # ... nor block committing good receipts
+        board.write_text(board_saved)
+        shard.write_text(json.dumps(rows))
         v.ERRORS.clear()
         v.check_lab(self.dir)  # synthetic receipts are never acceptable as real data
         self.assertTrue(any("unexpected mode" in e or "allowlist" in e for e in v.ERRORS))
