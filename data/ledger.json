@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "simulated": true,
+    "currency": "units (simulated, no real money)",
+    "rules_version": "v1 (see data/schema.md)",
+    "settlement_policy": "A ledger entry settles only when (1) its price record has ticker/market id + observed_utc, (2) the market's own settlement rule is recorded, and (3) the match result is confirmed on HLTV and cross-checked on Liquipedia. Conflicts block settlement.",
+    "payout_formula": "win: stake * decimal_odds; loss: 0; void: stake. profit = payout - stake.",
+    "prediction_share_conversion": "A Yes share bought at price p (0-1) converts to decimal_odds = 1 / p for ledger math; the raw share price and venue are always preserved alongside.",
+    "last_updated_utc": "2026-09-24T05:00:00Z",
+    "note": "Empty by policy: no verified TWC 2026 prices exist yet (see ML-030). Entries appear here only with full provenance."
+  },
+  "entries": []
+}

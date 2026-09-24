@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bet Ledger — Thunderpick WC 2026 Hub</title>
+  <meta name="description" content="Every simulated bet and trade: selection, odds, stake, price source, timestamp, settlement rule and outcome.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <div>
+          <h1>Bet Ledger <span class="badge sim">SIMULATED</span></h1>
+          <p class="tagline">Every simulated position, fully auditable — selection, odds, stake, source, settlement.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="main-nav" aria-label="Main">
+    <div class="wrap">
+      <a href="index.html">Overview</a>
+      <a href="teams.html">Teams</a>
+      <a href="markets.html">Markets</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="ledger.html" aria-current="page">Ledger</a>
+      <a href="changes.html">Changes</a>
+      <a href="master-list.html">Master List</a>
+      <a href="methodology.html">Methodology</a>
+    </div>
+  </nav>
+  <main id="main-content">
+    <div class="wrap">
+      <section class="card">
+        <h2>All simulated positions</h2>
+        <div data-render="ledger"><p class="muted">Loading ledger…</p></div>
+      </section>
+      <section class="card">
+        <h2>Ledger schema (what each future entry carries)</h2>
+        <div class="table-scroll"><table class="data">
+          <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">entry_id / username / match_id</td><td>Unique bet id, simulated user, and the match record it belongs to.</td></tr>
+            <tr><td class="mono">market / selection</td><td>E.g. match-winner / map-winner / outright, and the side taken.</td></tr>
+            <tr><td class="mono">decimal_odds / stake</td><td>Price at capture and units risked. Prediction shares keep raw price + venue too.</td></tr>
+            <tr><td class="mono">placed_utc / price_source</td><td>When the price was observed; venue + ticker/market id so anyone can re-check.</td></tr>
+            <tr><td class="mono">settlement.rule</td><td>The market's own settlement rule, quoted or linked — a result alone never settles a bet.</td></tr>
+            <tr><td class="mono">settlement.result / settled_utc</td><td>win / loss / void / pending, and when it was settled.</td></tr>
+            <tr><td class="mono">payout / profit</td><td>Computed: win → stake × odds; loss → 0; void → stake. profit = payout − stake.</td></tr>
+          </tbody>
+        </table></div>
+        <p class="small muted">Validation: <span class="mono">scripts/validate.py</span> recomputes every payout and fails the build on any mismatch, missing source, or reference to an unknown match/user.</p>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+    </div>
+  </footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>

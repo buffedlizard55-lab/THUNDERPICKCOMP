@@ -1,0 +1,706 @@
+[
+  {
+    "id": "ML-001",
+    "category": "tournament",
+    "claim": "Event identity: Thunderpick World Championship 2026, 4th edition, Counter-Strike 2, offline LAN",
+    "detail": "The Thunderpick World Championship 2026 is the fourth edition of Thunderpick's independent Counter-Strike 2 tournament, played offline (LAN). Thunderpick's announcement calls it the fourth edition of its 'premier independent Counter-Strike 2 tournament'; Liquipedia lists Game: Counter-Strike 2, Type: Offline.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Baseline identity claim; re-check if organizer renames the event."
+  },
+  {
+    "id": "ML-002",
+    "category": "tournament",
+    "claim": "Organizer GAM3RS_X; sponsor Thunderpick; data partner GRID; presenting partner Hotspawn",
+    "detail": "Liquipedia lists Organizer: GAM3RS_X and Sponsor: Thunderpick. Thunderpick's announcement states the championship is 'hosted in collaboration with data partner GRID'. The Sep 16 team announcement states Hotspawn 'returns as a Presenting Partner'.",
+    "sources": [
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-003",
+    "category": "tournament",
+    "claim": "Finals dates: October 14–18, 2026 (five days)",
+    "detail": "The LAN Finals run Oct 14–18, 2026. Stated identically in both Thunderpick announcements, on HLTV's event page (Oct 14th - Oct 18th 2026), and on Liquipedia (Start 2026-10-14, End 2026-10-18).",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-004",
+    "category": "tournament",
+    "claim": "Location: Malta, at BLAST's Malta studio (venue naming varies by source)",
+    "detail": "All sources agree the Finals are in Malta. Venue wording differs: Thunderpick's releases say 'BLAST Studios Malta'; Liquipedia says Venue: 'BLAST Arena Studios', Location: Attard; HLTV's news report says 'BLAST Arena studio'. Treated as the same venue with a naming variance, not two venues.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "flagged",
+    "flags": [
+      "Venue naming variance: 'BLAST Studios Malta' (Thunderpick) vs 'BLAST Arena Studios' (Liquipedia) vs 'BLAST Arena studio' (HLTV)."
+    ],
+    "notes": "Flag kept until one spelling is confirmed as official venue name."
+  },
+  {
+    "id": "ML-005",
+    "category": "tournament",
+    "claim": "Prize pool: $1,000,000 USD, split 50% players / 50% club share",
+    "detail": "The Finals prize pool is $1,000,000. HLTV breaks it into Player Share $500,000 + Club Share $500,000; Liquipedia's prize table splits every place 50/50 between Player Prize and Team Share.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "This is the Finals pool only; online circuit series had separate smaller pools."
+  },
+  {
+    "id": "ML-006",
+    "category": "tournament",
+    "claim": "Prize distribution: 500k / 250k / 100k / 50k / 30k x2 / 20k x2",
+    "detail": "1st $500,000 ($250k players + $250k club); 2nd $250,000 ($125k + $125k); 3rd $100,000 ($50k + $50k); 4th $50,000 ($25k + $25k); 5th-6th $30,000 each ($15k + $15k); 7th-8th $20,000 each ($10k + $10k). HLTV and Liquipedia agree on every line.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "All eight payouts sum to $1,000,000."
+  },
+  {
+    "id": "ML-007",
+    "category": "tournament",
+    "claim": "Field: 8 teams — 7 direct VRS invites + winner of the TWC 2026 Global (Closed) Qualifier",
+    "detail": "Thunderpick's Aug 13 announcement: the 8 Finals teams consist of '7 Direct VRS Invites from Global VRS ranking, and the Winner of TWC 2026 Finals - Global Qualifier'.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-008",
+    "category": "team",
+    "claim": "Final eight + Global VRS ranks (Sep 16 reveal): Legacy #3, Falcons #4, FURIA #8, BETBOOM #9, 9z #10, Aurora #12, PARIVISION #17, Virtus.pro #30",
+    "detail": "Thunderpick's Sep 16, 2026 reveal lists: Legacy (#3), Falcons (#4), FURIA (#8), BETBOOM (#9), 9z (#10), Aurora (#12), PARIVISION (#17), Virtus.pro (#30), and states seven of the eight were inside the Global VRS top 20, with VP at #30 after winning the closed qualifier.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [
+      "VRS ranks are a Sep 16, 2026 snapshot; live VRS/HLTV ranks move weekly."
+    ],
+    "notes": "HLTV's Sep 16 report independently confirms the same eight names."
+  },
+  {
+    "id": "ML-009",
+    "category": "team",
+    "claim": "Field strength: Falcons and FURIA are the only top-five sides; Legacy and Aurora complete four top-10 teams",
+    "detail": "HLTV (Sep 16, 2026): 'Falcons and FURIA headline the team list as the only top-five sides in attendance, while FISSURE Playground 3 champions Legacy, and Aurora round out the top-10 representation.' South American 9z plus Russian BETBOOM and PARIVISION complete the invite list; Virtus.pro qualified.",
+    "sources": [
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "We do not name absent teams as fact; absence lists in secondary press were not independently re-verified."
+  },
+  {
+    "id": "ML-010",
+    "category": "tournament",
+    "claim": "Defending champions: FURIA, who won 2025 with a reverse sweep from 2-0 down vs NAVI",
+    "detail": "Thunderpick's Aug 13 announcement: 'FURIA clawed back from a 2-0 deficit to deny NAVI in a dramatic and rare reverse sweep.' The Sep 16 reveal confirms '2025 champions FURIA return to the Finals' as defending champions.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Earlier editions (2023/2024 winners) are not in this master list yet — unverified."
+  },
+  {
+    "id": "ML-011",
+    "category": "format",
+    "claim": "Group stage: two GSL double-elimination groups of four; all matches Bo3; top two per group advance",
+    "detail": "Liquipedia format section: two double-elimination (GSL) groups of 4, all matches Bo3, top two per group to Playoffs. HLTV's report and event page confirm GSL Bo3 groups feeding single-elimination playoffs.",
+    "sources": [
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-012",
+    "category": "format",
+    "claim": "Playoffs: single elimination; Bo3 except Bo5 Grand Final; a 3rd-place decider is played",
+    "detail": "Liquipedia: single-elimination bracket, all matches except the Grand Final are Bo3, Grand Final is Bo5. HLTV's event page formats box adds: 'Single elimination Bo3 - Grand final Bo5, 3rd place decider match Bo3', and its bracket includes a 3rd Place Decider Match.",
+    "sources": [
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "The decider matters for bettors: 3rd pays $100k vs 4th $50k."
+  },
+  {
+    "id": "ML-013",
+    "category": "format",
+    "claim": "Map pool (7): Ancient, Anubis, Cache, Dust II, Inferno, Mirage, Nuke",
+    "detail": "Liquipedia's event infobox lists the map pool as Ancient, Anubis, Cache, Dust II, Inferno, Mirage, Nuke.",
+    "sources": [
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Map-pool history (Cache replacing Overpass etc.) is not in this master list yet — unverified."
+  },
+  {
+    "id": "ML-014",
+    "category": "broadcast",
+    "claim": "Broadcast live on Thunderpick's Twitch, Kick and YouTube",
+    "detail": "Both Thunderpick announcements: all matches broadcast live on Twitch (twitch.tv/thunderpicktv), Kick (kick.com/thunderpick) and YouTube (@thunderpickesports).",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-015",
+    "category": "broadcast",
+    "claim": "Broadcast talent lineup (casters, desk, analysts, reporter, host)",
+    "detail": "Per Thunderpick's Sep 16 reveal — Casters: Chad 'SPUNJ' Burchill, Alex 'Machine' Richardson, Hugo Byron, Harry 'JustHarry' Russell. Desk hosts: Tres 'stunna' Saranthus, Sam 'Tech Girl' Wright. Analysts: Sudhen 'Bleh' Wahengbam, Janko 'YNk' Paunovic, Teodor 'Tedd' Borisov, Jason 'moses' O'Toole. Sideline reporter: Anastasija 'Heccu' Tolmaceva. Stage host: James Banks.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Sep 16, 2026 team reveal)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-reveals-eight-team-field-for-1-million-malta-finals-302880720.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Diacritics normalized to ASCII in this record; source has originals."
+  },
+  {
+    "id": "ML-016",
+    "category": "tournament",
+    "claim": "Tier: S-Tier event and Valve Tier 1 (Liquipedia classification)",
+    "detail": "Liquipedia classifies the event as Liquipedia Tier: S-Tier and Valve Tier: Tier 1.",
+    "sources": [
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Tier label only; it does not itself describe Major qualification."
+  },
+  {
+    "id": "ML-017",
+    "category": "qualifier",
+    "claim": "Closed Qualifier: Sep 9–13, 2026, 16 teams, online (Europe), prize = Finals spot",
+    "detail": "HLTV's Closed Qualifier event page: Date Sep 9th - Sep 13th 2026, Prize pool 'Spot at Main Event', 16 teams, Location Europe (Online).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 Closed Qualifier",
+        "url": "https://www.hltv.org/events/9308/thunderpick-world-championship-2026-closed-qualifier",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "None."
+  },
+  {
+    "id": "ML-018",
+    "category": "qualifier",
+    "claim": "Closed Qualifier placements: VP 1st; HOTU 2nd; HEROIC + BBL 3-4th; 1win/100T/Wildcard/FOKUS 5-8th; NIP/3DMAX/Nemesis/K27 9-12th; INFINITE/Acend (+2 unverified) 13-16th",
+    "detail": "Per HLTV's qualifier prize distribution: 1st Virtus.pro (qualified for the main event), 2nd HOTU, 3-4th HEROIC and BBL, 5-8th 1win, 100 Thieves, Wildcard, FOKUS, 9-12th Ninjas in Pyjamas, 3DMAX, Nemesis, K27, 13-16th including INFINITE and Acend. The remaining two 13-16th slots were cut off in retrieval and are NOT claimed here.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 Closed Qualifier",
+        "url": "https://www.hltv.org/events/9308/thunderpick-world-championship-2026-closed-qualifier",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "flagged",
+    "flags": [
+      "13-16th placements only partially retrieved (INFINITE, Acend confirmed; two slots unconfirmed)."
+    ],
+    "notes": "Individual qualifier match scores are not in this master list — not yet verified line by line."
+  },
+  {
+    "id": "ML-019",
+    "category": "qualifier",
+    "claim": "Virtus.pro won the qualifier, broke into VRS top 30; first big international LAN since IEM Chengdu 2025; only b1st and tO0RO remain",
+    "detail": "HLTV (Sep 16, 2026): Virtus.pro 'booked a spot at the event through the closed qualifier — a run that saw them break into the top 30 in the global VRS. It will be the team's first big international LAN since IEM Chengdu 2025, with only Vladimir 'b1st' Krasikov and Vadim 'tO0RO' Arkov remaining on the roster.'",
+    "sources": [
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Full names of b1st/tO0RO verified by this article; other players' real names are not claimed."
+  },
+  {
+    "id": "ML-020",
+    "category": "roster",
+    "claim": "FURIA roster (current): FalleN, yuurih, YEKINDAR, KSCERATO, molodoy; coach sidde",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): FalleN (BR), yuurih (BR), YEKINDAR (LV), KSCERATO (BR), molodoy (KZ); coach sidde (BR). Liquipedia participants list the same five handles + sidde.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-021",
+    "category": "roster",
+    "claim": "Falcons roster (current): karrigan, NiKo, TeSeS, m0NESY, kyousuke; coach zonic",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): karrigan (DK), NiKo (BA), TeSeS (DK), m0NESY (RU), kyousuke (RU); coach zonic (DK). Liquipedia participants list the same five handles + zonic.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-022",
+    "category": "roster",
+    "claim": "Legacy roster (current): arT, dumau, latto, n1ssim, try; coach adrrr/adr (spelling varies)",
+    "detail": "Liquipedia participants: latto, dumau, n1ssim, arT (all BR), try (AR); coach adr (BR). HLTV's event page shows the same five handles with coach 'adrrr'. Coach handle spelling differs by source ('adrrr' vs 'adr').",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "flagged",
+    "flags": [
+      "Coach spelling variance: HLTV 'adrrr' vs Liquipedia 'adr'."
+    ],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-023",
+    "category": "roster",
+    "claim": "Aurora roster (current): XANTARES, woxic, Jimpphat, kyxsan, Wicadia; coach ash",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): XANTARES (TR), woxic (TR), Jimpphat (FI), kyxsan (MK), Wicadia (TR); coach ash (GB).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-024",
+    "category": "roster",
+    "claim": "BETBOOM roster (current): Boombl4, zorte, S1ren, d1Ledez, Magnojez; coach Fierce",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): Boombl4, zorte, S1ren, d1Ledez, Magnojez (all RU); coach Fierce (RU).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-025",
+    "category": "roster",
+    "claim": "9z roster (current): max, dgt, meyern, luchov, HUASOPEEK; coach BIT",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): max (UY), dgt (UY), meyern (AR), luchov (AR), HUASOPEEK (CL); coach BIT (BR). Liquipedia participants list the same five handles + BIT.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-026",
+    "category": "roster",
+    "claim": "PARIVISION roster (current): HObbit, FL1T, Jame, xiELO, zweih; coach dastan",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): HObbit (KZ), FL1T (RU), Jame (RU), xiELO (RU), zweih (RU); coach dastan (KZ).",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-027",
+    "category": "roster",
+    "claim": "Virtus.pro roster (current): mir, b1st, F0R3VER, AquaRS, tO0RO; coach ProbLeM",
+    "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): mir (RU), b1st (RU), F0R3VER (KZ), AquaRS (RU), tO0RO (RU); coach ProbLeM (RU). HLTV's Sep 16 report gives full names: Vladimir 'b1st' Krasikov, Vadim 'tO0RO' Arkov.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
+        "url": "https://www.hltv.org/news/45525/falcons-and-furia-headline-thunderpick-world-championship-team-list",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "secondary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Snapshot claim; rosters can change before Oct 14 — see Changes page."
+  },
+  {
+    "id": "ML-028",
+    "category": "market-data",
+    "claim": "Kalshi offers free public market-data API access without authentication",
+    "detail": "Kalshi's official API documentation includes 'Quick Start: Market Data — Learn how to access real-time market data without authentication', plus public endpoints for markets, orderbooks, trades and candlesticks. No TWC-2026-specific Kalshi market has been verified as of Sep 24, 2026.",
+    "sources": [
+      {
+        "label": "Kalshi API documentation index",
+        "url": "https://docs.kalshi.com/llms.txt",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Free access path confirmed; event-specific coverage still to be checked."
+  },
+  {
+    "id": "ML-029",
+    "category": "market-data",
+    "claim": "Polymarket offers free public market-data API access",
+    "detail": "Polymarket's official documentation: 'Build on the world's largest prediction market. Trade, integrate, and access real-time market data with the Polymarket API', with a Market Data section (discover markets, market details, prices and order books, analytics, real-time data). No TWC-2026-specific Polymarket market has been verified as of Sep 24, 2026.",
+    "sources": [
+      {
+        "label": "Polymarket documentation index",
+        "url": "https://docs.polymarket.com/llms.txt",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Free access path confirmed; event-specific coverage still to be checked."
+  },
+  {
+    "id": "ML-030",
+    "category": "market-data",
+    "claim": "No verified TWC 2026 odds or prediction-market prices exist in this repo yet (verified absence)",
+    "detail": "As of Sep 24, 2026, this repository holds zero odds/price records because none have been captured line-by-line from a citable public source with ticker, price, and timestamp. The ledger and markets tracker are therefore intentionally empty. This is a verified statement about the repo's own state, not a claim that no markets exist anywhere.",
+    "sources": [
+      {
+        "label": "This repository — data/ledger.json (empty by policy)",
+        "url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/blob/main/data/ledger.json",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "First prices may only enter via the schema in data/schema.md with full provenance."
+  },
+  {
+    "id": "ML-031",
+    "category": "match",
+    "claim": "Finals group draw is TBD and no Finals matches are scheduled or scored (as of Sep 24, 2026)",
+    "detail": "HLTV's TWC 2026 event page shows all Group A/B bracket slots as TBD with no fixtures; Liquipedia's results/participants sections show TBD throughout. No Finals match can therefore be recorded as scheduled or final yet.",
+    "sources": [
+      {
+        "label": "HLTV — Thunderpick World Championship 2026 event page",
+        "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      },
+      {
+        "label": "Liquipedia — Thunderpick World Championship 2026",
+        "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "official-data"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Match records unlock once the draw is published."
+  },
+  {
+    "id": "ML-032",
+    "category": "roster",
+    "claim": "Roster baseline snapshot: Sep 24, 2026 — historical change log not yet verified change-by-change",
+    "detail": "The eight current rosters (ML-020–ML-027) are a Sep 24, 2026 baseline. A historical log of who joined/left/benched when has NOT been verified change-by-change against primary sources, so no historical roster-change claims are made in this repo yet.",
+    "sources": [
+      {
+        "label": "This repository — data/teams.json (baseline snapshot)",
+        "url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/blob/main/data/teams.json",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T05:00:00Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Next data session: verify roster moves one by one from team/HLTV announcements."
+  }
+]

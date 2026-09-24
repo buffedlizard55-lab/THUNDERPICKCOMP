@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Market Tracker — Thunderpick WC 2026 Hub</title>
+  <meta name="description" content="Free public price tracking for Thunderpick WC 2026: Kalshi and Polymarket APIs, settlement sources, and the no-paid-API policy.">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <div>
+          <h1>Market Tracker</h1>
+          <p class="tagline">Free public prices only — every price captured with ticker, timestamp and source.</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="main-nav" aria-label="Main">
+    <div class="wrap">
+      <a href="index.html">Overview</a>
+      <a href="teams.html">Teams</a>
+      <a href="markets.html" aria-current="page">Markets</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="ledger.html">Ledger</a>
+      <a href="changes.html">Changes</a>
+      <a href="master-list.html">Master List</a>
+      <a href="methodology.html">Methodology</a>
+    </div>
+  </nav>
+  <main id="main-content">
+    <div class="wrap">
+      <section class="card">
+        <h2>Current status: no verified TWC 2026 prices yet</h2>
+        <div class="notice warn"><strong>Honest empty state (ML-030).</strong> As of Sep 24, 2026 this repo holds zero odds/price records — none have been captured line-by-line from a citable public source. The simulated <a href="ledger.html">ledger</a> stays empty until that happens. We do not invent lines.</div>
+        <p><strong>For prediction-market readers:</strong> Kalshi and Polymarket contracts trade 0–1 and settle at $1 (win) / $0 (loss). A Yes share at $0.62 implies a 62% chance and converts to decimal odds 1/0.62 ≈ 1.61 for ledger math — the raw share price and venue are always preserved alongside the conversion.</p>
+      </section>
+      <section class="card">
+        <h2>Free sources under watch (no paid API)</h2>
+        <div data-render="markets"><p class="muted">Loading market sources…</p></div>
+      </section>
+      <section class="card">
+        <h2>How a price enters this project</h2>
+        <ol>
+          <li><strong>Find:</strong> query the free public endpoints above for TWC 2026 markets (match-winner, map, outright).</li>
+          <li><strong>Capture:</strong> record venue, ticker/market id, selection, price, volume if shown, and <span class="mono">observed_utc</span>. Screenshot-equivalent: the API response is the receipt.</li>
+          <li><strong>Freeze:</strong> prices are append-only history — never overwritten. Stale prices are flagged, not deleted.</li>
+          <li><strong>Settle:</strong> outcomes need the market's own settlement rule plus an HLTV result cross-checked on Liquipedia. Any conflict blocks settlement and raises a flag.</li>
+        </ol>
+        <h3>Why no sportsbook odds yet?</h3>
+        <p>Traditional esports books (including Thunderpick's own odds pages) have no documented free public API, and their terms generally forbid scraping. We will only add a sportsbook line if it can be captured from a freely accessible page in a way that respects the site's terms — and each line still needs its URL + timestamp. Until then, prediction-market APIs are the primary price path because they are explicitly public.</p>
+      </section>
+      <section class="card">
+        <h2>Tournament betting context (verified facts)</h2>
+        <ul>
+          <li><strong>Short event, big variance:</strong> 8 teams, GSL groups (Bo3), single-elim playoffs (Bo3, Bo5 final) — favorites have little room to recover from one bad series (<a href="master-list.html">ML-011</a>, <a href="master-list.html">ML-012</a>).</li>
+          <li><strong>A 3rd-place decider is played</strong> (Bo3), and 3rd pays double 4th ($100k vs $50k) — placement markets must account for it (<a href="master-list.html">ML-012</a>, <a href="master-list.html">ML-006</a>).</li>
+          <li><strong>Top-heavy field:</strong> only Falcons and FURIA are top-five sides; Legacy and Aurora round out the top ten (<a href="master-list.html">ML-009</a>).</li>
+          <li><strong>Qualifier seed:</strong> Virtus.pro (VRS #30) came through online qualifying into a LAN final — the classic longshot profile (<a href="master-list.html">ML-019</a>).</li>
+        </ul>
+        <p class="muted small">Favorites/dark-horse <em>opinions</em> are analysis, not verified fact — the simulated strategies on the <a href="leaderboard.html">leaderboard</a> express them as testable rules instead of punditry.</p>
+      </section>
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+    </div>
+  </footer>
+  <script src="assets/app.js"></script>
+</body>
+</html>
