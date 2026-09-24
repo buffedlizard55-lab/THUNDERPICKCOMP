@@ -158,20 +158,28 @@ inspect `markets.html#source-checks` and the Actions run before relying on the
 feed. If all sources fail, the site must show errors/staleness, not a false 0.
 
 Published site: [buffedlizard55-lab.github.io/THUNDERPICKCOMP/](https://buffedlizard55-lab.github.io/THUNDERPICKCOMP/).
-A successful deployment after merge is required before the **new** UI/data is
-published; the prior site may remain visible if Pages settings or permissions
-block deployment. No feature here is a real wager or investment advice.
+The first [live Actions deployment](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36038171748) after [PR #3](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/3) merged succeeded on Sep 24 at 18:00 UTC; the published journal showed `mode=live`, two visible source errors, no quotes and no paper positions. A successful deployment after **each** future merge is required before calling its changes published. No feature here is a real wager or investment advice.
 
 ### Durability and the "no manual checking" goal
 
-Pages alone is static. The workflow restores its *previously published* JSON
-history from the same HTTPS site before each scheduled run, then republishes a
-new immutable receipt journal. If restoration fails, it must **stop** rather
-than discard historical prices/bets. The one-time bootstrap is tied to the
-prior `main` commit, not a standing permission to reset data. Workflows retain
-an artifact for recovery for the platform retention period; a long-term,
-versioned free archive is **not implemented**. This is a scoped first step
-against manual checking, not a promise of full match/odds/roster coverage.
+Pages alone is static. The workflow restores the public JSON history from the
+same HTTPS site before each scheduled run **and compares it with the last
+successful Actions journal artifact**. It uses the newest compatible history
+that covers older immutable receipts/decisions, then republishes. If neither
+has a covering live journal or they conflict, it must **stop** rather than
+discard historical prices/bets. The one-time bootstrap was tied to the prior
+`main` commit, not a standing permission to reset data. Artifacts expire after
+30 days; a long-term, versioned free archive is **not implemented**. This is a
+scoped first step against manual checking, not full match/odds/roster coverage.
+
+**Repository admin action:** Pages is still set to legacy `main` branch
+publishing. The Actions deployment succeeded anyway, but each push also starts
+a legacy build that can temporarily replace live data with the tracked offline
+seed. The GitHub App token cannot change this setting (Pages API HTTP 403). An
+admin should open [Settings → Pages](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/settings/pages)
+and set **Build and deployment → Source: GitHub Actions**. The artifact
+comparison prevents silent receipt loss if a branch build wins the race, but
+does not prevent a transient stale public page. Recheck after the next push.
 
 ## Session log
 
@@ -213,11 +221,16 @@ against manual checking, not a promise of full match/odds/roster coverage.
   Python cases/Node renderer checks/diff checks. See PR/checks for actual
   CI results; local fixture tests do **not** prove the remote hourly run worked.
 
+### 2026-09-24 — PR #3 merged, first live deployment and source repair
+
+- [PR #3](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/3) merged to `main` as `4b8e7d9`; its CI and the first [collection/Pages run](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36038171748) passed. The published JSON at 18:00 UTC was genuinely `live`, with seven scoped checks and zero pre-event quotes or paper entries. Two checks showed errors rather than falsely reporting no data: Valve VRS rejected an unrelated four-player/duplicate-name row, and Liquipedia returned HTTP 406 demanding gzip.
+- Verified the full Sep 7 Valve file from Valve's [public GitHub API](https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/invitation/2026/standings_global_2026_09_07.md): ranks 110 and 268 both use `Just Players` for distinct ranked rosters; rank 110 lists four names. The eight finalists' dated rows still parse. [Liquipedia's API terms](https://liquipedia.net/api-terms-of-use) explicitly require gzip support and a contactable custom user agent.
+- Follow-up code scopes validation to finalists, requests/boundedly decodes Liquipedia gzip, tests source failures, and compares Pages with the last successful artifact so a legacy branch build cannot silently reset history. These fixes must pass PR CI and a **new** live collection before either source is called repaired in production.
+- Three follow-up passes: (1) reproduce using the complete Valve snapshot and first published check errors; (2) add coverage for malformed finalists, corrupt/oversized gzip and legacy Pages journal rollback; (3) re-run validation/UI/tests and inspect the follow-up PR/next live publication. Keep future checks honest if either API remains unavailable.
+
 ## Next highest-value work / limitations
 
-1. **Verify a successful scheduled Pages live run** after merge: real external
-   API access, Pages permissions, rolling journal recovery and UI freshness.
-   Fix any host/API/rate failure instead of silently calling it zero coverage.
+1. **Verify the next scheduled/dispatch Pages run:** both Valve and Liquipedia checks, eligible quote scope, rolling journal recovery and UTC freshness. Switch Pages publishing to GitHub Actions (admin setting) to eliminate competing legacy builds; the recovery artifact is not permanent storage.
 2. **Match pipeline:** cross-check *both* official-data fixture pages/results,
    dates and outcome IDs (HLTV + Liquipedia), then implement and unpause the
    six match strategies with reproducible pre-start depth checks. No invented

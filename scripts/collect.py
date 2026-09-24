@@ -12,7 +12,9 @@ from __future__ import annotations
 
 import argparse
 import copy
+import gzip
 import hashlib
+import io
 import json
 import re
 import sys
@@ -104,20 +106,36 @@ class Fetcher:
         self.calls.append(url)
         if not url.startswith((GITHUB_LIST, VRS_RAW, POLY + "/", "https://clob.polymarket.com/book?", KALSHI + "/", LIQUIPEDIA_API)):
             raise SourceError("unapproved source URL")
-        req = Request(url, headers={
+        headers = {
             "Accept": "application/json" if not text else "text/plain",
-            "User-Agent": "THUNDERPICKCOMP/1.0 (+https://github.com/buffedlizard55-lab/THUNDERPICKCOMP; public research)",
-        })
+            "User-Agent": "THUNDERPICKCOMP/1.0 (+https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/issues; public research)",
+        }
+        # Liquipedia's MediaWiki API requires gzip-capable clients. urllib does
+        # not decompress it for us; other sources keep the default encoding.
+        if url == LIQUIPEDIA_API:
+            headers["Accept-Encoding"] = "gzip"
+        req = Request(url, headers=headers)
         last_error = None
         for attempt in range(3):
             try:
                 with urlopen(req, timeout=18) as resp:
                     if resp.status != 200:
                         raise SourceError(f"HTTP {resp.status} for {url}")
-                    # Do not download arbitrarily large or unexpected responses.
+                    # Bound both wire bytes and inflated bytes (no gzip bombs).
                     payload = resp.read(4_000_001)
                     if len(payload) > 4_000_000:
                         raise SourceError(f"response exceeds 4MB at {url}")
+                    encoding = resp.headers.get("Content-Encoding", "").strip().lower()
+                    if encoding == "gzip" and url == LIQUIPEDIA_API:
+                        try:
+                            with gzip.GzipFile(fileobj=io.BytesIO(payload)) as stream:
+                                payload = stream.read(4_000_001)
+                        except (OSError, EOFError) as exc:
+                            raise SourceError(f"invalid gzip response at {url}") from exc
+                        if len(payload) > 4_000_000:
+                            raise SourceError(f"decompressed response exceeds 4MB at {url}")
+                    elif encoding not in ("", "identity"):
+                        raise SourceError(f"unsupported content encoding {encoding!r} at {url}")
                     decoded = payload.decode("utf-8")
                     return decoded if text else json.loads(decoded)
             except (HTTPError, URLError, TimeoutError, UnicodeError, json.JSONDecodeError) as exc:
@@ -190,20 +208,33 @@ def source_failure(doc: dict, source: str, url: str, now: datetime, exc: Excepti
 def parse_vrs(markdown: str, date: str, teams: list[dict]) -> list[dict]:
     if not re.search(rf"Standings as of {date.replace('-', '_')}", markdown):
         raise SourceError("Valve snapshot date does not match file name")
+    aliases = {"falcons": "Falcons", "9z": "9z", "aurora": "Aurora", "betboom": "BetBoom"}
+    wanted = {aliases.get(t["id"], t["name"]).casefold() for t in teams}
+    if len(wanted) != len(teams):
+        raise SourceError("finalist VRS team names are ambiguous")
     rows = {}
     for line in markdown.splitlines():
         parts = [p.strip() for p in line.split("|")]
         if len(parts) < 6 or not re.fullmatch(r"\d+", parts[1]):
             continue
-        rank, points = int(parts[1]), int(parts[2])
-        name, names = parts[3], [p.strip() for p in parts[4].split(",")]
-        if name.casefold() in rows or len(names) != 5 or len(set(names)) != 5 or points <= 0:
-            raise SourceError("duplicate or malformed Valve VRS row: " + name)
+        name = parts[3]
+        if name.casefold() not in wanted:
+            # Valve ranks rosters, not unique organizations: its full Sep 7
+            # file has two different "Just Players" entries, one with four
+            # names. Neither is a finalist; only validate rows we publish.
+            continue
+        try:
+            rank, points = int(parts[1]), int(parts[2])
+        except ValueError as exc:
+            raise SourceError("malformed Valve VRS row: " + name) from exc
+        names = [p.strip() for p in parts[4].split(",")]
+        if (name.casefold() in rows or len(names) != 5 or not all(names)
+                or len(set(names)) != 5 or rank <= 0 or points <= 0):
+            raise SourceError("duplicate or malformed finalist Valve VRS row: " + name)
         rows[name.casefold()] = {"rank": rank, "points": points, "roster": names}
     result = []
     for t in teams:
-        key = {"falcons": "Falcons", "9z": "9z", "aurora": "Aurora", "betboom": "BetBoom"}.get(t["id"], t["name"])
-        key = key.casefold()
+        key = aliases.get(t["id"], t["name"]).casefold()
         # A missing ranked team is not rank=unranked: it may be beyond the
         # downloaded excerpt. Reject the whole snapshot until verified.
         if key not in rows:

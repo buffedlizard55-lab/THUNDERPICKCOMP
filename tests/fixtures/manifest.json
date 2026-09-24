@@ -9,7 +9,7 @@
     },
     "vrs_global_2026_09_07.md": {
       "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
-      "scope": "Eight verbatim ranking rows of the TWC finalists only. Other teams/rows omitted; missing teams must NOT be interpreted as unranked."
+      "scope": "Eight verbatim ranking rows of TWC finalists, plus Valve's rank 110 and 268 'Just Players' rows (same name, different roster; rank 110 has four players). Verified directly from Valve's public GitHub Contents API on Sep 24 after the first live run exposed the parser edge case. All other rows omitted; missing teams must NOT be interpreted as unranked."
     },
     "vrs_global_2026_08_03.md": {
       "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_08_03.md",
