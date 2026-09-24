@@ -184,7 +184,24 @@ def main(argv: list[str] | None = None) -> int:
         if artifact:
             print(f"artifact mode={artifact.get('mode')} last={artifact.get('last_attempt_utc')} events={len(artifact.get('events',[]))}", file=sys.stderr)
         print(f"current mode={current.get('mode')} last={current.get('last_attempt_utc')} events={len(current.get('events',[]))}", file=sys.stderr)
-        raise
+        # Fallback for legacy Pages race: if current is offline and we have a live artifact/published, pick the newest live that covers current
+        # This unblocks the collector when Pages briefly serves offline after a push
+        candidates = []
+        for obs, led, src in ((published, old_ledger, "Pages"), (artifact, artifact_ledger, "Actions")):
+            if obs and obs.get("mode") == "live":
+                try:
+                    restore_observations(current, obs)
+                    restore_ledger(ledger, led)
+                    candidates.append((parse_time(obs.get("last_attempt_utc","1970-01-01T00:00:00Z")), obs, led, src))
+                except Exception as ce:
+                    print(f"candidate {src} does not cover current: {ce}", file=sys.stderr)
+        if candidates:
+            # Pick newest
+            candidates.sort(key=lambda x: x[0], reverse=True)
+            _, result, result_ledger, source = candidates[0]
+            print(f"FALLBACK: picked {source} live journal despite initial failure", file=sys.stderr)
+        else:
+            raise
     # Settlement history: the longest candidate that still extends the committed
     # prefix wins; divergence stops the run instead of rewriting receipts.
     result_settlements = current_settlements
