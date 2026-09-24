@@ -141,8 +141,20 @@ up-to-date daily feed**: it had static timestamps and no collector. The first co
   **offline, partial research replay**; it is NOT a successful scheduled feed
   until Pages' first live deployment completes. The UI now emphasizes solving manual checking via hourly checks + visible staleness.
 - `data/ledger.json`, `data/strategies.json` — 8 simulated accounts: one active
-  conditional outright policy, one no-bet control, six paused match policies.
-  Ledger is intentionally empty until forward, first-party eligible quotes; betting-strategy theses are now documented on `guide.html#betting-strategies` for market-experienced readers.
+  conditional outright policy, one no-bet control, and six match policies that
+  are active **with gates** (double-sourced fixture + strictly pre-start fresh
+  first-party ask + top-of-book depth + unambiguous association + pending
+  budget; the TBD draw means nothing can be papered yet). Ledger is
+  intentionally empty until forward, first-party eligible quotes;
+  betting-strategy theses are documented on `guide.html#betting-strategies`
+  with a sourced-facts vs labeled-heuristics research table.
+- `data/settlements.json` — append-only, SHA-256-chained settlement journal
+  (venue-resolution receipts + independent result confirmation + decision
+  rows + holds). Void is never assumed; 50/50 settles as partial at the
+  venue's fraction; conflicts stay pending.
+- `data/player_stats.json` — the dated player-stat window policy (HLTV Rating
+  3.0, trailing 90 days, ≥40 maps) required before any rating is published.
+  Ships empty: no compliant collection has run yet.
 - `data/schema.md` — exact provenance, limitations, source scope and money math.
 - `scripts/collect.py` — bounded read-only collection from Valve GitHub API,
   Liquipedia wiki API (fixture *signals* only), Kalshi and Polymarket Gamma/CLOB.
@@ -155,9 +167,11 @@ up-to-date daily feed**: it had static timestamps and no collector. The first co
 - `scripts/validate.py`, `tests/` — schema/source/duplicate/gross-money checks,
   unit tests and documented **partial** real-response excerpts for offline
   replay (not betting inputs). All 56 claims, 19 Python tests and UI smoke tests pass locally; remote live run still must be verified post-merge.
-- `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — test on PR,
-  and attempt live collection, validation and Pages deployment on main + hourly
-  schedule. A cron is best effort, not a tick-by-tick live feed.
+- `.github/workflows/ci.yml`, `.github/workflows/pages.yml`,
+  `.github/workflows/watchdog.yml` — test on PR; collect, validate, record
+  settlement receipts, deploy Pages on main + hourly schedule, append the
+  versioned `journal-archive` branch, and fail loudly when the hourly job
+  stalls. A cron is best effort, not a tick-by-tick live feed.
 
 ## Runbook
 
@@ -179,25 +193,30 @@ inspect `markets.html#source-checks` and the Actions run before relying on the
 feed. If all sources fail, the site must show errors/staleness, not a false 0.
 
 Published site: [buffedlizard55-lab.github.io/THUNDERPICKCOMP/](https://buffedlizard55-lab.github.io/THUNDERPICKCOMP/).
-The first [live Actions deployment](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36038171748) after [PR #3](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/3) merged succeeded on Sep 24 at 18:00 UTC; the published journal showed `mode=live`, two visible source errors, no quotes and no paper positions. A successful deployment after **each** future merge is required before calling its changes published. No feature here is a real wager or investment advice.
+The first [live Actions deployment](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36038171748) after [PR #3](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/3) merged succeeded on Sep 24 at 18:00 UTC; the published journal showed `mode=live`, two visible source errors, no quotes and no paper positions (both source errors were repaired and verified live in the 18:49 UTC run after [PR #6](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/pull/6) — see the session log). A successful deployment after **each** future merge is required before calling its changes published. No feature here is a real wager or investment advice.
 
 ### Durability and the "no manual checking" goal
 
 Pages alone is static. The workflow restores the public JSON history from the
 same HTTPS site before each scheduled run **and compares it with the last
 successful Actions journal artifact**. It uses the newest compatible history
-that covers older immutable receipts/decisions, then republishes. If neither
-has a covering live journal or they conflict, it must **stop** rather than
-discard historical prices/bets. The one-time bootstrap was tied to the prior
-`main` commit, not a standing permission to reset data. Artifacts expire after
-30 days; a long-term, versioned free archive is **not implemented**. This is a
-scoped first step against manual checking, not full match/odds/roster coverage.
+that covers older immutable receipts/decisions (observations, ledger **and**
+the chained settlement journal), then republishes. If neither has a covering
+live journal or they conflict, it must **stop** rather than discard historical
+prices/bets. The one-time bootstrap was tied to the prior `main` commit, not a
+standing permission to reset data. Since this session, every successful run
+also commits the full journal + SHA-256 manifest to the **`journal-archive`**
+git branch (versioned, tamper-evident, outlives 30-day artifacts), and a
+**watchdog workflow** fails loudly when the hourly job stalls (>100 min since
+last success or >130 min since the published `last_attempt_utc`). This is a
+scoped step against manual checking, not full match/odds/roster coverage.
 
-**Repository admin action:** Pages is still set to legacy `main` branch
-publishing. The Actions deployment succeeded anyway, but each push also starts
-a legacy build that can temporarily replace live data with the tracked offline
-seed. The GitHub App token cannot change this setting (Pages API HTTP 403). An
-admin should open [Settings → Pages](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/settings/pages)
+**Repository admin action (still outstanding):** Pages is still set to legacy
+`main` branch publishing. The Actions deployment succeeded anyway, but each
+push also starts a legacy build that can temporarily replace live data with
+the tracked offline seed. The GitHub App token cannot change this setting
+(Pages API HTTP 403 on writes). An admin should open
+[Settings → Pages](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/settings/pages)
 and set **Build and deployment → Source: GitHub Actions**. The artifact
 comparison prevents silent receipt loss if a branch build wins the race, but
 does not prevent a transient stale public page. Recheck after the next push.
@@ -252,7 +271,88 @@ does not prevent a transient stale public page. Recheck after the next push.
 
 ## Session log (continued)
 
-### 2026-09-24 — Prompt re-alignment, design port & 20-claim expansion (this session)
+### 2026-09-24 — Post-merge-6 live verification, match pipeline, settlement journal, durability, coverage (this session)
+
+- **Verified the first live Pages run after merge #6** (PR #6 merged 18:48:51Z
+  as `02ccaec7`): Actions run [36043851018](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36043851018)
+  succeeded end-to-end (restore → collect → validate → deploy), published
+  `data/observations.json` is `mode=live` with `last_attempt_utc`
+  **2026-09-24T18:49:05Z** / `last_completed_utc` 18:49:08Z. All seven scoped
+  checks of that run reported: `valve_vrs` **ok** (8 finalist rows, Sep 7
+  snapshot — the PR-#3-era four-player-row error is repaired in production),
+  `liquipedia_fixtures` **partial-by-scope** with `records_checked: 0` (correct:
+  the Finals draw is TBD — no explicit UTC date/teams/HLTV id exists to parse),
+  `polymarket_search`/`polymarket_tag`/`kalshi_game`/`kalshi_outright` **ok**
+  (0 open TWC 2026 events found in their bounded scopes),
+  `polymarket_history` **partial** (20 TWC-2026 closed qualifier events found;
+  `truncated_search` alert raised honestly). Eligible quote scope produced
+  **zero quotes and zero paper positions** — consistent with no open Finals
+  market existing yet; the empty ledger stayed intact and journal continuity
+  is proven by preserved `first_seen_utc` values (17:10Z seed events still
+  present). Legacy branch publishing **did** transiently overwrite the live
+  feed: the `pages-build-deployment` run for `02ccaec7` completed at 18:49:14Z
+  publishing the offline seed, and the Actions deployment landed after it
+  (environment deployments 18:49:05Z legacy vs 18:49:16Z Actions; live content
+  is the Actions journal). No data was lost (artifact/coverage guard worked as
+  designed), but the Pages API still reports `build_type: "legacy"` — the
+  admin must switch Source to GitHub Actions (writes return HTTP 403 for the
+  app token).
+- **Match pipeline:** extended the Liquipedia parser to the real wikitext date
+  format (month-name + whitelisted timezone abbreviations; ambiguous offsets
+  like CST are skipped, never guessed; bare/naive dates remain ineligible),
+  group/stage context, finished flags, decided map scores and a labeled
+  Liquipedia-derived series result. Added `scripts/hltv.py` + a bounded
+  HLTV match-page cross-check (max 8 fetches/run; robots-permitted
+  `/matches/<id>` pages only): schedule needs same HLTV id + teams + UTC date
+  (`scheduled-confirmed`); results need HLTV series score and Liquipedia map
+  scores to agree (`result-confirmed`, labeled as score-derived); any
+  disagreement → `conflict` + alert, permanently ineligible. Implemented the
+  six match strategies in `scripts/competition.py` with pre-start depth checks
+  (top-of-book ≥ stake/ask, strictly before `scheduled_utc`, fresh same-run
+  receipts, unambiguous quote-to-fixture association, pending budget) and
+  flipped them from `paused` to `active` with those gates published in
+  `strategies.json`. The TBD draw means nothing can be papered yet; no
+  opponent, result or price is invented anywhere.
+- **Settlement journal:** new `data/settlements.json` + `scripts/settle.py` —
+  append-only SHA-256-chained receipts (venue resolution verbatim; independent
+  HLTV+Liquipedia confirmation for matches; Liquipedia infobox winner + a
+  confirmed playoff result for the outright). Decisions apply only when venue
+  and independent evidence agree; venue-vs-fixture disagreement, unresolved
+  venues and unmapped payout shapes append holds and stay pending. 50/50
+  settles as **partial** at the venue's fraction — never a refund; void is
+  never assumed. Wired into restore (prefix/divergence protection), validation
+  (chain re-verification), the workflow and the ledger UI.
+- **Durability:** `scripts/archive.py` + a workflow step commit the full
+  journal + SHA-256 MANIFEST to a `journal-archive` branch after every
+  successful deploy (versioned by git history, outlives 30-day artifacts),
+  and a new hourly `watchdog.yml` fails loudly when the last successful
+  collection is >100 min old or the published `last_attempt_utc` is >130 min
+  old. Archive manifest is published on-site and rendered on methodology.html.
+- **Coverage:** promoted ML-043/045/046/048/049 with **primary sources fetched
+  directly this session** (Falcons karrigan-welcome + roster statement, Legacy
+  arT + try, Aurora Jimpphat/ash/kyxsan, PARIVISION FL1T + HObbit farewell,
+  Virtus.pro academy promotions) and added primary-verified RC-003–RC-009;
+  ML-047 (BetBoom) was searched and honestly stays secondary (no official post
+  found). Broadened market discovery with bounded per-finalist Polymarket
+  searches (`polymarket_teams`, runs only when keyed searches found no open
+  TWC event). Defined the dated player-stat window policy (HLTV Rating 3.0,
+  trailing 90 days, ≥40 maps, robots-compliant) in `data/player_stats.json`
+  before any ratings exist. Expanded guide.html with a sourced-facts vs
+  labeled-heuristics CS2 betting research table (MR12/veto, Cache pool
+  newness, stand-in rules, EPL fatigue, cross-venue 50/50 settlement
+  asymmetry) — heuristics are labeled as analysis, never facts.
+- Three passes: (1) implemented and unit-tested everything offline (42
+  tests); (2) fixed a same-pair association ambiguity refusal, an ISO-date
+  regression that would have accepted naive UTC-less timestamps, a settlement
+  logic bug where venue/fixture disagreement could have settled a loss, and
+  several incorrect first-draft test expectations (documented above); (3)
+  re-ran validation + full suites + UI smoke + fixture replay, and re-checked
+  every claim in this log against the live run/artifact/API data. The new
+  checks (`hltv_crosscheck`, `polymarket_teams`) and the settle/archive steps
+  still require a successful post-merge Actions run before being called
+  verified in production.
+
+### 2026-09-24 — Prompt re-alignment, design port & 20-claim expansion
 
 - Re-read README + AGENTS.md as the every-session starting point; elevated **Maximize P(Win)** and **Own the Outcome** as the focal decision filter and made the daily-feed mission (“solve manual checking”) unmissable at the top of the README. Preserved the full original prompt verbatim.
 - Ported polished visual system from [THUNDERPICK-WC-2026](https://buffedlizard55-lab.github.io/THUNDERPICK-WC-2026/) (navy/gold hero gradient, better tables/cards/badge palette) into `assets/style.css` while retaining audit-feed readability and dark-mode. Improved `index.html` hero to emphasize its daily-use purpose and 56-claim audit coverage; updated `teams.html`/`guide.html`/`changes.html`/`methodology.html` to surface new roster history, map-pool drama, CS2 veto/OT rules and four concrete betting-strategy theses for market-experienced readers.
@@ -261,14 +361,22 @@ does not prevent a transient stale public page. Recheck after the next push.
 
 ## Next highest-value work / limitations
 
-1. **Verify the next scheduled/dispatch Pages run:** both Valve and Liquipedia checks, eligible quote scope, rolling journal recovery and UTC freshness. Switch Pages publishing to GitHub Actions (admin setting) to eliminate competing legacy builds; the recovery artifact is not permanent storage.
-2. **Match pipeline:** cross-check *both* official-data fixture pages/results,
-   dates and outcome IDs (HLTV + Liquipedia), then implement and unpause the
-   six match strategies with reproducible pre-start depth checks. No invented
-   opponent, fixture, result or price.
-3. **Settlement journal:** append-only venue-resolution receipts and independent
-   result confirmation, including canceled/forfeit/partial cases. Never turn
-   a 50/50 resolution into a presumed refund.
-4. **Durability:** versioned public storage for rolling quote/decision history
-   beyond Pages plus alerting when jobs stall. Actions artifacts expire.
-5. **Coverage:** promote secondary-sourced roster moves (ML-043–ML-049) to primary-ledger status by finding official team/player posts; add broader free market discovery and a dated, sourced player-stat window with betting-analysis, without treating heuristics as facts.
+1. **Verify the first run with the new pipeline after this merge:** nine scoped
+   checks (now including `hltv_crosscheck` and `polymarket_teams`), the
+   settle/archive steps, and watchdog scheduling. **Admin:** switch Pages
+   publishing to GitHub Actions (Settings → Pages → Source) — the app token
+   gets HTTP 403 on this setting, and legacy builds transiently republish the
+   offline seed on every push.
+2. **Fixture watch:** when the group draw is published, confirm the
+   Liquipedia/HLTV cross-check confirms schedules and, after matches, results;
+   then watch the six gated match strategies receive their first eligible
+   pre-start asks with depth (no invented opponents/results/prices).
+3. **Settlement exercise:** the settlement journal is built but unproven
+   against a real resolution; verify its first win/loss/50-50/partial receipts
+   and holds before trusting realized P/L on the leaderboard.
+4. **Archive monitoring:** confirm the first `journal-archive` commits land and
+   watchdog runs stay green; keep an eye on archive growth.
+5. **Coverage:** implement robots-compliant player-stat collection under the
+   defined window before publishing any rating; keep hunting primary posts for
+   the BetBoom chain (ML-047) and new roster moves; broaden bounded market
+   discovery further (more series/tags) as the event approaches.

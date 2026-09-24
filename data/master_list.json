@@ -958,6 +958,18 @@
     "detail": "HLTV confirms Falcons signed Finn 'karrigan' Andersen from FaZe on Apr 20, 2026, reuniting him with NiKo (FaZe 2017-18) and coach zonic (Astralis 2016-). FaZe had just missed the Cologne Major qualifier; Falcons had finished 3rd at IEM Rio (April) before the change. kyxsan moved to Falcons bench then to Aurora IGL on Jul 8.",
     "sources": [
       {
+        "label": "Falcons Esports official X post — CS2 roster statement/kyxsan bench (Apr 20, 2026, 15:13 UTC)",
+        "url": "https://x.com/FalconsEsport/status/2046245949446431160",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Falcons Esports official X post — karrigan welcome (Apr 20, 2026, 15:45 UTC)",
+        "url": "https://x.com/FalconsEsport/status/2046253812784984206",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
         "label": "HLTV — Falcons confirm karrigan signing (Apr 20, 2026)",
         "url": "https://www.hltv.org/news/44428/falcons-confirm-karrigan-signing",
         "accessed_utc": "2026-09-24T18:30:00Z",
@@ -970,10 +982,10 @@
         "type": "secondary"
       }
     ],
-    "verified_utc": "2026-09-24T18:30:00Z",
+    "verified_utc": "2026-09-24T19:00:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Move happened 61 days before Falcons won Cologne Major (see ML-044)."
+    "notes": "Move happened 61 days before Falcons won Cologne Major (see ML-044). PROMOTED TO PRIMARY 2026-09-24: both official Falcons posts fetched directly this session (welcome text verified verbatim; bench detail is in the statement post as quoted by the secondary sources below)."
   },
   {
     "id": "ML-044",
@@ -1006,6 +1018,18 @@
     "detail": "HLTV: Legacy signed Andrei 'arT' Piovezan from Fluxo on Feb 3, 2026 after benching lux on Feb 2. On Jul 11, 2026 they signed Santino 'try' Rigal (AR) and traded Bruno 'saadzin' to Imperial; Lucas 'n1ssim' Chavez returned from bench Jul 9 after requesting it Jun 13.",
     "sources": [
       {
+        "label": "Legacy official X post — try is Legacy (Jul 11, 2026, 17:15 UTC)",
+        "url": "https://x.com/legacyggbr/status/2075992284491841758",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Legacy official X post — arT is our new IGL (Feb 3, 2026, 20:08 UTC)",
+        "url": "https://x.com/legacyggbr/status/2018778533930078290",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
         "label": "HLTV — Legacy sign arT (Feb 3, 2026)",
         "url": "https://www.hltv.org/news/43812/official-legacy-sign-art",
         "accessed_utc": "2026-09-24T18:30:00Z",
@@ -1024,10 +1048,10 @@
         "type": "secondary"
       }
     ],
-    "verified_utc": "2026-09-24T18:30:00Z",
+    "verified_utc": "2026-09-24T19:00:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Shows Legacy's 2026 rebuild before becoming FISSURE Playground 3 champions."
+    "notes": "Shows Legacy's 2026 rebuild before becoming FISSURE Playground 3 champions. PROMOTED TO PRIMARY 2026-09-24: both official Legacy posts fetched directly this session. The Feb 2 lux bench and saadzin-to-Imperial swap details remain secondary-sourced (HLTV below)."
   },
   {
     "id": "ML-046",
@@ -1035,6 +1059,24 @@
     "claim": "Aurora international rebuild July 2-8, 2026: MAJ3R steps down, Jimpphat + ash join, kyxsan arrives as IGL",
     "detail": "HLTV rostermania: Engin 'MAJ3R' Kupeli stepped down Jul 2, 2026; Aurora benched Fabre Jun 29 and soulfly Jul 2; signed Jere 'Jimpphat' Salo and coach ash on Jul 3; signed Damjan 'kyxsan' Stoilkovski (ex-Falcons bench) as IGL on Jul 8, 2026. Core is ex-Eternal Fire roster acquired Apr 5, 2025.",
     "sources": [
+      {
+        "label": "Aurora CS2 official X post — kyxsan announced as captain (Jul 8, 2026, 13:00 UTC)",
+        "url": "https://x.com/AuroraCS2_GG/status/2074841104046825746",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Aurora CS2 official X post — ash named head coach (Jul 3, 2026, 17:00 UTC)",
+        "url": "https://x.com/AuroraCS2_GG/status/2073089404143271946",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Aurora CS2 official X post — Jimpphat welcome (Jul 3, 2026, 18:00 UTC)",
+        "url": "https://x.com/AuroraCS2_GG/status/2073104510189228086",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
       {
         "label": "HLTV — MAJ3R steps down from Aurora (Jul 2, 2026)",
         "url": "https://www.hltv.org/news/45050/maj3r-steps-down-from-aurora",
@@ -1054,10 +1096,10 @@
         "type": "secondary"
       }
     ],
-    "verified_utc": "2026-09-24T18:30:00Z",
+    "verified_utc": "2026-09-24T19:00:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Least settled top-10 rebuild besides PARIVISION; explains form volatility."
+    "notes": "Least settled top-10 rebuild besides PARIVISION; explains form volatility. PROMOTED TO PRIMARY 2026-09-24: three official Aurora posts fetched directly this session. MAJ3R's career break / soulfly bench details remain secondary-sourced (HLTV/Dust2)."
   },
   {
     "id": "ML-047",
@@ -1087,7 +1129,7 @@
     "verified_utc": "2026-09-24T18:30:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Visa context matters for Malta travel risk (see ML-049); BetBoom now at full five."
+    "notes": "Visa context matters for Malta travel risk (see ML-049); BetBoom now at full five. REVIEWED 2026-09-24: a bounded search for an official BetBoom X/primary post covering the visa stand-in chain found none (BetBoom announces mainly via regional channels); this entry REMAINS secondary-sourced and is not promoted."
   },
   {
     "id": "ML-048",
@@ -1095,6 +1137,18 @@
     "claim": "PARIVISION three-move saga: HObbit Jun 17 → FL1T Jul 29 (reuniting Rio Major 2022 core) → HObbit re-signs Sep 17 benching slaxejezzz",
     "detail": "HLTV: PARIVISION signed Abay 'HObbit' Khassenov Jun 17, 2026 to replace Jame's benched player; signed Vladislav 'FL1T' Shulga Jul 29 to replace HObbit (reuniting Outsider Rio 2022 winners Jame+FL1T+dastan). Sep 17 official X posts benched Vyacheslav 'slaxejezzz' Vinokurov (loan available, not for sale) and re-added HObbit permanently (ML-033/034). Four days after Sep 16 TWC field reveal.",
     "sources": [
+      {
+        "label": "PARIVISION official X post — HObbit farewell (Jul 29, 2026, 15:01 UTC)",
+        "url": "https://x.com/parivisiongg/status/2082481645936902154",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "PARIVISION official X post — FL1T joins (Jul 29, 2026, 15:04 UTC)",
+        "url": "https://x.com/parivisiongg/status/2082482379902361711",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
       {
         "label": "HLTV — PARIVISION replace slaxejezzz with HObbit (Sep 17, 2026)",
         "url": "https://www.hltv.org/news/45534/parivision-replace-slaxejezzz-with-hobbit",
@@ -1120,10 +1174,10 @@
         "type": "primary"
       }
     ],
-    "verified_utc": "2026-09-24T18:30:00Z",
+    "verified_utc": "2026-09-24T19:00:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Most roster-volatile team in the field; market may overreact to recent change."
+    "notes": "Most roster-volatile team in the field; market may overreact to recent change. PROMOTED (Jul 29 leg) TO PRIMARY 2026-09-24: both official PARIVISION posts fetched directly this session. The Jun 17 stand-in arrival still has only secondary coverage; the Sep 17 permanent re-sign was already primary (ML-033/034)."
   },
   {
     "id": "ML-049",
@@ -1131,6 +1185,12 @@
     "claim": "Virtus.pro rebuilt Feb-Mar 2026 around academy core + mir: Perfecto/FL1T/fame out, AquaRS/F0R3VER promoted Mar 12",
     "detail": "HLTV: After sinking to ~#100-123 VRS post-Major, Virtus.pro transfer-listed Perfecto, FL1T, fame in Feb 2026; promoted academy duo Vladislav 'AquaRS' Fokin and Pavel 'F0R3VER' Ermakhin on Mar 12; kept Timur 'FL4MUS' off main, later used; coach Andrey 'ProbLeM' Ovcharov. Mir remained.",
     "sources": [
+      {
+        "label": "Virtus.pro official X post — FOR3VER and AquaRS join main roster, full lineup (Mar 12, 2026, 11:00 UTC)",
+        "url": "https://x.com/virtuspro/status/2032049048031502498",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
       {
         "label": "HLTV — Virtus.pro finalize roster with academy duo (Mar 12, 2026)",
         "url": "https://www.hltv.org/news/44059/virtuspro-finalize-roster-with-academy-duo",
@@ -1144,10 +1204,10 @@
         "type": "secondary"
       }
     ],
-    "verified_utc": "2026-09-24T18:30:00Z",
+    "verified_utc": "2026-09-24T19:00:00Z",
     "status": "verified",
     "flags": [],
-    "notes": "Academy project explains VRS #40 qualifier path vs top-20 invites."
+    "notes": "Academy project explains VRS #40 qualifier path vs top-20 invites. PROMOTED TO PRIMARY 2026-09-24: the official Virtus.pro post (full lineup incl. mir/tO0RO/b1st/FOR3VER/AquaRS + coach) fetched directly this session. The earlier Perfecto/FL1T/fame benching steps remain secondary-sourced."
   },
   {
     "id": "ML-050",

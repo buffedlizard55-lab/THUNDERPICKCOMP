@@ -12,8 +12,9 @@
       "Settlement: per market rule + HLTV/Liquipedia result cross-check."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 25
   },
   {
     "username": "sim_underdog_hunter",
@@ -28,8 +29,9 @@
       "Settlement: per market rule + HLTV/Liquipedia result cross-check."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 15
   },
   {
     "username": "sim_vrs_value",
@@ -44,8 +46,9 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 20
   },
   {
     "username": "sim_cache_chaos",
@@ -59,8 +62,9 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 12
   },
   {
     "username": "sim_qualifier_fade",
@@ -74,8 +78,9 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 20
   },
   {
     "username": "sim_champ_correlation",
@@ -91,7 +96,8 @@
     ],
     "bankroll_start": 1000.0,
     "status": "active",
-    "notes": "This is the only price-dependent strategy currently implemented. It will remain empty unless both verified quotes appear in the same future live run."
+    "notes": "This is the only price-dependent strategy currently implemented. It will remain empty unless both verified quotes appear in the same future live run.",
+    "stake_units": 50
   },
   {
     "username": "sim_flat_observer",
@@ -117,7 +123,8 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "paused",
-    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
+    "status": "active",
+    "notes": "Engine live since 2026-09-24: a position additionally requires a DOUBLE-SOURCED fixture (HLTV page and Liquipedia template agree on HLTV id, both teams and UTC date), a strictly pre-start, same-run, fresh first-party ask whose top-of-book size covers the stake, and an unambiguous quote-to-fixture match. No eligible fixture/quote exists yet (group draw TBD), so no position can be created. Never invented.",
+    "stake_units": 10
   }
 ]

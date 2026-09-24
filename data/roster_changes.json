@@ -36,5 +36,156 @@
       }
     ],
     "master_list": "ML-034"
+  },
+  {
+    "id": "RC-003",
+    "team_id": "legacy",
+    "kind": "joined main roster (IGL)",
+    "player": "arT",
+    "published_utc": "2026-02-03T20:08:04Z",
+    "fact": "Legacy announced Andrei “arT” Piovezan as its new IGL (“O @arTcsgo é nosso novo IGL! Seja bem-vindo!”), filling the spot left by lux.",
+    "impact": "arT joins dumau/latto/n1ssim/saadzin for 2026; TWC26 Finals roster as of Sep 24 also lists try (RC-004).",
+    "sources": [
+      {
+        "label": "Legacy official X announcement (Feb 3, 2026)",
+        "url": "https://x.com/legacyggbr/status/2018778533930078290",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-045",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-004",
+    "team_id": "legacy",
+    "kind": "joined main roster (AWPer)",
+    "player": "try",
+    "published_utc": "2026-07-11T17:15:05Z",
+    "fact": "Legacy announced Santino “try” Rigal has joined Legacy (“Agora o @TRYZSE1 é Legacy!”), completing the swap that sent saadzin to Imperial.",
+    "impact": "Restores the dumau/latto/try core; try replaces saadzin as AWPer for the run-up to the TWC26 Finals.",
+    "sources": [
+      {
+        "label": "Legacy official X announcement (Jul 11, 2026)",
+        "url": "https://x.com/legacyggbr/status/2075992284491841758",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-045",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-005",
+    "team_id": "aurora",
+    "kind": "joined main roster",
+    "player": "Jimpphat",
+    "published_utc": "2026-07-03T18:00:06Z",
+    "fact": "Aurora announced Jimi “Jimpphat” Salo has joined the team (“Welcome to Aurora, Jimpphat!”).",
+    "impact": "Aurora pivoted to an international roster; Jimpphat is in the Sep 7 Valve VRS ranked roster for Aurora (ML-035).",
+    "sources": [
+      {
+        "label": "Aurora CS2 official X announcement (Jul 3, 2026)",
+        "url": "https://x.com/AuroraCS2_GG/status/2073104510189228086",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-046",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-006",
+    "team_id": "aurora",
+    "kind": "joined main roster (IGL)",
+    "player": "kyxsan",
+    "published_utc": "2026-07-08T13:00:42Z",
+    "fact": "Aurora announced Damjan “kyxsan” Stoilkovski as its captain (“Welcome, kyxsan! It's him. That's the captain.”), days after Falcons benched him.",
+    "impact": "Completes Aurora's rebuild (with ash as coach, announced Jul 3); kyxsan leads the TWC26 finalist lineup.",
+    "sources": [
+      {
+        "label": "Aurora CS2 official X announcement (Jul 8, 2026)",
+        "url": "https://x.com/AuroraCS2_GG/status/2074841104046825746",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Aurora CS2 official X post — ash named head coach (Jul 3, 2026)",
+        "url": "https://x.com/AuroraCS2_GG/status/2073089404143271946",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-046",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-007",
+    "team_id": "falcons",
+    "kind": "joined main roster (IGL)",
+    "player": "karrigan",
+    "published_utc": "2026-04-20T15:45:01Z",
+    "fact": "Falcons announced karrigan has joined its CS2 roster (“Welcome to Falcons CS @karriganCSGO”), minutes after a roster statement benching kyxsan.",
+    "impact": "kyxsan later surfaced at Aurora (RC-006); karrigan IGLs the TWC26 finalist Falcons lineup.",
+    "sources": [
+      {
+        "label": "Falcons Esports official X post (Apr 20, 2026, 15:45 UTC)",
+        "url": "https://x.com/FalconsEsport/status/2046253812784984206",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "Falcons Esports official X roster statement (Apr 20, 2026, 15:13 UTC)",
+        "url": "https://x.com/FalconsEsport/status/2046245949446431160",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-043",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-008",
+    "team_id": "parivision",
+    "kind": "joined main roster; prior member released",
+    "player": "FL1T",
+    "published_utc": "2026-07-29T15:04:24Z",
+    "fact": "PARIVISION announced Evgenii “FL1T” Lebedev has joined, and said goodbye to stand-in HObbit in a companion post the same afternoon.",
+    "impact": "FL1T reunited the IEM Rio 2022 core with Jame/dastan; the wheel turned again on Sep 17 when HObbit returned (RC-002).",
+    "sources": [
+      {
+        "label": "PARIVISION official X post — FL1T joins (Jul 29, 2026)",
+        "url": "https://x.com/parivisiongg/status/2082482379902361711",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      },
+      {
+        "label": "PARIVISION official X post — HObbit farewell (Jul 29, 2026)",
+        "url": "https://x.com/parivisiongg/status/2082481645936902154",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-048",
+    "verified_utc": "2026-09-24T19:00:00Z"
+  },
+  {
+    "id": "RC-009",
+    "team_id": "virtuspro",
+    "kind": "promoted from academy to main roster",
+    "player": "AquaRS and F0R3VER",
+    "published_utc": "2026-03-12T11:00:21Z",
+    "fact": "Virtus.pro announced FOR3VER and AquaRS joined the main CS2 roster after VP.Prodigy, listing mir, tO0RO, b1st, FOR3VER, AquaRS with coach ProbLeM.",
+    "impact": "This academy core is the TWC26 finalist Virtus.pro lineup in the Sep 7 Valve VRS snapshot (ML-035).",
+    "sources": [
+      {
+        "label": "Virtus.pro official X announcement (Mar 12, 2026)",
+        "url": "https://x.com/virtuspro/status/2032049048031502498",
+        "accessed_utc": "2026-09-24T19:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-049",
+    "verified_utc": "2026-09-24T19:00:00Z"
   }
 ]

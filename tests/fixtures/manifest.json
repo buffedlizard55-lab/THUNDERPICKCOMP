@@ -35,9 +35,13 @@
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200",
       "scope": "Selected fields from TWO real open events, no TWC context; other open events intentionally omitted. No absence claim."
     },
-    "kalshi_events_outright_open.json": {
-      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
-      "scope": "Complete response at capture time, empty events array for the specific KXCS2 series; other outright series may exist."
+        "kalshi_events_outright_open.json": {
+            "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
+            "scope": "Complete response at capture time, empty events array for the specific KXCS2 series; other outright series may exist."
+        },
+        "hltv_match_2397860.html": {
+            "url": "https://www.hltv.org/matches/2397860/3dmax-vs-acend-thunderpick-world-championship-2026-closed-qualifier",
+            "scope": "TRIMMED VERIFIED-MARKER EXCERPT reconstructed from the rendered HLTV match page (fetched 2026-09-24). Only markers used by scripts/hltv.py are reproduced verbatim (title, /team/4914/3dmax and /team/13518/acend links, '2 : 0' score, 'Match over', '9th of September 2026'); original markup/classes and the viewer-localized start clock are NOT reproduced. Robots note: HLTV robots.txt disallows /matches?* listing URLs; individual /matches/<id> pages are permitted and fetched bounded (max 8/run)."
+        }
     }
-  }
 }
