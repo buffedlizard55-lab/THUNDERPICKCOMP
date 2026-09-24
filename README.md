@@ -303,11 +303,45 @@ does not prevent a transient stale public page. Recheck after the next push.
   source key crash fixed), full suite 54/54, validator, UI smoke, fixture
   replay, badge/count cross-check (index 56/3 = actual statuses; roster_changes
   9; live doc composition restore→collect→settle re-traced); (3) charter
-  re-check against the original brief. **Live verification is the remaining
-  gate:** the fix counts only when the first post-merge Actions run completes
-  with 9 checks, publishes `mode=live`, appends the first `journal-archive`
-  commit, and the watchdog stays/calms green. Watchdog's first-ever scheduled
-  runs also still need confirming (registered ~19:15Z, no tick recorded yet).
+  re-check against the original brief.
+- **Live recovery VERIFIED (PR #9 merged 19:51Z, run [36050952696](https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36050952696)
+  succeeded end-to-end in 43s):** published `data/observations.json` is
+  `mode=live` with `last_attempt_utc` **2026-09-24T19:51:34Z** and all **nine**
+  checks — `valve_vrs` ok (8 finalist rows, Sep 7 snapshot),
+  `liquipedia_fixtures` partial-by-scope (0 parseable; Finals draw still TBD —
+  honest), `hltv_crosscheck` ok (0 fixtures yet to cross-check),
+  `polymarket_search`/`polymarket_tag`/`polymarket_history`
+  ok/partial/partial (0 open TWC 2026 events in scoped searches; 20 historical
+  qualifier events), `polymarket_teams` partial (12 finalist-name searches, 88
+  first-page records), `kalshi_game` ok (55 open events scanned, 0 TWC 2026),
+  `kalshi_outright` ok (0). Zero eligible pre-event asks → **zero quotes and
+  zero paper positions** — nothing was invented. Journal continuity held: the
+  seed event's `first_seen_utc` (17:10Z) survived. The merge's legacy
+  `pages-build-deployment` (19:51:21Z, seed) landed BEFORE the Actions deploy
+  (~19:52:04Z, live), so live content is the recovered feed; `build_type` is
+  still `legacy` (admin action outstanding). The CI smoke check initially
+  failed on this PR for a second time: it built its synthetic live journal
+  from the stale 7-check seed; fixed by replaying the real collector inside
+  the disposable copy (suite unchanged at 54; the copy now also mirrors
+  `.github/`).
+- **Archive bug found by post-run inspection (fixed in PR #10):** the first
+  `journal-archive` commit (8a401ed, run 36050952696) stored the **committed
+  offline seed**, not the published live journal — the archive step ran in the
+  deploy job, whose fresh checkout has `ROOT/data` = seed, so
+  `scripts/archive.py` archived the wrong files; `commit_url` was also empty.
+  Fix: archiving moved into the build job immediately after validation (where
+  `data/` holds the exact journal being published), with a new
+  `--expect-mode live` guard that refuses to archive anything else, a
+  `--data-dir` option, `--commit-url`, and a fresh-manifest re-copy after the
+  branch switch so the packaged site shows the real archive state. The deploy
+  job is now deploy-only. Regression tests (3 new, suite 57): wrong mode
+  refused, live journal archived from an explicit dir, and a workflow
+  structure check that the archive step precedes artifact packaging inside the
+  build job and no longer exists in the deploy job. Tracked
+  `data/archive_manifest.json` updated to the real first archive commit. The
+  next successful run must be checked for a `journal-archive` commit whose
+  manifest reports `mode: live`. Watchdog's first-ever scheduled ticks also
+  still need confirming (registered ~19:15Z).
 
 
 
@@ -411,21 +445,23 @@ does not prevent a transient stale public page. Recheck after the next push.
 
 ## Next highest-value work / limitations
 
-1. **Verify the first run with the new pipeline after this merge:** nine scoped
-   checks (now including `hltv_crosscheck` and `polymarket_teams`), the
-   settle/archive steps, and watchdog scheduling. **Admin:** switch Pages
-   publishing to GitHub Actions (Settings → Pages → Source) — the app token
-   gets HTTP 403 on this setting, and legacy builds transiently republish the
-   offline seed on every push.
-2. **Fixture watch:** when the group draw is published, confirm the
+1. ~~Verify the first run with the new pipeline after this merge~~ **DONE
+   2026-09-24:** run 36050952696 completed with nine live checks and a live
+   publication (see session log). Still open from that item: **Admin must
+   switch Pages publishing to GitHub Actions** (Settings → Pages → Source) —
+   `build_type` is still `legacy`, the app token gets HTTP 403 on the setting,
+   and every push starts a legacy build that transiently republishes the
+   offline seed (this merge's legacy build lost the race only by timing).
+2. **Confirm PR #10's post-merge run archives the LIVE journal** (manifest
+   `mode: live`, non-empty `commit_url`) and that the watchdog's first
+   scheduled runs execute green now that the feed is fresh.
+3. **Fixture watch:** when the group draw is published, confirm the
    Liquipedia/HLTV cross-check confirms schedules and, after matches, results;
    then watch the six gated match strategies receive their first eligible
    pre-start asks with depth (no invented opponents/results/prices).
-3. **Settlement exercise:** the settlement journal is built but unproven
+4. **Settlement exercise:** the settlement journal is built but unproven
    against a real resolution; verify its first win/loss/50-50/partial receipts
    and holds before trusting realized P/L on the leaderboard.
-4. **Archive monitoring:** confirm the first `journal-archive` commits land and
-   watchdog runs stay green; keep an eye on archive growth.
 5. **Coverage:** implement robots-compliant player-stat collection under the
    defined window before publishing any rating; keep hunting primary posts for
    the BetBoom chain (ML-047) and new roster moves; broaden bounded market

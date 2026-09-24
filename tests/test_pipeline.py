@@ -993,3 +993,53 @@ class ValidatorLiveCheckSetTests(unittest.TestCase):
     def test_tracked_offline_seed_remains_valid_under_derived_set(self):
         seed = json.loads((ROOT / "data" / "observations.json").read_text(encoding="utf-8"))
         self.assertEqual(self.observed(seed), [])
+
+
+class ArchiveModeGuardTests(unittest.TestCase):
+    """Run 36050952696's first archive commit stored the committed offline seed:
+    the deploy job's fresh checkout had ROOT/data = seed, not the published
+    live journal. build() must refuse to archive the wrong mode and must be
+    able to archive an explicit directory."""
+
+    def temp_journal(self, tmp: Path, mode: str) -> Path:
+        data = tmp / "data"
+        data.mkdir(parents=True, exist_ok=True)
+        obs = {"schema_version": 1, "mode": mode,
+               "last_attempt_utc": c.stamp(NOW), "last_completed_utc": c.stamp(NOW),
+               "checks": [], "vrs_history": [], "roster_signals": [],
+               "fixtures": [], "events": [], "quotes": [], "alerts": []}
+        (data / "observations.json").write_text(json.dumps(obs), encoding="utf-8")
+        (data / "ledger.json").write_text(json.dumps(synthetic_ledger()), encoding="utf-8")
+        from scripts import settle as st
+        (data / "settlements.json").write_text(json.dumps(st.empty_journal()), encoding="utf-8")
+        return data
+
+    def test_archive_refuses_offline_seed_when_live_expected(self):
+        import scripts.archive as arch
+        with tempfile.TemporaryDirectory() as tmp:
+            data = self.temp_journal(Path(tmp), "offline-replay")
+            with self.assertRaises(SystemExit):
+                arch.build(Path(tmp) / "snap", run_id="T", data_dir=data, expect_mode="live")
+
+    def test_archive_accepts_live_journal_from_explicit_dir(self):
+        import scripts.archive as arch
+        with tempfile.TemporaryDirectory() as tmp:
+            data = self.temp_journal(Path(tmp), "live")
+            snap = Path(tmp) / "snap"
+            manifest = arch.build(snap, run_id="T", commit_url="https://example/run/T",
+                                  data_dir=data, expect_mode="live")
+            self.assertEqual(manifest["journal"]["mode"], "live")
+            self.assertEqual(manifest["run_id"], "T")
+            self.assertEqual(manifest["commit_url"], "https://example/run/T")
+            self.assertEqual(set(manifest["files"]), {"observations.json", "ledger.json", "settlements.json"})
+            self.assertEqual(json.loads((data / "archive_manifest.json").read_text(encoding="utf-8")), manifest)
+
+    def test_workflow_archives_live_journal_inside_build_job(self):
+        text = (ROOT / ".github" / "workflows" / "pages.yml").read_text(encoding="utf-8")
+        self.assertIn("--expect-mode live", text)
+        build_part = text.split("deploy:", 1)[0]
+        archive_at = build_part.index("Archive the live journal")
+        artifact_at = build_part.index("Save short-lived recovery artifact")
+        self.assertLess(archive_at, artifact_at, "archive must run before the artifact/site packaging in the build job")
+        deploy_part = text.split("deploy:", 1)[1]
+        self.assertNotIn("scripts.archive", deploy_part, "deploy-job checkout archives the stale seed; archive belongs in the build job")
