@@ -33,6 +33,10 @@ jobs:
     timeout-minutes: 110
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Branch head, not the triggering SHA: a queued run must continue from the receipts the
+          # previous run committed (append-only), otherwise the rebase would conflict or drop data.
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"

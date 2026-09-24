@@ -35,7 +35,9 @@ from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 LAB = ROOT / "data" / "lab"
-LINES = LAB / "lines.json"
+LINES_DIR = LAB / "lines"           # monthly shards: append-friendly, small daily git diffs
+META = LAB / "lines_meta.json"      # coverage, exclusions, run status, configuration
+LEGACY_SINGLE_FILE = LAB / "lines.json"
 AUDIT = LAB / "audit.json"
 FIXTURES = ROOT / "tests" / "fixtures" / "lab"
 
@@ -75,6 +77,10 @@ class LineError(ValueError):
 
 class FetchError(LineError):
     """Transient transport failure: never a permanent exclusion; retried next run."""
+
+
+class NotYetFinal(LineError):
+    """Market exists but is not finally settled yet: retried next run, never excluded."""
 
 
 def iso(ts: int | float) -> str:
@@ -261,7 +267,7 @@ def build_kalshi_line(markets: list[dict], fetcher, cutoff_ts: str) -> dict:
         raise LineError(f"rules teams {rule['a']!r}/{rule['b']!r} != yes_sub_titles {teams}")
     for m in (a, b):
         if m.get("status") not in ("finalized", "settled") or m.get("result") not in ("yes", "no"):
-            raise LineError(f"{m['ticker']} not finally settled (status={m.get('status')}, result={m.get('result')})")
+            raise NotYetFinal(f"{m['ticker']} not finally settled (status={m.get('status')}, result={m.get('result')})")
     sv = [dec(a.get("settlement_value_dollars")), dec(b.get("settlement_value_dollars"))]
     if None in sv:
         raise LineError("settlement value missing")
@@ -400,7 +406,7 @@ def build_poly_line(m: dict, fetcher) -> dict:
     if {o.strip() for o in outcomes} != {q["a"].strip(), q["b"].strip()}:
         raise LineError(f"outcomes {outcomes} do not match question teams")
     if not m.get("closed") or m.get("umaResolutionStatus") != "resolved":
-        raise LineError("market not resolved")
+        raise NotYetFinal("market not resolved")
     sv = [dec(p) for p in prices]
     if sv not in (["1.0000", "0.0000"], ["0.0000", "1.0000"], ["0.5000", "0.5000"]):
         raise LineError(f"non-final outcome prices {prices}")
@@ -501,16 +507,49 @@ def empty_store() -> dict:
     }
 
 
-def load_store() -> dict:
-    if LINES.exists():
-        return json.loads(LINES.read_text(encoding="utf-8"))
-    return empty_store()
-
-
-def save_json(path: Path, doc: dict) -> None:
+def save_json(path: Path, doc) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":"), sort_keys=False) + "\n",
                     encoding="utf-8")
+
+
+def load_store(lab: Path = LAB) -> dict:
+    """Meta + every monthly shard. Migrates the legacy single-file layout once."""
+    meta_path, lines_dir, legacy = lab / "lines_meta.json", lab / "lines", lab / "lines.json"
+    if legacy.exists() and not meta_path.exists():
+        return json.loads(legacy.read_text(encoding="utf-8"))
+    if not meta_path.exists():
+        return empty_store()
+    store = json.loads(meta_path.read_text(encoding="utf-8"))
+    store["lines"] = []
+    for shard in sorted(lines_dir.glob("*.json")):
+        rows = json.loads(shard.read_text(encoding="utf-8"))
+        if any(r["cutoff_utc"][:7] != shard.stem for r in rows):
+            raise LineError(f"{shard.name} contains a line from another month")
+        store["lines"].extend(rows)
+    ids = [r["line_id"] for r in store["lines"]]
+    if len(ids) != len(set(ids)):
+        raise LineError("duplicate line_id across shards")
+    return store
+
+
+def save_store(store: dict, lab: Path = LAB) -> None:
+    lines_dir = lab / "lines"
+    months: dict[str, list] = {}
+    for row in sorted(store["lines"], key=lambda r: (r["cutoff_utc"], r["line_id"])):
+        months.setdefault(row["cutoff_utc"][:7], []).append(row)
+    lines_dir.mkdir(parents=True, exist_ok=True)
+    for month, rows in months.items():
+        # One line per record keeps daily diffs reviewable and small.
+        text = "[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) for r in rows) + "\n]\n"
+        (lines_dir / f"{month}.json").write_text(text, encoding="utf-8")
+    meta = {k: v for k, v in store.items() if k != "lines"}
+    meta["shards"] = {m: len(rows) for m, rows in sorted(months.items())}
+    meta["lines_total"] = len(store["lines"])
+    save_json(lab / "lines_meta.json", meta)
+    legacy = lab / "lines.json"
+    if legacy.exists():
+        legacy.unlink()
 
 
 def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
@@ -520,6 +559,7 @@ def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
     coverage = {"kalshi": {}, "polymarket": {}}
     added = {"kalshi": 0, "polymarket": 0}
     pending = {"kalshi": 0, "polymarket": 0}
+    not_final = {"kalshi": 0, "polymarket": 0}
     errors: list[str] = []
     transient: list[str] = []
 
@@ -551,6 +591,8 @@ def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
             try:
                 store["lines"].append(build_kalshi_line(rows, fetcher, cutoff))
                 added["kalshi"] += 1
+            except NotYetFinal:
+                not_final["kalshi"] += 1
             except FetchError as exc:
                 transient.append(f"kalshi {rows[0]['event_ticker']}: {exc}")
             except LineError as exc:
@@ -561,6 +603,8 @@ def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
             try:
                 store["lines"].append(build_poly_line(m, fetcher))
                 added["polymarket"] += 1
+            except NotYetFinal:
+                not_final["polymarket"] += 1
             except FetchError as exc:
                 transient.append(f"polymarket {m['id']}: {exc}")
             except LineError as exc:
@@ -575,6 +619,7 @@ def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
             "added_this_run": added[venue],
             "pending_after_run": pending[venue],
             "excluded_total": len(excluded.get(venue, {})),
+            "not_yet_final_this_run": not_final[venue],
             "oldest_cutoff_utc": rows[0]["cutoff_utc"] if rows else None,
             "newest_cutoff_utc": rows[-1]["cutoff_utc"] if rows else None,
             "complete": pending[venue] == 0 and not coverage[venue].get("truncated") and not errors,
@@ -629,25 +674,25 @@ def audit(store: dict, fetcher, sample: int, seed: str) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--fixtures", action="store_true", help="offline replay of recorded responses (writes to --output)")
-    ap.add_argument("--output", type=Path, default=LINES)
+    ap.add_argument("--fixtures", action="store_true", help="offline replay of recorded responses (writes to --lab-dir)")
+    ap.add_argument("--lab-dir", type=Path, default=LAB, help="directory holding lines/ shards and lines_meta.json")
     ap.add_argument("--budget-minutes", type=float, default=45.0)
     ap.add_argument("--audit", type=int, default=0, help="re-fetch N random stored lines and compare exactly")
     ap.add_argument("--audit-seed", default=None)
     args = ap.parse_args(argv)
     fetcher = FixtureFetcher() if args.fixtures else Fetcher()
     if args.audit:
-        store = json.loads(args.output.read_text(encoding="utf-8"))
+        store = load_store(args.lab_dir)
         seed = args.audit_seed or now_utc().strftime("%Y%m%d%H")
         report = audit(store, fetcher, args.audit, seed)
-        save_json(AUDIT if args.output == LINES else args.output.with_name("audit.json"), report)
+        save_json(args.lab_dir / "audit.json", report)
         print(f"Audit: {report['matches']}/{report['sample_size']} exact matches, "
               f"{report['mismatches']} mismatches, {report['errors']} errors")
         return 1 if report["mismatches"] else 0
-    store = empty_store() if args.fixtures else (json.loads(args.output.read_text()) if args.output.exists() else empty_store())
+    store = empty_store() if args.fixtures else load_store(args.lab_dir)
     store = collect(store, fetcher, budget_seconds=args.budget_minutes * 60,
                     mode="offline-fixture" if args.fixtures else "live")
-    save_json(args.output, store)
+    save_store(store, args.lab_dir)
     cov = store["coverage"]
     print(json.dumps({v: {k: cov[v].get(k) for k in ("lines_stored", "added_this_run", "pending_after_run",
                                                      "excluded_total", "complete")} for v in ("kalshi", "polymarket")}))

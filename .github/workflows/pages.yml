@@ -39,6 +39,24 @@ jobs:
               --dir /tmp/previous-thunderpickcomp/artifact
             echo "Downloaded the last successful journal checkpoint from Actions run $last."
           fi
+      - name: Fetch versioned journal-archive snapshot + provenance history (durable; outlives artifacts)
+        run: |
+          set -euo pipefail
+          if git fetch --quiet --depth=400 origin journal-archive 2>/dev/null; then
+            mkdir -p /tmp/previous-thunderpickcomp/archive /tmp/previous-thunderpickcomp/archive-history
+            for f in observations.json ledger.json settlements.json; do
+              git show "FETCH_HEAD:$f" > "/tmp/previous-thunderpickcomp/archive/$f" 2>/dev/null \
+                || rm -f "/tmp/previous-thunderpickcomp/archive/$f"
+            done
+            n=0
+            for sha in $(git rev-list FETCH_HEAD); do
+              git show "$sha:observations.json" > "/tmp/previous-thunderpickcomp/archive-history/$sha.json" 2>/dev/null \
+                && n=$((n+1)) || rm -f "/tmp/previous-thunderpickcomp/archive-history/$sha.json"
+            done
+            echo "journal-archive head $(git rev-parse FETCH_HEAD); $n observation snapshots kept as provenance evidence."
+          else
+            echo "journal-archive branch not available yet."
+          fi
       - name: Restore newest compatible Pages/Actions quote + paper-decision journal
         env:
           BEFORE: ${{ github.event.before }}
@@ -50,6 +68,12 @@ jobs:
           artifact_args=()
           if [[ -d /tmp/previous-thunderpickcomp/artifact ]]; then
             artifact_args=(--artifact-dir /tmp/previous-thunderpickcomp/artifact)
+          fi
+          if [[ -f /tmp/previous-thunderpickcomp/archive/observations.json && -f /tmp/previous-thunderpickcomp/archive/ledger.json ]]; then
+            artifact_args+=(--archive-dir /tmp/previous-thunderpickcomp/archive)
+          fi
+          if [[ -d /tmp/previous-thunderpickcomp/archive-history ]]; then
+            artifact_args+=(--provenance-history /tmp/previous-thunderpickcomp/archive-history)
           fi
           observations_url="$PAGES_BASE/data/observations.json?run=$GITHUB_RUN_ID"
           status=$(curl --silent --show-error --location --max-time 35 --retry 2 \
@@ -83,29 +107,14 @@ jobs:
             restore_exit=$?
             set -e
             if [[ $restore_exit -ne 0 ]]; then
-              echo "Restore failed with exit $restore_exit, dumping debug info"
-              ls -R /tmp/previous-thunderpickcomp/ || true
-              echo "=== published observations head ==="
-              cat /tmp/previous-thunderpickcomp/observations.json | head -n 80 || true
-              echo "=== current observations head ==="
-              cat data/observations.json | head -n 30 || true
-              if [[ -d /tmp/previous-thunderpickcomp/artifact ]]; then
-                echo "=== artifact dir ==="
-                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 300 || true
-                echo "=== artifact observations head ==="
-                cat /tmp/previous-thunderpickcomp/artifact/data/observations.json 2>/dev/null | head -n 80 || cat /tmp/previous-thunderpickcomp/artifact/observations.json 2>/dev/null | head -n 80 || true
-              else
-                echo "No artifact dir"
-              fi
-              # Save debug for artifact upload
+              # restore.py wrote /tmp/restore-debug/restore_failure.json and left data/ untouched.
               mkdir -p /tmp/restore-debug
-              cp -R /tmp/previous-thunderpickcomp /tmp/restore-debug/ || true
-              cp data/observations.json /tmp/restore-debug/current_observations.json || true
-              echo "Restore failed, see logs above" > /tmp/restore-debug/FAILED.txt
+              cp -R /tmp/previous-thunderpickcomp /tmp/restore-debug/ 2>/dev/null || true
+              echo "Restore refused: candidate journals disagree or none covers the others. History protected; see restore-debug artifact." >&2
               exit $restore_exit
             fi
           elif [[ "$status" == "404" && ${#artifact_args[@]} -gt 0 ]]; then
-            echo "Published journal missing; restoring the last successful Actions checkpoint."
+            echo "Published journal missing; restoring the last successful Actions checkpoint / journal-archive."
             python3 -m scripts.restore "${artifact_args[@]}" --require-live-history
           else
             echo "Published observations unavailable ($status). Refusing to reset history." >&2
@@ -126,6 +135,8 @@ jobs:
         run: python3 -m scripts.settle
       - name: Generate historical backtesting leaderboard (verified matches + modeled odds where no free line)
         run: python3 -m scripts.backtest
+      - name: Rebuild the real-line strategy lab (leaderboard, analytics, featured ledgers, match table)
+        run: python3 -m scripts.strategy_lab
       - name: Validate data and regression tests before publishing
         run: |
           python3 scripts/validate.py
@@ -143,30 +154,40 @@ jobs:
           # offline seed instead (bug of run 36050952696's first archive commit).
           git config user.name "thunderpickcomp-journal-bot"
           git config user.email "actions@users.noreply.github.com"
-          git fetch origin journal-archive 2>/dev/null || true
-          if git rev-parse --verify FETCH_HEAD 2>/dev/null; then
-            git checkout --force -B journal-archive FETCH_HEAD
+          # Commit from a SEPARATE worktree. The old in-place `git checkout --force` to the archive
+          # branch and back reverted every tracked file this run produced (observations, ledger,
+          # settlements, derived JSON) to the committed offline seed BEFORE the recovery artifact and
+          # the site package were built -- the root cause of the 2026-09-24 history reset.
+          rm -rf /tmp/archive-wt
+          if git fetch --quiet origin journal-archive 2>/dev/null; then
+            git worktree add --quiet --detach /tmp/archive-wt FETCH_HEAD
           else
-            git checkout --orphan journal-archive
-            git rm -rf --quiet . 2>/dev/null || true
+            git worktree add --quiet --detach /tmp/archive-wt HEAD
+            git -C /tmp/archive-wt checkout --quiet --orphan journal-archive
+            git -C /tmp/archive-wt rm -rf --quiet . 2>/dev/null || true
           fi
-          rm -f MANIFEST.json observations.json ledger.json settlements.json
           cp /tmp/journal-archive/MANIFEST.json /tmp/journal-archive/observations.json \
-             /tmp/journal-archive/ledger.json /tmp/journal-archive/settlements.json .
-          git add MANIFEST.json observations.json ledger.json settlements.json
-          if git diff --cached --quiet; then
+             /tmp/journal-archive/ledger.json /tmp/journal-archive/settlements.json /tmp/archive-wt/
+          git -C /tmp/archive-wt add MANIFEST.json observations.json ledger.json settlements.json
+          if git -C /tmp/archive-wt diff --cached --quiet; then
             echo "Archive unchanged; nothing to commit."
           else
-            git commit -m "Journal archive: run $GITHUB_RUN_ID [skip ci]"
-            git push origin journal-archive
+            git -C /tmp/archive-wt commit --quiet -m "Journal archive: run $GITHUB_RUN_ID [skip ci]"
+            git -C /tmp/archive-wt push --quiet origin HEAD:journal-archive
           fi
-          # Return to the deployment content so the site package is unaffected.
-          git checkout --force -B main "$GITHUB_SHA"
-          # The branch switch restored the committed archive manifest; put the
-          # fresh one (identical content) back so the published site shows the
-          # real archive state of this run.
+          git worktree remove --force /tmp/archive-wt
           mkdir -p data
           cp /tmp/journal-archive/MANIFEST.json data/archive_manifest.json
+      - name: Refuse to package anything but the journal this run validated
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          obs = json.load(open("data/observations.json"))
+          man = json.load(open("data/archive_manifest.json"))
+          if obs.get("mode") != "live":
+              sys.exit(f"about to publish mode={obs.get('mode')!r}; the live journal was lost from the working tree")
+          print("Publishing live journal", obs.get("last_attempt_utc"), "archive manifest", man.get("run_id", ""))
+          PY
       - name: Save short-lived recovery artifact
         uses: actions/upload-artifact@v4
         with:

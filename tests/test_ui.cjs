@@ -75,6 +75,18 @@ async function render(page, broken = null, transform = (name, value) => value) {
   const ev = market.targets.find((e) => e.getAttribute('data-render') === 'market-events').innerHTML;
   assert.match(ev, /&lt;img/);
   assert.doesNotMatch(ev, /<img|href="javascript:/);
+  const lab = await render('backtest.html', null, (name, x) => {
+    if (name === 'lab/leaderboard.json') x.rows[0].username = '<img src=x onerror=alert(1)>';
+    if (name === 'lab/strategies.json') x.strategies[0].rule = '<script>alert(1)</script>';
+    if (name === 'lab/analytics.json' && x.irregularities) {
+      x.irregularities.unshift({ type: '<b>x</b>', line_id: '<i>y</i>', review_urls: ['javascript:alert(1)'] });
+    }
+    return x;
+  });
+  const board = lab.targets.find((e) => e.getAttribute('data-render') === 'lab-leaderboard').innerHTML;
+  const analytics = lab.targets.find((e) => e.getAttribute('data-render') === 'lab-analytics').innerHTML;
+  assert.match(board, /SIM<\/span>/, 'every leaderboard row is labeled simulated');
+  assert.doesNotMatch(board + analytics, /<img|<script>|<b>x|href="javascript:/);
   const failed = await render('index.html', 'observations.json');
   assert.match(failed.targets.find((e) => e.getAttribute('data-render') === 'pulse').innerHTML,
     /Data unavailable/);

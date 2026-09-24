@@ -435,6 +435,60 @@ class CompetitionTests(unittest.TestCase):
             self.assertEqual(json.loads(observation.read_text())["mode"], "live")
             self.assertEqual(json.loads(ledger.read_text())["entries"], [])
 
+    def test_restore_refuses_instead_of_falling_back_to_seed(self):
+        """Regression (2026-09-24): a failed coverage check once fell back to the offline seed, exit 0."""
+        seed, seed_ledger = offline_seed(), synthetic_ledger()
+        paper, later_ledger = synthetic_docs()
+        comp.apply_outright(later_ledger, paper, NOW)
+        live = copy.deepcopy(seed)
+        live.update(mode="live", last_attempt_utc=c.stamp(NOW + timedelta(minutes=1)))
+        live["events"] += paper["events"]
+        live["quotes"] += paper["quotes"]
+        newer = copy.deepcopy(live)
+        newer["last_attempt_utc"] = c.stamp(NOW + timedelta(minutes=2))
+        newer["quotes"].pop()  # newest journal lost a receipt the other candidate holds
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            art, arc, dbg = root / "artifact", root / "archive", root / "debug"
+            art.mkdir(); arc.mkdir()
+            observation, ledger = root / "observations.json", root / "ledger.json"
+            observation.write_text(json.dumps(seed)); ledger.write_text(json.dumps(seed_ledger))
+            (art / "observations.json").write_text(json.dumps(newer))
+            (art / "ledger.json").write_text(json.dumps(later_ledger))
+            (arc / "observations.json").write_text(json.dumps(live))
+            (arc / "ledger.json").write_text(json.dumps(later_ledger))
+            before = observation.read_text()
+            with patch.object(rest, "OUTPUT", observation), patch.object(rest, "LEDGER", ledger), \
+                    patch.object(rest, "SETTLEMENTS", root / "settlements.json"):
+                code = rest.main(["--artifact-dir", str(art), "--archive-dir", str(arc),
+                                  "--debug-dir", str(dbg), "--require-live-history"])
+                self.assertEqual(code, 1)
+                self.assertEqual(observation.read_text(), before)  # data untouched
+                self.assertIn("does not cover journal-archive", json.loads((dbg / "restore_failure.json").read_text())["error"])
+                # No candidate at all -> refuse too.
+                self.assertEqual(rest.main(["--debug-dir", str(dbg), "--require-live-history"]), 1)
+                # Durable archive alone rescues history when the artifact expired.
+                self.assertEqual(rest.main(["--archive-dir", str(arc), "--debug-dir", str(dbg),
+                                            "--require-live-history"]), 0)
+            self.assertEqual(json.loads(observation.read_text())["mode"], "live")
+
+    def test_first_seen_repair_needs_identical_identity_and_only_moves_earlier(self):
+        paper, _ = synthetic_docs()
+        event = paper["events"][0]
+        result = {"events": [copy.deepcopy(event)]}
+        earlier = copy.deepcopy(event)
+        earlier["first_seen_utc"] = c.stamp(NOW - timedelta(hours=3))
+        impostor = copy.deepcopy(earlier)
+        impostor["source_url"] = "https://example.invalid/other"
+        impostor["first_seen_utc"] = c.stamp(NOW - timedelta(days=9))
+        later = copy.deepcopy(event)
+        later["first_seen_utc"] = c.stamp(NOW + timedelta(hours=3))
+        self.assertEqual(rest.repair_first_seen(copy.deepcopy(result), [{"events": [impostor]}]), [])
+        self.assertEqual(rest.repair_first_seen(copy.deepcopy(result), [{"events": [later]}]), [])
+        notes = rest.repair_first_seen(result, [{"events": [later]}, {"events": [earlier]}])
+        self.assertEqual(len(notes), 1)
+        self.assertEqual(result["events"][0]["first_seen_utc"], earlier["first_seen_utc"])
+
 
 if __name__ == "__main__":
     unittest.main()

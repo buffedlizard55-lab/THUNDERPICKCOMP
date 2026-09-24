@@ -91,47 +91,79 @@ def restore_settlements(current: dict, published: dict | None) -> dict:
 def choose_history(current: dict, ledger: dict,
                    published: dict | None, published_ledger: dict | None,
                    artifact: dict | None, artifact_ledger: dict | None,
-                   *, require_live: bool = False) -> tuple[dict, dict, str]:
-    """Select only a journal that covers both the committed seed and the other journal.
+                   *, require_live: bool = False,
+                   archive: dict | None = None, archive_ledger: dict | None = None) -> tuple[dict, dict, str]:
+    """Select the NEWEST candidate journal and require it to cover the committed seed and every
+    other candidate; otherwise STOP. Nothing is ever selected by timestamp alone.
 
-    Comparing timestamps alone could discard an earlier run's immutable quote
-    or position. Checks/alerts describe only the most recent poll, not history.
+    Candidates: published Pages JSON, last successful Actions artifact, and the latest commit of
+    the versioned ``journal-archive`` branch (outlives artifacts and cannot be overwritten by the
+    legacy branch Pages build). The only candidate that may be left uncovered is a stale
+    *offline-replay* seed that is not newer than the committed seed: that is the legacy Pages build
+    republishing tracked files, and it carries no live receipts. Checks/alerts describe only the
+    most recent poll, not history.
     """
-    if (published is None) != (published_ledger is None) or (artifact is None) != (artifact_ledger is None):
-        raise SourceError("observations and ledger must be restored together")
-    if published is None and artifact is None:
+    pairs = ((published, published_ledger, "Pages"), (artifact, artifact_ledger, "Actions checkpoint"),
+             (archive, archive_ledger, "journal-archive"))
+    for obs, led, label in pairs:
+        if (obs is None) != (led is None):
+            raise SourceError(f"observations and ledger must be restored together ({label})")
+    candidates = [(obs, led, label) for obs, led, label in pairs if obs is not None]
+    if not candidates:
         raise SourceError("no published or successful Actions journal; refusing to reset history")
-    # The committed seed (current) is offline-replay; Pages may briefly serve
-    # an older offline seed after a push while the Actions artifact is newer
-    # and live. Requiring BOTH to cover current would fail the race where
-    # Pages is still offline and current is live (or vice versa). Instead,
-    # require that the selected journal covers current, and that the newer
-    # covers the older to avoid silent history loss.
-    if published is None:
-        selected, selected_ledger, source = artifact, artifact_ledger, "Actions checkpoint"
-        restore_observations(current, selected)
-        restore_ledger(ledger, selected_ledger)
-    elif artifact is None:
-        selected, selected_ledger, source = published, published_ledger, "Pages"
-        restore_observations(current, selected)
-        restore_ledger(ledger, selected_ledger)
-    elif parse_time(published["last_attempt_utc"]) >= parse_time(artifact["last_attempt_utc"]):
-        # Published is newer — it must cover current and artifact
-        restore_observations(current, published)
-        restore_ledger(ledger, published_ledger)
-        restore_observations(artifact, published)
-        restore_ledger(artifact_ledger, published_ledger)
-        selected, selected_ledger, source = published, published_ledger, "Pages"
-    else:
-        # Artifact is newer — it must cover current and published
-        restore_observations(current, artifact)
-        restore_ledger(ledger, artifact_ledger)
-        restore_observations(published, artifact)
-        restore_ledger(published_ledger, artifact_ledger)
-        selected, selected_ledger, source = artifact, artifact_ledger, "Actions checkpoint"
+    current_time = parse_time(current["last_attempt_utc"]) if current.get("last_attempt_utc") else None
+
+    def stale_seed(obs: dict) -> bool:
+        return (obs.get("mode") != "live" and current_time is not None and obs.get("last_attempt_utc")
+                and parse_time(obs["last_attempt_utc"]) <= current_time)
+
+    candidates.sort(key=lambda c: parse_time(c[0]["last_attempt_utc"]), reverse=True)
+    selected, selected_ledger, source = candidates[0]
+    restore_observations(current, selected)
+    restore_ledger(ledger, selected_ledger)
+    for obs, led, label in candidates[1:]:
+        if stale_seed(obs):
+            continue
+        try:
+            restore_observations(obs, selected)
+            restore_ledger(led, selected_ledger)
+        except SourceError as exc:
+            raise SourceError(f"newest journal ({source}) does not cover {label}: {exc}") from exc
     if require_live and selected.get("mode") != "live":
         raise SourceError("journal reverted to offline research seed; require a prior successful live run")
     return selected, selected_ledger, source
+
+
+PROVENANCE_IDENTITY = ("key", "venue", "id", "source_url", "review_url")
+
+
+def repair_first_seen(result: dict, history: list[dict]) -> list[str]:
+    """Move an event's first_seen_utc EARLIER only when a versioned journal-archive snapshot shows
+    the identical event (same key/venue/id/source_url/review_url) was already seen earlier.
+
+    Repairs the 2026-09-24 incident where a since-removed restore fallback republished the offline
+    seed and reset first_seen_utc for 19 events. Never moves a timestamp later, never invents one.
+    """
+    earliest: dict[str, tuple[str, str]] = {}
+    for snap in history:
+        for event in snap.get("events", []):
+            key, seen = event.get("key"), event.get("first_seen_utc")
+            if not key or not seen:
+                continue
+            ident = json.dumps([event.get(f) for f in PROVENANCE_IDENTITY])
+            if key not in earliest or parse_time(seen) < parse_time(earliest[key][0]):
+                earliest[key] = (seen, ident)
+    notes = []
+    for event in result.get("events", []):
+        found = earliest.get(event.get("key"))
+        if not found:
+            continue
+        seen, ident = found
+        if ident == json.dumps([event.get(f) for f in PROVENANCE_IDENTITY]) and \
+                parse_time(seen) < parse_time(event["first_seen_utc"]):
+            notes.append(f"{event['key']}: first_seen_utc {event['first_seen_utc']} -> {seen} (journal-archive evidence)")
+            event["first_seen_utc"] = seen
+    return notes
 
 
 def artifact_json(directory: Path, name: str, *, optional: bool = False) -> dict | None:
@@ -141,11 +173,8 @@ def artifact_json(directory: Path, name: str, *, optional: bool = False) -> dict
     if not found:
         if optional:
             return None  # older checkpoints predate this journal file
-        print(f"DEBUG: artifact dir {directory} missing {name}, checked {paths}", file=sys.stderr)
-        print(f"DEBUG: dir contents: {list(directory.rglob('*'))}", file=sys.stderr)
         raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     if len(found) != 1:
-        print(f"DEBUG: artifact dir {directory} has duplicate {name}: {found}", file=sys.stderr)
         raise SourceError(f"Actions checkpoint must contain exactly one {name}")
     return json.loads(found[0].read_text(encoding="utf-8"))
 
@@ -156,6 +185,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ledger", type=Path, help="downloaded published data/ledger.json")
     parser.add_argument("--settlements", type=Path, help="downloaded published data/settlements.json (optional)")
     parser.add_argument("--artifact-dir", type=Path, help="last successful Actions journal checkpoint")
+    parser.add_argument("--archive-dir", type=Path, help="latest journal-archive branch snapshot (durable)")
+    parser.add_argument("--provenance-history", type=Path,
+                        help="directory of older journal-archive observations snapshots (first_seen repair evidence)")
+    parser.add_argument("--debug-dir", type=Path, default=Path("/tmp/restore-debug"),
+                        help="where to write diagnostics on failure (never inside data/)")
     parser.add_argument("--require-live-history", action="store_true", help="never select the pre-launch offline seed")
     args = parser.parse_args(argv)
     if (args.observations is None) != (args.ledger is None):
@@ -169,76 +203,50 @@ def main(argv: list[str] | None = None) -> int:
     artifact = artifact_json(args.artifact_dir, "observations.json") if args.artifact_dir else None
     artifact_ledger = artifact_json(args.artifact_dir, "ledger.json") if args.artifact_dir else None
     artifact_settlements = artifact_json(args.artifact_dir, "settlements.json", optional=True) if args.artifact_dir else None
+    archive = artifact_json(args.archive_dir, "observations.json") if args.archive_dir else None
+    archive_ledger = artifact_json(args.archive_dir, "ledger.json") if args.archive_dir else None
+    archive_settlements = artifact_json(args.archive_dir, "settlements.json", optional=True) if args.archive_dir else None
+    history = []
+    if args.provenance_history and args.provenance_history.is_dir():
+        for snap in sorted(args.provenance_history.glob("*.json")):
+            try:
+                history.append(json.loads(snap.read_text(encoding="utf-8")))
+            except (OSError, json.JSONDecodeError):
+                print(f"skipping unreadable provenance snapshot {snap.name}", file=sys.stderr)
+    # The repair is deterministic and idempotent, so apply it to EVERY candidate before comparing:
+    # a repaired checkpoint and a not-yet-repaired Pages copy must not look like a rewrite.
+    for label, doc in (("committed", current), ("Pages", published), ("Actions checkpoint", artifact),
+                       ("journal-archive", archive)):
+        if doc is not None:
+            for note in repair_first_seen(doc, history):
+                print(f"PROVENANCE REPAIRED ({label}): {note}")
     try:
         result, result_ledger, source = choose_history(
             current, ledger, published, old_ledger, artifact, artifact_ledger,
-            require_live=args.require_live_history,
+            require_live=args.require_live_history, archive=archive, archive_ledger=archive_ledger,
         )
-    except Exception as e:
-        import traceback
-        print(f"RESTORE FAILED: {e}", file=sys.stderr)
-        traceback.print_exc()
-        # Also dump some context for debugging
-        if published:
-            print(f"published mode={published.get('mode')} last={published.get('last_attempt_utc')} events={len(published.get('events',[]))}", file=sys.stderr)
-        else:
-            print("published is None", file=sys.stderr)
-        if artifact:
-            print(f"artifact mode={artifact.get('mode')} last={artifact.get('last_attempt_utc')} events={len(artifact.get('events',[]))}", file=sys.stderr)
-        else:
-            print("artifact is None", file=sys.stderr)
-        print(f"current mode={current.get('mode')} last={current.get('last_attempt_utc')} events={len(current.get('events',[]))}", file=sys.stderr)
-        # Fallback for legacy Pages race: if current is offline and we have a live artifact/published, pick the newest live that covers current
-        # This unblocks the collector when Pages briefly serves offline after a push
-        candidates = []
-        for obs, led, src in ((published, old_ledger, "Pages"), (artifact, artifact_ledger, "Actions")):
-            if obs and obs.get("mode") == "live":
-                try:
-                    restore_observations(current, obs)
-                    restore_ledger(ledger, led)
-                    candidates.append((parse_time(obs.get("last_attempt_utc","1970-01-01T00:00:00Z")), obs, led, src))
-                except Exception as ce:
-                    print(f"candidate {src} does not cover current: {ce}", file=sys.stderr)
-                    traceback.print_exc()
-        if candidates:
-            # Pick newest
-            candidates.sort(key=lambda x: x[0], reverse=True)
-            _, result, result_ledger, source = candidates[0]
-            print(f"FALLBACK: picked {source} live journal despite initial failure", file=sys.stderr)
-        else:
-            # Last resort: if current is offline and no live covers it, write debug and use current to unblock publishing of debug
-            print("No live candidate covers current, attempting to write debug and use current", file=sys.stderr)
-            try:
-                debug_path = ROOT / "data" / "restore_debug.json"
-                debug_info = {
-                    "error": str(e),
-                    "traceback": traceback.format_exc(),
-                    "current": {"mode": current.get("mode"), "last": current.get("last_attempt_utc"), "events": len(current.get("events",[])), "checks": len(current.get("checks",[]))},
-                    "published": {"mode": published.get("mode") if published else None, "last": published.get("last_attempt_utc") if published else None, "events": len(published.get("events",[])) if published else 0, "checks": len(published.get("checks",[])) if published else 0} if published else None,
-                    "artifact": {"mode": artifact.get("mode") if artifact else None, "last": artifact.get("last_attempt_utc") if artifact else None, "events": len(artifact.get("events",[])) if artifact else 0, "checks": len(artifact.get("checks",[])) if artifact else 0} if artifact else None,
-                }
-                debug_path.write_text(json.dumps(debug_info, indent=2), encoding="utf-8")
-                print(f"Wrote debug to {debug_path}", file=sys.stderr)
-            except Exception as de:
-                print(f"Failed to write debug: {de}", file=sys.stderr)
-            # If require_live is set, we still want to fail visibly, but after writing debug
-            # For now, return current to allow debug to be published via Pages (legacy)
-            # The next hourly run will retry
-            if args.require_live_history:
-                # If current is offline, this will fail the require_live check below, but we want to publish debug
-                # So we return current and let the require_live check fail after, but debug is already written
-                pass
-            result, result_ledger, source = current, ledger, "current (fallback after failure)"
-            # Don't enforce require_live here, let it be checked after, but we want to publish debug
-            # So we will not raise, but return current
-            print(f"FALLBACK: using current offline journal to publish debug", file=sys.stderr)
-    # Settlement history: the longest candidate that still extends the committed
-    # prefix wins; divergence stops the run instead of rewriting receipts.
-    result_settlements = current_settlements
-    for candidate in sorted((j for j in (published_settlements, artifact_settlements) if j is not None),
-                            key=lambda j: len(j.get("rows", []))):
-        result_settlements = restore_settlements(result_settlements, candidate)
-    # Both candidates and their coverage were checked BEFORE writing any file.
+        # Settlement history: the longest candidate that still extends the committed
+        # prefix wins; divergence stops the run instead of rewriting receipts.
+        result_settlements = current_settlements
+        for candidate in sorted((j for j in (published_settlements, artifact_settlements, archive_settlements)
+                                 if j is not None), key=lambda j: len(j.get("rows", []))):
+            result_settlements = restore_settlements(result_settlements, candidate)
+    except SourceError as exc:
+        # Fail visibly. Diagnostics go to a temp dir for the workflow's debug artifact; NOTHING in
+        # data/ is modified, so a failed restore can never publish the offline seed as "history".
+        summary = {"error": str(exc)}
+        for label, doc in (("current", current), ("published", published), ("artifact", artifact), ("archive", archive)):
+            summary[label] = None if doc is None else {
+                "mode": doc.get("mode"), "last_attempt_utc": doc.get("last_attempt_utc"),
+                "events": len(doc.get("events", [])), "quotes": len(doc.get("quotes", []))}
+        try:
+            args.debug_dir.mkdir(parents=True, exist_ok=True)
+            (args.debug_dir / "restore_failure.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+        except OSError:
+            pass
+        print(f"RESTORE REFUSED (history protected, nothing written): {json.dumps(summary)}", file=sys.stderr)
+        return 1
+    # All candidates and their coverage were checked BEFORE writing any file.
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     LEDGER.write_text(json.dumps(result_ledger, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     SETTLEMENTS.write_text(json.dumps(result_settlements, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
