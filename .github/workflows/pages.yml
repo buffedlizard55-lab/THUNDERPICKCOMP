@@ -74,24 +74,26 @@ jobs:
             else
               echo "Published settlement journal unavailable ($settlements_status); starting from the committed/empty chain."
             fi
+            set +e
             python3 -m scripts.restore \
               --observations /tmp/previous-thunderpickcomp/observations.json \
               --ledger /tmp/previous-thunderpickcomp/ledger.json \
               "${settlements_args[@]}" \
               "${artifact_args[@]}" --require-live-history
             restore_exit=$?
+            set -e
             if [[ $restore_exit -ne 0 ]]; then
               echo "Restore failed with exit $restore_exit, dumping debug info"
               ls -R /tmp/previous-thunderpickcomp/ || true
               echo "=== published observations head ==="
-              cat /tmp/previous-thunderpickcomp/observations.json | head -n 50 || true
+              cat /tmp/previous-thunderpickcomp/observations.json | head -n 80 || true
               echo "=== current observations head ==="
-              cat data/observations.json | head -n 20 || true
+              cat data/observations.json | head -n 30 || true
               if [[ -d /tmp/previous-thunderpickcomp/artifact ]]; then
                 echo "=== artifact dir ==="
-                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 200 || true
+                ls -R /tmp/previous-thunderpickcomp/artifact | head -n 300 || true
                 echo "=== artifact observations head ==="
-                cat /tmp/previous-thunderpickcomp/artifact/data/observations.json 2>/dev/null | head -n 50 || cat /tmp/previous-thunderpickcomp/artifact/observations.json 2>/dev/null | head -n 50 || true
+                cat /tmp/previous-thunderpickcomp/artifact/data/observations.json 2>/dev/null | head -n 80 || cat /tmp/previous-thunderpickcomp/artifact/observations.json 2>/dev/null | head -n 80 || true
               else
                 echo "No artifact dir"
               fi
@@ -99,6 +101,7 @@ jobs:
               mkdir -p /tmp/restore-debug
               cp -R /tmp/previous-thunderpickcomp /tmp/restore-debug/ || true
               cp data/observations.json /tmp/restore-debug/current_observations.json || true
+              echo "Restore failed, see logs above" > /tmp/restore-debug/FAILED.txt
               exit $restore_exit
             fi
           elif [[ "$status" == "404" && ${#artifact_args[@]} -gt 0 ]]; then
