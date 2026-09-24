@@ -1,0 +1,13 @@
+{
+  "meta": {
+    "simulated": true,
+    "currency": "units (simulated, no real money)",
+    "rules_version": "v2 (see data/schema.md and scripts/competition.py)",
+    "settlement_policy": "No automatic settlement. Require the venue’s actual resolution (including any partial/void rules), plus independent HLTV and Liquipedia result confirmation; check for conflicts before recording outcome and payout. Outright: verify official tournament winner and venue resolution. Unverified results remain pending.",
+    "payout_formula": "Gross, fee-free simulation: win = stake / raw_ask; loss = 0; venue-approved void = stake. profit = payout - stake. Partial/50-50 resolves from venue’s actual payout fraction; do not assume void.",
+    "prediction_share_conversion": "A $1 Yes share at first-party best ask p converts to gross decimal_odds = 1/p for simulation. Historical/book quotes are NOT executed trades. Fees, slippage and tax excluded; top-of-book depth required for the amount modeled.",
+    "last_updated_utc": "2026-09-24T05:00:00Z",
+    "note": "Empty by policy: no timestamped, first-party pre-event Finals price with BOTH eligible outright asks captured yet. Resolved qualifier market prices are NOT usable as earlier asks."
+  },
+  "entries": []
+}

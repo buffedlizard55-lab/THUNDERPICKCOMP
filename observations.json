@@ -1,0 +1,194 @@
+{
+  "schema_version": 1,
+  "last_attempt_utc": "2026-09-24T17:10:00Z",
+  "mode": "offline-replay",
+  "checks": [
+    {
+      "source": "valve_vrs",
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "Latest published Valve Global VRS snapshot (ranked roster; not necessarily today's starting five). Offline replay contains only finalist rows.",
+      "records_checked": 8,
+      "detail": "Snapshot date 2026-09-07"
+    },
+    {
+      "source": "liquipedia_fixtures",
+      "url": "https://liquipedia.net/counterstrike/api.php?action=parse&page=Thunderpick%2FWorld_Championship%2F2026&prop=wikitext&format=json",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "Matches with explicit UTC date, both finalist names and HLTV id in Liquipedia Results. HLTV match content has NOT been verified by this job.",
+      "records_checked": 0,
+      "detail": "Other templates/dates deliberately skipped; no paper bets on unconfirmed fixtures."
+    },
+    {
+      "source": "polymarket_search",
+      "url": "https://gamma-api.polymarket.com/public-search?q=Thunderpick&limit_per_type=25&events_status=active",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "Search Thunderpick active events, first 25 only; not a complete market enumeration.",
+      "records_checked": 0,
+      "detail": "0 TWC 2026 events found in this query"
+    },
+    {
+      "source": "polymarket_tag",
+      "url": "https://gamma-api.polymarket.com/events?closed=false&limit=60&order=startDate&ascending=false&tag_slug=counter-strike",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "First 60 currently open events in the counter-strike tag; other tags/matches may be missed.",
+      "records_checked": 1,
+      "detail": "0 TWC 2026 events found in this query"
+    },
+    {
+      "source": "polymarket_history",
+      "url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "First 20 search results, including historical qualifier events; never use post-match settlement prices as pre-match quotes.",
+      "records_checked": 1,
+      "detail": "1 TWC 2026 events found in this query"
+    },
+    {
+      "source": "kalshi_game",
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "First 1 page(s) of OPEN events in KXCS2GAME; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
+      "records_checked": 2,
+      "detail": "0 TWC 2026 events confirmed from market rules"
+    },
+    {
+      "source": "kalshi_outright",
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
+      "scope": "First 1 page(s) of OPEN events in KXCS2; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
+      "records_checked": 0,
+      "detail": "0 TWC 2026 events confirmed from market rules"
+    }
+  ],
+  "vrs_history": [
+    {
+      "snapshot_date": "2026-09-07",
+      "observed_utc": "2026-09-24T17:10:00Z",
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
+      "teams": [
+        {
+          "team_id": "furia",
+          "rank": 7,
+          "points": 1754,
+          "roster": [
+            "FalleN",
+            "KSCERATO",
+            "molodoy",
+            "YEKINDAR",
+            "yuurih"
+          ]
+        },
+        {
+          "team_id": "falcons",
+          "rank": 3,
+          "points": 1881,
+          "roster": [
+            "karrigan",
+            "kyousuke",
+            "m0NESY",
+            "NiKo",
+            "TeSeS"
+          ]
+        },
+        {
+          "team_id": "legacy",
+          "rank": 6,
+          "points": 1783,
+          "roster": [
+            "arT",
+            "dumau",
+            "latto",
+            "n1ssim",
+            "try"
+          ]
+        },
+        {
+          "team_id": "aurora",
+          "rank": 12,
+          "points": 1552,
+          "roster": [
+            "Jimpphat",
+            "kyxsan",
+            "Wicadia",
+            "woxic",
+            "XANTARES"
+          ]
+        },
+        {
+          "team_id": "betboom",
+          "rank": 15,
+          "points": 1499,
+          "roster": [
+            "Boombl4",
+            "d1Ledez",
+            "Magnojez",
+            "S1ren",
+            "zorte"
+          ]
+        },
+        {
+          "team_id": "9z",
+          "rank": 9,
+          "points": 1606,
+          "roster": [
+            "dgt",
+            "HUASOPEEK",
+            "luchov",
+            "max",
+            "meyern"
+          ]
+        },
+        {
+          "team_id": "parivision",
+          "rank": 18,
+          "points": 1461,
+          "roster": [
+            "HObbit",
+            "Jame",
+            "slaxejezzz",
+            "xiELO",
+            "zweih"
+          ]
+        },
+        {
+          "team_id": "virtuspro",
+          "rank": 40,
+          "points": 1270,
+          "roster": [
+            "AquaRS",
+            "b1st",
+            "F0R3VER",
+            "mir",
+            "tO0RO"
+          ]
+        }
+      ]
+    }
+  ],
+  "roster_signals": [],
+  "fixtures": [],
+  "events": [
+    {
+      "key": "polymarket:1000135",
+      "venue": "Polymarket (international)",
+      "id": "1000135",
+      "title": "Counter-Strike: 3DMAX vs 100 Thieves (BO3) - Thunderpick World Championship Closed Qualifier Group C",
+      "stage": "qualifier/series",
+      "status": "closed",
+      "first_seen_utc": "2026-09-24T17:10:00Z",
+      "last_seen_utc": "2026-09-24T17:10:00Z",
+      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
+      "review_url": "https://polymarket.com/event/cs2-3dmax-100t-2026-09-11"
+    }
+  ],
+  "quotes": [],
+  "alerts": [],
+  "last_completed_utc": "2026-09-24T17:10:00Z"
+}

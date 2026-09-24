@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "policy": "No automatic settlement. Append-only venue-resolution receipts plus independent HLTV/Liquipedia result confirmation; ledger changes only on a settlement_decision row with agreeing evidence. Canceled/unresolved markets stay pending (void is never assumed); venue 50/50 resolutions are 'partial' with the venue fraction.",
+  "rows": [],
+  "chain_head": null,
+  "note": "Empty by policy: no paper position has settled yet. Rows are chained with SHA-256 so edits or deletions of history are detectable; scripts/validate.py re-verifies every link."
+}
