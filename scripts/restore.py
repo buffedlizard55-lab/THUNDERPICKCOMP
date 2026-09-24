@@ -100,19 +100,31 @@ def choose_history(current: dict, ledger: dict,
         raise SourceError("observations and ledger must be restored together")
     if published is None and artifact is None:
         raise SourceError("no published or successful Actions journal; refusing to reset history")
-    for obs, entries in ((published, published_ledger), (artifact, artifact_ledger)):
-        if obs is not None:
-            restore_observations(current, obs)
-            restore_ledger(ledger, entries)
+    # The committed seed (current) is offline-replay; Pages may briefly serve
+    # an older offline seed after a push while the Actions artifact is newer
+    # and live. Requiring BOTH to cover current would fail the race where
+    # Pages is still offline and current is live (or vice versa). Instead,
+    # require that the selected journal covers current, and that the newer
+    # covers the older to avoid silent history loss.
     if published is None:
         selected, selected_ledger, source = artifact, artifact_ledger, "Actions checkpoint"
+        restore_observations(current, selected)
+        restore_ledger(ledger, selected_ledger)
     elif artifact is None:
         selected, selected_ledger, source = published, published_ledger, "Pages"
+        restore_observations(current, selected)
+        restore_ledger(ledger, selected_ledger)
     elif parse_time(published["last_attempt_utc"]) >= parse_time(artifact["last_attempt_utc"]):
+        # Published is newer — it must cover current and artifact
+        restore_observations(current, published)
+        restore_ledger(ledger, published_ledger)
         restore_observations(artifact, published)
         restore_ledger(artifact_ledger, published_ledger)
         selected, selected_ledger, source = published, published_ledger, "Pages"
     else:
+        # Artifact is newer — it must cover current and published
+        restore_observations(current, artifact)
+        restore_ledger(ledger, artifact_ledger)
         restore_observations(published, artifact)
         restore_ledger(published_ledger, artifact_ledger)
         selected, selected_ledger, source = artifact, artifact_ledger, "Actions checkpoint"
