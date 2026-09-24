@@ -15,7 +15,7 @@
         <span class="brand-mark" aria-hidden="true">⚡</span>
         <div>
           <h1>Thunderpick World Championship 2026 · Competition Hub</h1>
-          <p class="tagline">Verified facts, free market tracking &amp; a simulated leaderboard — every claim linked to its source.</p>
+          <p class="tagline">Dated sources, first-party market receipts &amp; an auditable simulated competition.</p>
         </div>
       </div>
     </div>
@@ -24,6 +24,7 @@
     <div class="wrap">
       <a href="index.html" aria-current="page">Overview</a>
       <a href="teams.html">Teams</a>
+      <a href="guide.html">CS2 Guide</a>
       <a href="markets.html">Markets</a>
       <a href="leaderboard.html">Leaderboard</a>
       <a href="ledger.html">Ledger</a>
@@ -36,7 +37,7 @@
     <div class="wrap">
       <section class="hero" aria-labelledby="hero-title">
         <h2 id="hero-title">The Finals: 8 teams · $1,000,000 · Malta · Oct 14–18, 2026</h2>
-        <p>The fourth edition of Counter-Strike 2's premier bookmaker-backed independent tournament. This hub tracks the event with <strong>verified facts only</strong> — plus a forward-looking <strong>simulated prediction competition</strong> where every bot's exact positions are public and settled against verified prices.</p>
+        <p>The fourth edition of Counter-Strike 2's premier bookmaker-backed independent tournament. This hub separates sourced facts from analysis and automated observations. A <strong>forward-only simulated competition</strong> records paper decisions only if first-party prices meet strict evidence rules; no real orders or guaranteed fills.</p>
         <div class="fact-grid">
           <div class="fact"><div class="k">Dates</div><div class="v">Oct 14–18, 2026</div></div>
           <div class="fact"><div class="k">Prize pool</div><div class="v">$1,000,000</div></div>
@@ -45,8 +46,8 @@
           <div class="fact"><div class="k">Venue</div><div class="v">BLAST Studios, Malta</div></div>
           <div class="fact"><div class="k">Tier</div><div class="v">S-Tier · Valve Tier 1</div></div>
         </div>
-        <p class="small muted">Data as of <span data-today>2026-09-24</span> · 32 verified master-list entries · <a href="master-list.html">Audit every claim →</a></p>
-        <div class="notice good"><strong>No hallucinations policy:</strong> missing data is shown as <em>unknown / TBD</em> — never guessed. Simulated bets are labeled <span class="badge sim">SIM</span> and the ledger is empty until real verified prices exist.</div>
+        <p class="small muted">Tournament facts: <a href="master-list.html#ML-001">event</a> · <a href="master-list.html#ML-003">dates</a> · <a href="master-list.html#ML-005">prize</a> · <a href="master-list.html#ML-007">field</a>. <span data-master-count>36</span> sourced claims. <a href="master-list.html">Audit the list →</a></p><div data-render="pulse"><p class="muted">Loading feed health…</p></div>
+        <div class="notice good"><strong>No hallucinations policy:</strong> missing data is shown as <em>unknown / TBD</em> — never guessed. Simulated bets are labeled <span class="badge sim">SIM</span> and never backdated from a resolved market. Check <a href="markets.html#source-checks">collection coverage and errors</a>.</div>
       </section>
 
       <section class="card" aria-labelledby="field-title">
@@ -57,15 +58,15 @@
 
       <section class="card" aria-labelledby="matches-title">
         <h2 id="matches-title">Matches &amp; current feed</h2>
-        <div class="notice warn"><strong>Pre-event state:</strong> the group draw is TBD — no Finals fixtures exist yet. The closed qualifier is final (Virtus.pro qualified). New verified items appear here first.</div>
+        <p class="muted small">The seeded event status is dated Sep 24; unconfirmed future fixture signals appear separately. Do not treat an old TBD label as a live schedule.</p>
         <div data-render="matches"><p class="muted">Loading match records…</p></div>
-        <h3>Latest verified entries</h3>
+        <div data-render="fixture-signals"><p class="muted">Checking fixture signals…</p></div><h3>Latest sourced items</h3>
         <div data-render="feed" data-limit="6"><p class="muted">Loading feed…</p></div>
       </section>
 
       <section class="card" aria-labelledby="comp-title">
         <h2 id="comp-title">Simulated leaderboard competition <span class="badge sim">SIM</span></h2>
-        <p>Eight simulated users run eight transparent strategies from 1,000 units each. Every position will be recorded with selection, odds, stake, price source, timestamp, settlement rule and outcome — <a href="ledger.html">inspect the ledger</a>.</p>
+        <p>Eight simulated accounts start with 1,000 units each. One price-dependent outright policy is operational, one is a no-bet control, and six match policies are paused until fixture verification and execution logic exist. If eligible asks are captured, exact paper receipts appear in the <a href="ledger.html">ledger</a>.</p>
         <div data-render="leaderboard"><p class="muted">Loading standings…</p></div>
         <p class="small"><span data-ledger-meta></span></p>
         <p><a href="leaderboard.html">Full standings &amp; strategy rules →</a></p>
@@ -78,14 +79,15 @@
             <h3>Understand the event</h3>
             <ul>
               <li><a href="teams.html">Teams &amp; full rosters</a> — every player and coach, sourced</li>
+              <li><a href="guide.html">CS2 field guide</a> — GSL bracket, dated favorites and market-rule context</li>
               <li><a href="changes.html">Roster &amp; event change tracker</a> — baseline + watchlist</li>
-              <li><a href="master-list.html">Verified master list</a> — all 32 claims with sources</li>
+              <li><a href="master-list.html">Verified master list</a> — <span data-master-count>36</span> sourced claims</li>
             </ul>
           </div>
           <div>
             <h3>Follow the competition</h3>
             <ul>
-              <li><a href="markets.html">Market tracker</a> — free Kalshi/Polymarket price feeds (no paid API)</li>
+              <li><a href="markets.html">Market tracker</a> — first-party Kalshi/Polymarket query receipts (no paid API)</li>
               <li><a href="leaderboard.html">Leaderboard</a> — simulated standings, recomputed live</li>
               <li><a href="methodology.html">Methodology &amp; limitations</a> — how verification works</li>
             </ul>
@@ -97,7 +99,7 @@
   <footer class="site-footer">
     <div class="wrap">
       <p><strong>THUNDERPICKCOMP</strong> — Thunderpick World Championship 2026 competition hub. All competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
-      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Last collection finished <span data-today>2026-09-24</span></p>
     </div>
   </footer>
   <script src="assets/app.js"></script>

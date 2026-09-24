@@ -6,12 +6,12 @@
     "url": "https://kalshi.com/",
     "docs_url": "https://docs.kalshi.com/llms.txt",
     "access": "Free public REST + WebSocket market data without authentication (per official 'Quick Start: Market Data'). No paid API or subscription required to read markets, orderbooks, trades, candlesticks.",
-    "coverage": "CS2/esports markets exist on the platform in principle; NO Thunderpick World Championship 2026-specific market has been verified as of 2026-09-24T05:00:00Z.",
-    "poll_plan": "Query Get Series List / Get Markets for esports series; record ticker, yes/no price, volume, observed_utc for any TWC 2026 market found. Record explicit 'none found' snapshots so absence is auditable.",
-    "last_checked_utc": "2026-09-24T05:00:00Z",
-    "status": "verified-access / coverage-unverified",
+    "coverage": "Public Kalshi KXCS2GAME match-winner and KXCS2 tournament-winner series. Scoped search of open events; market rules must explicitly name TWC 2026. No current Finals contract captured in this repo. Historical Kalshi website example exists but no historical pre-match ask was stored.",
+    "poll_plan": "GET /events?series_ticker=KXCS2GAME|KXCS2&status=open&limit=200 (bounded pages); for an event naming Thunderpick or pairing two known finalists, GET /markets?event_ticker=... and verify rules_primary/rules_secondary mention this event/year. Capture yes_ask_dollars, yes_ask_size_fp and updated_time; NEVER use last_price as an executable ask.",
+    "last_checked_utc": "2026-09-24T17:16:10Z",
+    "status": "verified public access; open-event discovery scoped (not exhaustive)",
     "master_list": "ML-028",
-    "notes": "Respect Kalshi rate limits and terms. Prices are market prices in cents that settle at $1/$0 — not decimal odds; conversion must be shown in the ledger."
+    "notes": "Series names confirmed from Kalshi public series API. Category=Esports returned null; the real discovery tag is tags=Esports. This collector currently uses two known series and limits pages/candidate match pairs. Quotes are paper observations only."
   },
   {
     "id": "polymarket",
@@ -20,12 +20,12 @@
     "url": "https://polymarket.com/",
     "docs_url": "https://docs.polymarket.com/llms.txt",
     "access": "Free public REST market-data API (discover markets, market details, prices and order books, analytics, real-time data). No paid API or subscription required to read markets.",
-    "coverage": "CS2/esports markets exist on the platform in principle; NO Thunderpick World Championship 2026-specific market has been verified as of 2026-09-24T05:00:00Z.",
-    "poll_plan": "Query the public market-data endpoints for TWC 2026 events; record event/market id, outcome prices, volume, observed_utc for any TWC 2026 market found. Record explicit 'none found' snapshots so absence is auditable.",
-    "last_checked_utc": "2026-09-24T05:00:00Z",
-    "status": "verified-access / coverage-unverified",
+    "coverage": "TWC 2026 Closed Qualifier market verified: event 1000135 (3DMAX vs 100 Thieves). It is closed; its resolution 0/1 values are not pre-match prices. No active Finals ask captured in this repo yet; absence outside the checked query scope is UNKNOWN.",
+    "poll_plan": "Search q=Thunderpick&events_status=active (first 25), plus the first 60 open counter-strike-tagged events; inspect first 20 historical search hits for evidence of coverage. For active relevant markets, query the free CLOB order book for EACH outcome token; use best ask and size + book timestamp, never Gamma outcomePrices as executable fills.",
+    "last_checked_utc": "2026-09-24T17:16:10Z",
+    "status": "verified historical qualifier coverage; Finals price availability unknown",
     "master_list": "ML-029",
-    "notes": "Outcome-share prices settle at $1/$0 — not decimal odds; conversion must be shown in the ledger. Polymarket US and international rulebooks differ; record which venue a price came from."
+    "notes": "Gamma event id 1000135: https://gamma-api.polymarket.com/events/1000135. Snapshot checks are scoped, not an assertion that no other markets exist. Fees/void/partial rules differ by market; the full rule text is captured before any paper decision."
   },
   {
     "id": "hltv-results",

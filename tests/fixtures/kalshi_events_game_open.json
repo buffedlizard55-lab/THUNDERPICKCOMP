@@ -1,0 +1,22 @@
+{
+  "cursor": "",
+  "events": [
+    {
+      "category": "Sports",
+      "event_ticker": "KXCS2GAME-26SEP241230KEYDTDP",
+      "product_metadata": {"competition": "CS2", "competition_scope": "Game"},
+      "series_ticker": "KXCS2GAME",
+      "sub_title": "Keyd vs. Turma do Pagode (Sep 24)",
+      "title": "Keyd vs. Turma do Pagode"
+    },
+    {
+      "category": "Sports",
+      "event_ticker": "KXCS2GAME-26SEP241330AURYBYTIGERES",
+      "product_metadata": {"competition": "CS2", "competition_scope": "Game"},
+      "series_ticker": "KXCS2GAME",
+      "sub_title": "Aurora Young Blood vs. Young TigeRES (Sep 24)",
+      "title": "Aurora Young Blood vs. Young TigeRES"
+    }
+  ],
+  "milestones": []
+}

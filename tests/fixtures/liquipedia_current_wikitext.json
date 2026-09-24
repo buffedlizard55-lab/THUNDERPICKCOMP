@@ -1,0 +1,9 @@
+{
+  "parse": {
+    "title": "Thunderpick/World Championship/2026",
+    "pageid": 368756,
+    "wikitext": {
+      "*": "{{DISPLAYTITLE:Thunderpick World Championship 2026}}\n{{Infobox league\n|name=Thunderpick World Championship 2026\n|sdate=2026-10-14\n|edate=2026-10-18\n|team_number=8\n}}\n==Results==\n===Group Stage===\n===={{HiddenSort|Group A}}====\n{{Matchlist|id=hqBeFfpILf|gsl=winnersfirst|width=400px|collapsed=true|attached=true|title=Group A Matches\n|{{Match\n\t|opponent1={{TeamOpponent|}}|opponent2={{TeamOpponent|}}\n\t|date= |finished=\n\t|twitch=Thunderpick |youtube=Thunderpick |kick=Thunderpick\n\t|map1={{Map|map=|finished=\n\t\t|t1firstside=|t1t=|t1ct=|t2t=|t2ct=\n\t\t|stats=}}\n\t|map2={{Map|map=|finished=\n\t\t|t1firstside=|t1t=|t1ct=|t2t=|t2ct=\n\t\t|stats=}}\n\t|map3={{Map|map=|finished=\n\t\t|t1firstside=|t1t=|t1ct=|t2t=|t2ct=\n\t\t|stats=}}\n\t|hltv=\n    }}\n}}\n"
+    }
+  }
+}

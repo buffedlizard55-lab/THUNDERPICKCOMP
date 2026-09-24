@@ -179,6 +179,17 @@ footer.site-footer a { color: #ffd75e; }
 .roster li { padding: 0.15rem 0; border-bottom: 1px dotted var(--line); }
 .roster li:last-child { border-bottom: none; }
 
+/* Audit feed: readable on narrow screens, including long market IDs/rules. */
+.signal-list { list-style: none; padding: 0; margin: 0.65rem 0 1rem; }
+.signal-list li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+.signal-list li:last-child { border-bottom: none; }
+.change-item { border-top: 1px solid var(--line); padding: 0.7rem 0; }
+.change-item p { margin: 0.25rem 0; }
+.rule-text { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; padding: 0.6rem; background: var(--bg); border-radius: 7px; }
+.mono { overflow-wrap: anywhere; }
+.negative { color: var(--bad); font-weight: 700; }
+[id^="ML-"] { scroll-margin-top: 4.25rem; }
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 details { margin: 0.5rem 0; }
 details summary { cursor: pointer; font-weight: 600; }
 .error-box {
@@ -198,6 +209,10 @@ details summary { cursor: pointer; font-weight: 600; }
     --line: #2a3554;
     --accent: #8fa8ff;
     --accent-ink: #101a38;
+    --good: #88d4a2;
+    --warn: #f8c57a;
+    --bad: #ffaaa1;
+    --gold: #ffdc72;
   }
   .site-header { background: linear-gradient(135deg, #0a0f22 0%, #16225c 60%, #1f3a8a 100%); }
   .main-nav { background: #0a0f22; }
@@ -216,4 +231,7 @@ details summary { cursor: pointer; font-weight: 600; }
   .badge.tbd { background: #20263c; }
   a { color: #a9bcff; }
   footer.site-footer a { color: #ffd75e; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }

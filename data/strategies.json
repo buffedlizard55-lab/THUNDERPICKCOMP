@@ -12,8 +12,8 @@
       "Settlement: per market rule + HLTV/Liquipedia result cross-check."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Pre-event: no verified prices exist, so no bets placed."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   },
   {
     "username": "sim_underdog_hunter",
@@ -28,8 +28,8 @@
       "Settlement: per market rule + HLTV/Liquipedia result cross-check."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Pre-event: no verified prices exist, so no bets placed."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   },
   {
     "username": "sim_vrs_value",
@@ -44,8 +44,8 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Heuristic is transparent but unproven; labeled analysis, not fact."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   },
   {
     "username": "sim_cache_chaos",
@@ -59,8 +59,8 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Thesis: new-map veto variance favors dogs early. Unproven; labeled analysis."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   },
   {
     "username": "sim_qualifier_fade",
@@ -74,23 +74,24 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Pre-event: no verified prices exist, so no bets placed."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   },
   {
     "username": "sim_champ_correlation",
     "simulated": true,
     "strategy": "Champion Correlation",
-    "description": "Outright-only: splits 100 units across FURIA (defending champions) and Falcons (other top-five side) tournament-winner prices 50/50, if verified outright prices exist before the event.",
+    "description": "Outright-only paper strategy: if BOTH teams have fresh first-party best asks with enough top-of-book size in the same pre-Finals collection run, records 50 simulated units on FURIA and Falcons. Gross P/L; no real execution, fees or slippage modeled.",
     "rules": [
-      "Eligible: verified tournament-winner (outright) market only, captured before Oct 14.",
-      "Stake: 50.00 units on FURIA + 50.00 units on Falcons. No match bets.",
-      "If no verified outright market exists, places nothing (does not substitute match bets).",
-      "Settlement: per outright market rule + official final result."
+      "Eligible: tournament-winner contracts explicitly tied to Thunderpick World Championship 2026, NOT qualifier/series or map/match markets.",
+      "In the same live collection run before Oct 14 UTC, require BOTH FURIA and Falcons Yes outcomes: exchange book timestamps <= 10 minutes old, quote receipts <= 2 minutes before decision and <= 60 seconds apart, top-of-book size >= stake / ask.",
+      "Pick the lowest eligible ask for each team (market ID breaks ties); stake 50.00 units each, atomically. If either side is unavailable, place neither.",
+      "Capture the raw ask, ask size, quote ID, venue, market ID, settlement rule and decision timestamp. No inference of a real fill; fees/slippage excluded.",
+      "One pair maximum, never backdated. Settlements are held pending until venue resolution and the winner are independently cross-checked."
     ],
     "bankroll_start": 1000.0,
     "status": "active",
-    "notes": "Pre-event: no verified outright market, so no bets placed."
+    "notes": "This is the only price-dependent strategy currently implemented. It will remain empty unless both verified quotes appear in the same future live run."
   },
   {
     "username": "sim_flat_observer",
@@ -116,7 +117,7 @@
       "Price + settlement rules identical to sim_favorite_backer."
     ],
     "bankroll_start": 1000.0,
-    "status": "active",
-    "notes": "Pre-event: no verified prices exist, so no bets placed."
+    "status": "paused",
+    "notes": "Policy published, not live: match bets require independently verified Finals fixtures, pre-start asks with depth, and a tested match-strategy engine. No inferred/backdated positions."
   }
 ]

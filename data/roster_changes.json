@@ -1,0 +1,40 @@
+[
+  {
+    "id": "RC-001",
+    "team_id": "parivision",
+    "kind": "benched (remains with team)",
+    "player": "slaxejezzz",
+    "published_utc": "2026-09-17T12:00:00Z",
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "fact": "PARIVISION benched Vyacheslav “slaxejezzz” Vinokurov. The team says he remains part of PARIVISION, is available for loan, and is not for sale.",
+    "impact": "Removed from the stated main roster; do not confuse with a confirmed release or completed loan.",
+    "sources": [
+      {
+        "label": "PARIVISION official X announcement (Sep 17)",
+        "url": "https://x.com/parivisiongg/status/2100555368153903362",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-033"
+  },
+  {
+    "id": "RC-002",
+    "team_id": "parivision",
+    "kind": "joined main roster",
+    "player": "HObbit",
+    "published_utc": "2026-09-17T12:01:00Z",
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "fact": "PARIVISION announced Abay “HObbit” Khassenov joined its main roster permanently, after an earlier summer stand-in stint.",
+    "impact": "Changes the announced starting lineup ahead of the Finals; earlier stand-in dates are not specified here.",
+    "sources": [
+      {
+        "label": "PARIVISION official X announcement (Sep 17)",
+        "url": "https://x.com/parivisiongg/status/2100555617832149185",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-034"
+  }
+]

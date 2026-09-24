@@ -26,6 +26,26 @@
     "master_list": "ML-031"
   },
   {
+    "id": "TWC26-FINALS-CHAMPION",
+    "event": "Thunderpick World Championship 2026 — Finals",
+    "stage": "Tournament champion (outright market reference)",
+    "team_a": null,
+    "team_b": null,
+    "scheduled_utc": null,
+    "score": null,
+    "status": "tbd",
+    "detail": "Outright competition target, not a match/fixture. Winner cannot be known before the Oct 14–18 Finals conclude; market settlement has its own cancellation/void rules.",
+    "sources": [
+      {
+        "label": "Thunderpick via PRNewswire (Aug 13, 2026 announcement)",
+        "url": "https://www.prnewswire.com/news-releases/thunderpick-world-championship-2026-returns-to-malta-with-1-million-prize-pool-302850221.html",
+        "accessed_utc": "2026-09-24T05:00:00Z",
+        "type": "primary"
+      }
+    ],
+    "master_list": "ML-007"
+  },
+  {
     "id": "TWC26Q-FINAL-STANDINGS",
     "event": "Thunderpick World Championship 2026 — Closed Qualifier",
     "stage": "Final standings",

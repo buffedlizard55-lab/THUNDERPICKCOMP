@@ -10,7 +10,10 @@ For any tournament, team, player, roster, match, odds, prediction-market, or res
 
 - Verify each claim against an accessible source and keep a reviewable source link and retrieval/publication timestamp. Prefer primary sources. A prior assistant answer, a search snippet, an existing project page, or an unsourced dataset is not verification.
 - Do not create unsupported records to satisfy a requested count. Check for duplicates and verify line by line before adding entries.
-- Preserve the source's exact price/line and timestamp, make calculations reproducible, label estimates and simulated actions, and flag conflicts, missing data, parsing changes, and stale data rather than guessing.
+- Preserve the source's exact price/line and *HTTP receipt time*, make calculations reproducible, label estimates and simulated actions, and flag conflicts, missing data, parsing changes, and stale data rather than guessing.
+- Read `data/schema.md` before touching the collector or ledger. Polymarket Gamma displayed/outcome prices and 0/1 resolved markets are not executable pre-match asks; use the outcome-specific first-party CLOB book. Kalshi last trade is not its Yes ask. A quote is not a completed trade.
+- Valve Global VRS ranked-roster snapshots and the dated Sep 24 event lineup answer different questions; a snapshot difference is not proof of a transfer or its effective date. A partial or failed market query never proves market absence.
+- Preserve the published Pages journal when updating workflows: `scripts/restore.py` must reject missing/corrupt history rather than reset it. Offline fixtures are partial research replays, not live data or paper-betting inputs.
 - Use no paid API/subscription. Follow source terms, attribution requirements, and rate limits.
 
 Before finishing, complete the three passes required by the README, run applicable checks, review the diff, and report verified work, uncertainty, limitations, and next steps. Never state that a source, test, or requirement was verified unless it actually was.

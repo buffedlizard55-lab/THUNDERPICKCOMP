@@ -15,6 +15,12 @@ jobs:
           python-version: "3.12"
       - name: Validate JSON data and site wiring
         run: python3 scripts/validate.py
+      - name: Test source parsing, quote rules, restoration and simulation
+        run: python3 -m unittest discover -s tests -v
+      - name: Test static browser rendering, failure states and escaping
+        run: |
+          node --check assets/app.js
+          node tests/test_ui.cjs
       - name: Check for forbidden placeholder leaks
         run: |
           # Fail if common hallucination/placeholder markers leak into data files.

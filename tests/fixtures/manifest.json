@@ -1,0 +1,43 @@
+{
+  "notice": "TEST REPLAY ONLY. Except where marked complete, these are SELECTED-FIELD/PARTIAL excerpts from observed public responses, not original raw API payloads. Do not treat an absent record here as evidence of absence in the source. No fixture can create a simulated wager.",
+  "captured_by": "Repository research session using public page-fetch (2026-09-24)",
+  "captured_utc": "2026-09-24T17:10:00Z",
+  "files": {
+    "vrs_listing_2026.json": {
+      "url": "https://api.github.com/repos/ValveSoftware/counter-strike_regional_standings/contents/invitation/2026",
+      "scope": "Partial listing, selected entries only. File names and URLs observed in source; does NOT enumerate all files."
+    },
+    "vrs_global_2026_09_07.md": {
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
+      "scope": "Eight verbatim ranking rows of the TWC finalists only. Other teams/rows omitted; missing teams must NOT be interpreted as unranked."
+    },
+    "vrs_global_2026_08_03.md": {
+      "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_08_03.md",
+      "scope": "Seven verbatim ranking rows of TWC finalists in the captured top-36 rows only. Virtus.pro is not included because its rank was not verified in the excerpt; absence here says nothing about its August rank."
+    },
+    "liquipedia_current_wikitext.json": {
+      "url": "https://liquipedia.net/counterstrike/api.php?action=parse&page=Thunderpick%2FWorld_Championship%2F2026&prop=wikitext&format=json",
+      "scope": "Source text excerpts: infobox date/team count and first unscheduled Group A Match template. All other templates omitted; not suitable to conclude no other published fixtures."
+    },
+    "polymarket_search_thunderpick_active.json": {
+      "url": "https://gamma-api.polymarket.com/public-search?q=Thunderpick&limit_per_type=25&events_status=active",
+      "scope": "Complete response, totalResults=0 for this specific search at capture time. Does NOT prove no Thunderpick markets on the whole exchange."
+    },
+    "polymarket_events_counter_strike_open.json": {
+      "url": "https://gamma-api.polymarket.com/events?closed=false&limit=60&order=startDate&ascending=false&tag_slug=counter-strike",
+      "scope": "One event appeared at capture time; selected fields only. Unrelated event description omitted; this source alone is not a comprehensive market search."
+    },
+    "polymarket_event_twc26_qualifier_closed.json": {
+      "url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
+      "scope": "Selected fields of one real closed 3DMAX vs 100 Thieves TWC 2026 Closed Qualifier event. Resolution rule excerpt only, no pre-match price. Other events/markets from large response omitted. NEVER use the 0/1 resolved outcomePrices as pre-match quotes."
+    },
+    "kalshi_events_game_open.json": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200",
+      "scope": "Selected fields from TWO real open events, no TWC context; other open events intentionally omitted. No absence claim."
+    },
+    "kalshi_events_outright_open.json": {
+      "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
+      "scope": "Complete response at capture time, empty events array for the specific KXCS2 series; other outright series may exist."
+    }
+  }
+}

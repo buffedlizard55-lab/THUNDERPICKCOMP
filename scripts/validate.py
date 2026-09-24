@@ -3,10 +3,12 @@
 
 Fails (exit 1) on any violation. Run: python3 scripts/validate.py
 """
+import hashlib
 import json
 import re
 import sys
 from datetime import datetime, timezone
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -48,21 +50,40 @@ def check_iso(value, where):
         err(f"{where}: timestamp is in the future: {value}")
 
 
+def decimal(value, where, lower=None, upper=None):
+    try:
+        result = Decimal(str(value))
+        if not result.is_finite():
+            raise InvalidOperation()
+    except (InvalidOperation, ValueError, TypeError):
+        err(f"{where}: must be a finite decimal, got {value!r}")
+        return None
+    if lower is not None and result <= lower:
+        err(f"{where}: must be > {lower}, got {result}")
+    if upper is not None and result >= upper:
+        err(f"{where}: must be < {upper}, got {result}")
+    return result
+
+
+def check_url(value, where):
+    if not isinstance(value, str) or not URL.match(value):
+        err(f"{where}: HTTPS URL required, got {value!r}")
+
+
 def check_sources(sources, where, require=True):
-    if not sources:
+    if not isinstance(sources, list) or not sources:
         if require:
             err(f"{where}: missing required sources[]")
         return
     for i, s in enumerate(sources):
         w = f"{where}.sources[{i}]"
+        if not isinstance(s, dict):
+            err(f"{w}: source must be an object")
+            continue
         if not s.get("label"):
             err(f"{w}: missing label")
-        if not s.get("url") or not URL.match(s["url"]):
-            err(f"{w}: url must be https, got {s.get('url')!r}")
-        if "accessed_utc" not in s:
-            err(f"{w}: missing accessed_utc")
-        else:
-            check_iso(s["accessed_utc"], w)
+        check_url(s.get("url"), w)
+        check_iso(s.get("accessed_utc"), w)
         if s.get("type") not in TYPES:
             err(f"{w}: type must be one of {sorted(TYPES)}, got {s.get('type')!r}")
 
@@ -218,79 +239,344 @@ def check_strategies(strats):
     return users
 
 
-def check_ledger(ledger, users, match_ids):
+def check_changes(changes, teams, master_ids):
+    if changes is None:
+        return
+    if not isinstance(changes, list):
+        err("roster_changes: expected array")
+        return
+    team_ids = {t.get("id") for t in teams or []}
+    seen = set()
+    for i, row in enumerate(changes):
+        w = f"roster_changes[{i}]"
+        if not isinstance(row, dict):
+            err(f"{w}: expected object")
+            continue
+        if not re.fullmatch(r"RC-\d{3}", str(row.get("id", ""))) or row["id"] in seen:
+            err(f"{w}: missing, malformed or duplicate id")
+        seen.add(row.get("id"))
+        if row.get("team_id") not in team_ids or row.get("master_list") not in master_ids:
+            err(f"{w}: missing referenced team / master-list entry")
+        for field in ("kind", "player", "fact", "impact"):
+            if not row.get(field):
+                err(f"{w}: missing {field}")
+        check_iso(row.get("published_utc"), w + ".published_utc")
+        check_iso(row.get("verified_utc"), w + ".verified_utc")
+        if (row.get("published_utc") or "") > (row.get("verified_utc") or ""):
+            err(f"{w}: publication is after verification")
+        check_sources(row.get("sources"), w)
+        if not any(src.get("type") == "primary" for src in row.get("sources", []) if isinstance(src, dict)):
+            err(f"{w}: verified move needs a primary team/player source")
+
+
+def check_observations(obs, teams):
+    if not isinstance(obs, dict) or obs.get("schema_version") != 1:
+        err("observations: missing/unknown schema v1")
+        return set()
+    mode = obs.get("mode")
+    if mode not in {"not-run", "offline-replay", "live"}:
+        err(f"observations: unexpected mode {mode!r}")
+    if mode != "not-run":
+        check_iso(obs.get("last_attempt_utc"), "observations.last_attempt_utc")
+        check_iso(obs.get("last_completed_utc"), "observations.last_completed_utc")
+        if (obs.get("last_attempt_utc") or "") > (obs.get("last_completed_utc") or ""):
+            err("observations: completion precedes attempt")
+    team_ids = {t.get("id") for t in teams or []}
+    for field in ("checks", "vrs_history", "roster_signals", "fixtures", "events", "quotes", "alerts"):
+        if not isinstance(obs.get(field), list):
+            err(f"observations.{field}: expected array")
+            return set()
+    if mode == "live" and len(obs["checks"]) != 7:
+        err("observations: live run must report every one of seven source checks")
+    checked = set()
+    for i, c in enumerate(obs["checks"]):
+        w = f"observations.checks[{i}]"
+        if not isinstance(c, dict):
+            err(f"{w}: expected object")
+            continue
+        if c.get("source") in checked or c.get("source") not in {
+                "valve_vrs", "liquipedia_fixtures", "polymarket_search", "polymarket_tag",
+                "polymarket_history", "kalshi_game", "kalshi_outright"}:
+            err(f"{w}: duplicate or unknown source")
+        checked.add(c.get("source"))
+        if c.get("status") not in {"ok", "partial", "error"}:
+            err(f"{w}: invalid status")
+        check_url(c.get("url"), w)
+        check_iso(c.get("checked_utc"), w)
+        if not isinstance(c.get("records_checked"), int) or c["records_checked"] < 0 or not c.get("scope"):
+            err(f"{w}: missing scope or invalid count")
+    seen_dates = set()
+    previous_date = ""
+    for i, snapshot in enumerate(obs["vrs_history"]):
+        w = f"observations.vrs_history[{i}]"
+        date = snapshot.get("snapshot_date", "")
+        try:
+            datetime.strptime(date, "%Y-%m-%d")
+        except (TypeError, ValueError):
+            err(f"{w}: invalid snapshot date")
+        if date in seen_dates or date <= previous_date:
+            err(f"{w}: duplicate or out-of-order date")
+        previous_date = date
+        seen_dates.add(date)
+        check_url(snapshot.get("url"), w)
+        check_iso(snapshot.get("observed_utc"), w)
+        rows = snapshot.get("teams")
+        if not isinstance(rows, list) or {r.get("team_id") for r in rows} != team_ids:
+            err(f"{w}: must contain exactly the eight finalists")
+            continue
+        for row in rows:
+            if type(row.get("rank")) is not int or row["rank"] <= 0 or type(row.get("points")) is not int or row["points"] <= 0:
+                err(f"{w}: invalid Valve rank/points")
+            if not isinstance(row.get("roster"), list) or len(row["roster"]) != 5 or len(set(row["roster"])) != 5:
+                err(f"{w}: invalid VRS ranked roster")
+    signals = set()
+    for i, row in enumerate(obs["roster_signals"]):
+        w = f"observations.roster_signals[{i}]"
+        if row.get("id") in signals or row.get("team_id") not in team_ids:
+            err(f"{w}: duplicate id or unknown team")
+        signals.add(row.get("id"))
+        if row.get("old_snapshot_date") not in seen_dates or row.get("new_snapshot_date") not in seen_dates or not row.get("old_snapshot_date", "") < row.get("new_snapshot_date", ""):
+            err(f"{w}: invalid snapshot references")
+        for f in ("old_url", "new_url"):
+            check_url(row.get(f), w)
+        if not row.get("removed") and not row.get("added"):
+            err(f"{w}: roster signal must explain the difference")
+    event_ids = set()
+    for i, e in enumerate(obs["events"]):
+        w = f"observations.events[{i}]"
+        if not isinstance(e, dict) or e.get("key") in event_ids or not e.get("key"):
+            err(f"{w}: duplicate/missing event key")
+            continue
+        event_ids.add(e["key"])
+        if not e.get("title") or e.get("status") not in {"open", "closed"} or e.get("venue") not in {"Kalshi", "Polymarket (international)"}:
+            err(f"{w}: malformed venue/event/status")
+        for f in ("source_url", "review_url"):
+            check_url(e.get(f), w)
+        for f in ("first_seen_utc", "last_seen_utc"):
+            check_iso(e.get(f), w)
+    seen_fixtures = set()
+    for i, row in enumerate(obs["fixtures"]):
+        w = f"observations.fixtures[{i}]"
+        if row.get("id") in seen_fixtures or not re.fullmatch(r"HLTV-\d{6,9}", row.get("id", "")):
+            err(f"{w}: duplicate/malformed HLTV match id")
+        seen_fixtures.add(row.get("id"))
+        if row.get("team_a") not in team_ids or row.get("team_b") not in team_ids or row.get("team_a") == row.get("team_b"):
+            err(f"{w}: malformed teams")
+        check_iso(row.get("scheduled_utc"), w)
+        check_iso(row.get("observed_utc"), w)
+        for f in ("source_url", "liquipedia_url"):
+            check_url(row.get(f), w)
+        if row.get("status") != "scheduled-unconfirmed":
+            err(f"{w}: fixture must be unconfirmed until independently checked")
+    ids = set()
+    if mode == "offline-replay" and obs["quotes"]:
+        err("observations: offline replay must not publish quotes or create bets")
+    for i, q in enumerate(obs["quotes"]):
+        w = f"observations.quotes[{i}]"
+        if not isinstance(q, dict) or not q.get("quote_id") or q.get("quote_id") in ids:
+            err(f"{w}: duplicate/missing quote ID")
+            continue
+        ids.add(q["quote_id"])
+        if q.get("event_key") not in event_ids or not q.get("market_id") or not q.get("selection") or not q.get("resolution_rule"):
+            err(f"{w}: missing event, market id, selection or settlement rule")
+        if q.get("venue") not in {"Kalshi", "Polymarket (international)"}:
+            err(f"{w}: unknown venue")
+        raw_price = decimal(q.get("raw_price"), w + ".raw_price", lower=Decimal(0), upper=Decimal(1))
+        size = decimal(q["ask_size"], w + ".ask_size") if q.get("ask_size") is not None else None
+        if size is not None and size < 0:
+            err(f"{w}: negative size")
+        if raw_price is not None and all(isinstance(q.get(f), str) for f in ("venue", "market_id", "selection", "observed_utc")):
+            identity = "|".join([q["venue"], q["market_id"], q["selection"], q["observed_utc"], str(raw_price), str(q.get("ask_size")), str(q.get("source_updated_utc"))])
+            if q["quote_id"] != hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]:
+                err(f"{w}: quote ID does not match immutable price/size/time fields")
+        check_iso(q.get("observed_utc"), w)
+        if q.get("source_updated_utc") is not None:
+            check_iso(q["source_updated_utc"], w + ".source_updated_utc")
+        elif q.get("quote_status") != "indicative-only":
+            err(f"{w}: fresh quote needs a first-party book timestamp")
+        for f in ("source_url", "event_url"):
+            check_url(q.get(f), w)
+        if q.get("quote_status") not in {"fresh", "indicative-only"}:
+            err(f"{w}: quote freshness unknown")
+        if q.get("source_updated_utc") and q.get("observed_utc"):
+            try:
+                lag = (datetime.strptime(q["observed_utc"], "%Y-%m-%dT%H:%M:%SZ") -
+                       datetime.strptime(q["source_updated_utc"], "%Y-%m-%dT%H:%M:%SZ")).total_seconds()
+                if lag < 0:
+                    err(f"{w}: venue book timestamp after receipt")
+                if q.get("quote_status") == "fresh" and (lag > 600 or size is None or size <= 0):
+                    err(f"{w}: a fresh ask needs a book update within 10 minutes and positive size")
+            except (TypeError, ValueError):
+                err(f"{w}: quote/book timestamps invalid")
+        if q.get("observed_utc") and obs.get("last_completed_utc") and q["observed_utc"] > obs["last_completed_utc"]:
+            err(f"{w}: observation occurred after last completed run")
+    for i, a in enumerate(obs["alerts"]):
+        if not a.get("code") or not a.get("message"):
+            err(f"observations.alerts[{i}]: missing code/message")
+        if a.get("source_url"):
+            check_url(a["source_url"], f"observations.alerts[{i}]")
+    return ids
+
+
+def gross_payout(stake, raw_price, result, fraction=None):
+    """Pure Decimal gross paper math. No exchange fees or real fills."""
+    if result == "win":
+        raw = stake / raw_price
+    elif result == "loss":
+        raw = Decimal(0)
+    elif result == "void":
+        raw = stake
+    elif result == "partial" and fraction is not None and 0 < fraction < 1:
+        raw = stake * fraction / raw_price
+    else:
+        raise ValueError("invalid settled result or payout fraction")
+    return raw.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def check_ledger(ledger, users, match_ids, observations, paused_users=()):
     if ledger is None:
         return
-    w0 = "ledger"
     meta = ledger.get("meta") or {}
     for f in ("simulated", "currency", "settlement_policy", "last_updated_utc"):
         if f not in meta:
-            err(f"{w0}.meta: missing field {f}")
+            err(f"ledger.meta: missing field {f}")
     if meta.get("simulated") is not True:
-        err(f"{w0}.meta: simulated must be true")
-    if "last_updated_utc" in meta:
-        check_iso(meta["last_updated_utc"], w0 + ".meta")
+        err("ledger.meta: simulated must be true")
+    check_iso(meta.get("last_updated_utc"), "ledger.meta.last_updated_utc")
     entries = ledger.get("entries")
     if not isinstance(entries, list):
-        err(f"{w0}: entries must be a list")
+        err("ledger.entries: expected array")
         return
-    seen = set()
+    quote_by_id = {q["quote_id"]: q for q in (observations or {}).get("quotes", []) if isinstance(q, dict) and q.get("quote_id")}
+    event_by_key = {ev["key"]: ev for ev in (observations or {}).get("events", []) if isinstance(ev, dict) and ev.get("key")}
+    seen, positions = set(), set()
     for i, e in enumerate(entries):
-        w = f"{w0}.entries[{i}]"
-        for f in ("entry_id", "username", "match_id", "market", "selection",
-                  "decimal_odds", "stake", "placed_utc", "price_source",
-                  "settlement", "payout", "profit"):
+        w = f"ledger.entries[{i}]"
+        if not isinstance(e, dict):
+            err(f"{w}: expected object")
+            continue
+        for f in ("entry_id", "username", "match_id", "market", "selection", "decimal_odds",
+                  "stake", "placed_utc", "price_source", "settlement", "payout", "profit", "fill_policy"):
             if f not in e:
                 err(f"{w}: missing field {f}")
-        if e.get("entry_id") in seen:
-            err(f"{w}: duplicate entry_id {e.get('entry_id')}")
+        if not e.get("entry_id") or e.get("entry_id") in seen:
+            err(f"{w}: duplicate/missing entry_id")
         seen.add(e.get("entry_id"))
-        if e.get("username") not in users:
-            err(f"{w}: unknown username {e.get('username')!r}")
-        if e.get("match_id") not in match_ids:
-            err(f"{w}: unknown match_id {e.get('match_id')!r}")
-        try:
-            odds = float(e.get("decimal_odds", 0))
-            stake = float(e.get("stake", -1))
-        except (TypeError, ValueError):
-            err(f"{w}: decimal_odds/stake must be numeric")
-            continue
-        if odds < 1.01:
-            err(f"{w}: decimal_odds must be >= 1.01, got {odds}")
-        if stake <= 0:
-            err(f"{w}: stake must be > 0, got {stake}")
-        if "placed_utc" in e:
-            check_iso(e["placed_utc"], w)
+        if e.get("username") not in users or e.get("match_id") not in match_ids or e.get("simulated") is not True:
+            err(f"{w}: unknown user/match or not labeled simulated")
+        if e.get("username") == "sim_flat_observer" or e.get("username") in paused_users:
+            err(f"{w}: control/paused policy must not create a paper decision")
+        if e.get("username") == "sim_champ_correlation":
+            if e.get("match_id") != "TWC26-FINALS-CHAMPION" or e.get("selection") not in {"FURIA", "Falcons"}:
+                err(f"{w}: outright policy must target the confirmed Finals winner market and one of its two teams")
+            if isinstance(e.get("placed_utc"), str) and e["placed_utc"] >= "2026-10-14T00:00:00Z":
+                err(f"{w}: outright paper decision is after pre-event cutoff")
+        if not isinstance(e.get("fill_policy"), str) or "SIMULATED" not in e["fill_policy"]:
+            err(f"{w}: paper fill must be explicitly labeled")
+        pair = (e.get("username"), e.get("event_key"), e.get("selection"))
+        if pair in positions:
+            err(f"{w}: duplicate user/event/selection paper position")
+        positions.add(pair)
+        stake = decimal(e.get("stake"), w + ".stake", lower=Decimal(0))
+        odds = decimal(e.get("decimal_odds"), w + ".decimal_odds", lower=Decimal(1))
+        check_iso(e.get("placed_utc"), w)
         ps = e.get("price_source") or {}
-        if not ps.get("venue"):
-            err(f"{w}: price_source.venue missing")
-        if not (ps.get("ticker") or ps.get("market_id") or ps.get("url")):
-            err(f"{w}: price_source needs ticker/market_id/url")
-        st = e.get("settlement") or {}
-        if st.get("result") not in {"win", "loss", "void", "pending", None}:
-            err(f"{w}: bad settlement.result {st.get('result')!r}")
-        if st.get("result") in {"win", "loss", "void"} and not st.get("rule"):
-            err(f"{w}: settled entry needs settlement.rule")
-        # Money math
-        try:
-            payout = float(e.get("payout"))
-            profit = float(e.get("profit"))
-        except (TypeError, ValueError):
-            err(f"{w}: payout/profit must be numeric")
-            continue
-        if st.get("result") == "win":
-            expect = round(stake * odds, 2)
-        elif st.get("result") == "loss":
-            expect = 0.0
-        elif st.get("result") == "void":
-            expect = round(stake, 2)
+        q = quote_by_id.get(ps.get("quote_id"))
+        if not q:
+            err(f"{w}: missing quote ID in append-only observations")
         else:
-            expect = None
-        if expect is not None:
-            if abs(payout - expect) > 0.01:
-                err(f"{w}: payout {payout} != expected {expect} (settlement math)")
-            if abs(profit - round(payout - stake, 2)) > 0.01:
-                err(f"{w}: profit {profit} != payout - stake")
+            for field, observed in (("venue", "venue"), ("market_id", "market_id"),
+                                     ("raw_price", "raw_price"), ("url", "source_url"),
+                                     ("observed_utc", "observed_utc")):
+                if str(ps.get(field)) != str(q.get(observed)):
+                    err(f"{w}: source {field} differs from immutable quote {ps.get('quote_id')}")
+            if e.get("selection") != q.get("selection") or e.get("event_key") != q.get("event_key"):
+                err(f"{w}: ledger selection/event does not match quote")
+            if q.get("quote_status") != "fresh":
+                err(f"{w}: cannot paper-trade an old/missing-size quote")
+            if e.get("username") == "sim_champ_correlation":
+                event = event_by_key.get(q.get("event_key"), {})
+                title = str(event.get("title", "")).lower()
+                question = str(q.get("market_title", "")).lower()
+                if ("thunderpick world championship" not in title or "2026" not in title or
+                        re.search(r"\bvs\.?\b", title) or event.get("stage") == "qualifier/series"):
+                    err(f"{w}: paper champion cannot target a match or qualifier event")
+                if q.get("venue") == "Kalshi" and q.get("market_type") != "tournament winner":
+                    err(f"{w}: Kalshi contract is not a tournament-winner outright")
+                if q.get("venue") == "Polymarket (international)" and (
+                        re.search(r"\b(map|match|game)\b", question) or
+                        not (re.search(r"\b(winner|champion|win)\b", title) or
+                             re.search(r"\btournament\s+winner\b", question) or
+                             ("championship" in question and re.search(r"\b(winner|champion|win)\b", question)))):
+                    err(f"{w}: Polymarket contract is not a tournament-winner outright")
+        check_url(ps.get("url"), w + ".price_source")
+        check_iso(ps.get("observed_utc"), w + ".price_source.observed_utc")
+        check_iso(ps.get("source_updated_utc"), w + ".price_source.source_updated_utc")
+        if e.get("placed_utc") and ps.get("observed_utc"):
+            try:
+                delay = datetime.strptime(e["placed_utc"], "%Y-%m-%dT%H:%M:%SZ") - datetime.strptime(ps["observed_utc"], "%Y-%m-%dT%H:%M:%SZ")
+                if not 0 <= delay.total_seconds() <= 120:
+                    err(f"{w}: decision must be 0–120s after its quote receipt")
+            except ValueError:
+                err(f"{w}: invalid quote-to-decision timestamps")
+        raw_price = decimal(ps.get("raw_price"), w + ".price_source.raw_price", lower=Decimal(0), upper=Decimal(1))
+        if odds is not None and raw_price is not None and abs(odds - Decimal(1) / raw_price) > Decimal("0.00000002"):
+            err(f"{w}: decimal odds not derived from the raw price")
+        if stake is not None and raw_price is not None:
+            size = decimal(ps.get("ask_size"), w + ".price_source.ask_size")
+            if size is not None and size < stake / raw_price:
+                err(f"{w}: top-of-book size is too small for paper stake")
+        settlement = e.get("settlement") or {}
+        result = settlement.get("result")
+        if result not in {"win", "loss", "void", "partial", "pending"}:
+            err(f"{w}: invalid settlement result {result!r}")
+            continue
+        if not settlement.get("rule"):
+            err(f"{w}: market resolution rule required even when pending")
+        if q and settlement.get("rule") != q.get("resolution_rule"):
+            err(f"{w}: market rule not identical to first captured rule")
+        if result == "pending":
+            if e.get("payout") is not None or e.get("profit") is not None or settlement.get("settled_utc"):
+                err(f"{w}: pending payout/profit/settlement time must all be null")
+            continue
+        check_iso(settlement.get("settled_utc"), w + ".settled_utc")
+        if settlement.get("settled_utc") and e.get("placed_utc"):
+            if settlement["settled_utc"] < e["placed_utc"]:
+                err(f"{w}: cannot settle before the paper decision")
+            if e.get("match_id") == "TWC26-FINALS-CHAMPION" and settlement["settled_utc"] < "2026-10-18T00:00:00Z":
+                err(f"{w}: cannot settle an outright before the Finals date")
+        check_sources(settlement.get("result_source"), w + ".result_source")
+        urls = [s.get("url", "") for s in (settlement.get("result_source") or []) if isinstance(s, dict)]
+        venue_host = "kalshi.com" if ps.get("venue") == "Kalshi" else "polymarket.com"
+        if not (any(venue_host in u for u in urls) and any("hltv.org" in u for u in urls) and
+                any("liquipedia.net" in u for u in urls)):
+            err(f"{w}: settlement needs venue resolution plus independent HLTV and Liquipedia result links")
+        payout = decimal(e.get("payout"), w + ".payout")
+        profit = decimal(e.get("profit"), w + ".profit")
+        if stake is None or raw_price is None or payout is None or profit is None:
+            continue
+        fraction = None
+        if result == "partial":
+            fraction = decimal(settlement.get("payout_fraction"), w + ".payout_fraction", lower=Decimal(0), upper=Decimal(1))
+            if fraction is None:
+                continue
+        try:
+            expected = gross_payout(stake, raw_price, result, fraction)
+        except (ValueError, ArithmeticError):
+            err(f"{w}: invalid settled gross payout")
+            continue
+        if payout != expected or profit != payout - stake:
+            err(f"{w}: payout/profit do not match gross price math ({expected}, {expected - stake})")
+
+    champion = [e for e in entries if isinstance(e, dict) and e.get("username") == "sim_champ_correlation"]
+    if champion:
+        if len(champion) != 2 or {e.get("selection") for e in champion} != {"FURIA", "Falcons"}:
+            err("ledger: champion strategy must contain exactly one FURIA/Falcons pair, or none")
+        elif champion[0].get("placed_utc") != champion[1].get("placed_utc"):
+            err("ledger: champion pair must be recorded atomically at the same paper-decision UTC time")
+        for e in champion:
+            if decimal(e.get("stake"), "ledger.champion.stake") != Decimal("50.00"):
+                err("ledger: champion policy stake must be exactly 50 units per leg")
 
 
 def check_html_refs():
@@ -312,13 +598,18 @@ def main():
     market_sources = load("market_sources.json")
     strategies = load("strategies.json")
     ledger = load("ledger.json")
+    changes = load("roster_changes.json")
+    observations = load("observations.json")
 
     master_ids = check_master(master)
     check_teams(teams, master_ids)
     match_ids = check_matches(matches, master_ids)
     check_market_sources(market_sources, master_ids)
     users = check_strategies(strategies)
-    check_ledger(ledger, users, match_ids)
+    check_changes(changes, teams, master_ids)
+    check_observations(observations, teams)
+    paused = {s["username"] for s in (strategies or []) if s.get("status") == "paused"}
+    check_ledger(ledger, users, match_ids, observations, paused)
     check_html_refs()
 
     # Required static assets
