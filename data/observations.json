@@ -1,13 +1,13 @@
 {
   "schema_version": 1,
-  "last_attempt_utc": "2026-09-24T19:56:12Z",
-  "mode": "live",
+  "last_attempt_utc": "2026-09-24T17:10:00Z",
+  "mode": "offline-replay",
   "checks": [
     {
       "source": "valve_vrs",
       "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
-      "checked_utc": "2026-09-24T19:56:12Z",
-      "status": "ok",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
       "scope": "Latest published Valve Global VRS snapshot (ranked roster; not necessarily today's starting five). Offline replay contains only finalist rows.",
       "records_checked": 8,
       "detail": "Snapshot date 2026-09-07"
@@ -15,26 +15,17 @@
     {
       "source": "liquipedia_fixtures",
       "url": "https://liquipedia.net/counterstrike/api.php?action=parse&page=Thunderpick%2FWorld_Championship%2F2026&prop=wikitext&format=json",
-      "checked_utc": "2026-09-24T19:56:13Z",
+      "checked_utc": "2026-09-24T17:10:00Z",
       "status": "partial",
-      "scope": "Matches with explicit UTC date+time, both finalist names and HLTV id in Liquipedia Results. HLTV match content has NOT been verified by this job.",
+      "scope": "Matches with explicit UTC date, both finalist names and HLTV id in Liquipedia Results. HLTV match content has NOT been verified by this job.",
       "records_checked": 0,
       "detail": "Other templates/dates deliberately skipped; no paper bets on unconfirmed fixtures."
     },
     {
-      "source": "hltv_crosscheck",
-      "url": "https://www.hltv.org/matches/",
-      "checked_utc": "2026-09-24T19:56:13Z",
-      "status": "ok",
-      "scope": "HLTV /matches/<id> pages for Liquipedia-cited fixtures only (max 8/run; robots.txt disallows /matches?* listing URLs, single match pages are permitted). Confirm needs same HLTV id, both teams and the same UTC date; results need HLTV series score + Liquipedia map-score agreement. HLTV start clock is viewer-localized and unused.",
-      "records_checked": 0,
-      "detail": "0 fixtures parsed means the strict Liquipedia parser found no cross-checkable matches yet; an empty result is not proof of absence."
-    },
-    {
       "source": "polymarket_search",
       "url": "https://gamma-api.polymarket.com/public-search?q=Thunderpick&limit_per_type=25&events_status=active",
-      "checked_utc": "2026-09-24T19:56:13Z",
-      "status": "ok",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
       "scope": "Search Thunderpick active events, first 25 only; not a complete market enumeration.",
       "records_checked": 0,
       "detail": "0 TWC 2026 events found in this query"
@@ -42,8 +33,8 @@
     {
       "source": "polymarket_tag",
       "url": "https://gamma-api.polymarket.com/events?closed=false&limit=60&order=startDate&ascending=false&tag_slug=counter-strike",
-      "checked_utc": "2026-09-24T19:56:13Z",
-      "status": "ok",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
       "scope": "First 60 currently open events in the counter-strike tag; other tags/matches may be missed.",
       "records_checked": 1,
       "detail": "0 TWC 2026 events found in this query"
@@ -51,35 +42,26 @@
     {
       "source": "polymarket_history",
       "url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "checked_utc": "2026-09-24T19:56:13Z",
+      "checked_utc": "2026-09-24T17:10:00Z",
       "status": "partial",
       "scope": "First 20 search results, including historical qualifier events; never use post-match settlement prices as pre-match quotes.",
-      "records_checked": 20,
-      "detail": "20 TWC 2026 events found in this query; more pages may exist"
-    },
-    {
-      "source": "polymarket_teams",
-      "url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=",
-      "checked_utc": "2026-09-24T19:56:13Z",
-      "status": "partial",
-      "scope": "Per-finalist bounded active searches (first 10 each); runs only after the Thunderpick-keyed searches found no open TWC 2026 event.",
-      "records_checked": 88,
-      "detail": "Searched 12 finalist names; first-page results only, not a complete enumeration."
+      "records_checked": 1,
+      "detail": "1 TWC 2026 events found in this query"
     },
     {
       "source": "kalshi_game",
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200",
-      "checked_utc": "2026-09-24T19:56:14Z",
-      "status": "ok",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
       "scope": "First 1 page(s) of OPEN events in KXCS2GAME; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
-      "records_checked": 55,
+      "records_checked": 2,
       "detail": "0 TWC 2026 events confirmed from market rules"
     },
     {
       "source": "kalshi_outright",
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
-      "checked_utc": "2026-09-24T19:56:14Z",
-      "status": "ok",
+      "checked_utc": "2026-09-24T17:10:00Z",
+      "status": "partial",
       "scope": "First 1 page(s) of OPEN events in KXCS2; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
       "records_checked": 0,
       "detail": "0 TWC 2026 events confirmed from market rules"
@@ -201,281 +183,12 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T17:10:00Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
+      "last_seen_utc": "2026-09-24T17:10:00Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-3dmax-100t-2026-09-11"
-    },
-    {
-      "key": "polymarket:1006472",
-      "venue": "Polymarket (international)",
-      "id": "1006472",
-      "title": "Counter-Strike: Heroic vs 1WIN (BO3) - Thunderpick World Championship Closed Qualifier Playoffs",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-hero-1win-2026-09-12"
-    },
-    {
-      "key": "polymarket:1006427",
-      "venue": "Polymarket (international)",
-      "id": "1006427",
-      "title": "Counter-Strike: HOTU vs 100 Thieves (BO3) - Thunderpick World Championship Closed Qualifier Playoffs",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-hotu-100t-2026-09-12"
-    },
-    {
-      "key": "polymarket:996083",
-      "venue": "Polymarket (international)",
-      "id": "996083",
-      "title": "Counter-Strike: FOKUS vs 1WIN (BO3) - Thunderpick World Championship Closed Qualifier Group D",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-fokus-1win-2026-09-10"
-    },
-    {
-      "key": "polymarket:988296",
-      "venue": "Polymarket (international)",
-      "id": "988296",
-      "title": "Counter-Strike: 3DMAX vs Acend (BO3) - Thunderpick World Championship Closed Qualifier Group C",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-3dmax-ace1-2026-09-09"
-    },
-    {
-      "key": "polymarket:994807",
-      "venue": "Polymarket (international)",
-      "id": "994807",
-      "title": "Counter-Strike: 3DMAX vs BBL (BO3) - Thunderpick World Championship Closed Qualifier Group C",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-3dmax-bbl1-2026-09-10"
-    },
-    {
-      "key": "polymarket:1013120",
-      "venue": "Polymarket (international)",
-      "id": "1013120",
-      "title": "Counter-Strike: Virtus.pro vs Heroic (BO3) - Thunderpick World Championship Closed Qualifier Playoffs",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-vp-hero-2026-09-13"
-    },
-    {
-      "key": "polymarket:999597",
-      "venue": "Polymarket (international)",
-      "id": "999597",
-      "title": "Counter-Strike: Team Nemesis vs Wildcard (BO3) - Thunderpick World Championship Closed Qualifier Group B",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-nem-wc1-2026-09-11"
-    },
-    {
-      "key": "polymarket:1000984",
-      "venue": "Polymarket (international)",
-      "id": "1000984",
-      "title": "Counter-Strike: 1WIN vs NIP (BO3) - Thunderpick World Championship Closed Qualifier Group D",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-1win-nip-2026-09-11"
-    },
-    {
-      "key": "polymarket:775062",
-      "venue": "Polymarket (international)",
-      "id": "775062",
-      "title": "Counter-Strike: Lavked vs megoshort (BO3) - Thunderpick World Championship European Series #2 Playoffs",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-lavked-meg1-2026-07-31"
-    },
-    {
-      "key": "polymarket:988295",
-      "venue": "Polymarket (international)",
-      "id": "988295",
-      "title": "Counter-Strike: Heroic vs BESTIA (BO3) - Thunderpick World Championship Closed Qualifier Group A",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-hero-bst-2026-09-09"
-    },
-    {
-      "key": "polymarket:994691",
-      "venue": "Polymarket (international)",
-      "id": "994691",
-      "title": "Counter-Strike: Wildcard vs EYEBALLERS (BO3) - Thunderpick World Championship Closed Qualifier Group B",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-wc1-eye-2026-09-10"
-    },
-    {
-      "key": "polymarket:740398",
-      "venue": "Polymarket (international)",
-      "id": "740398",
-      "title": "Counter-Strike: Bebop vs Falcons Force (BO3) - Thunderpick World Championship European Series #2 Group D",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-bbp-fal-2026-07-27"
-    },
-    {
-      "key": "polymarket:682736",
-      "venue": "Polymarket (international)",
-      "id": "682736",
-      "title": "Counter-Strike: METANOIA WOLVES vs MIBR Academy (BO3) - Thunderpick World Championship South American Series #2 Group B",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-mw-mibra-2026-07-09"
-    },
-    {
-      "key": "polymarket:1006425",
-      "venue": "Polymarket (international)",
-      "id": "1006425",
-      "title": "Counter-Strike: FOKUS vs Virtus.pro (BO3) - Thunderpick World Championship Closed Qualifier Playoffs",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-fokus-vp-2026-09-12"
-    },
-    {
-      "key": "polymarket:673075",
-      "venue": "Polymarket (international)",
-      "id": "673075",
-      "title": "Counter-Strike: Isurus vs UNO MILLE (BO3) - Thunderpick World Championship South American Series #2 Group A",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-isg-uno-2026-07-08"
-    },
-    {
-      "key": "polymarket:673104",
-      "venue": "Polymarket (international)",
-      "id": "673104",
-      "title": "Counter-Strike: Fake do Biru vs paiN Academy (BO3) - Thunderpick World Championship South American Series #2 Group A",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-fdb-paina-2026-07-08"
-    },
-    {
-      "key": "polymarket:518397",
-      "venue": "Polymarket (international)",
-      "id": "518397",
-      "title": "Counter-Strike: ALGO Esports vs Omega (BO3) - Thunderpick World Championship European Series #1 Group B",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-algo1-omega1-2026-05-24"
-    },
-    {
-      "key": "polymarket:759729",
-      "venue": "Polymarket (international)",
-      "id": "759729",
-      "title": "Counter-Strike: Black Phoenix vs Bebop (BO3) - Thunderpick World Championship European Series #2 Group D",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-blackp-bbp-2026-07-28"
-    },
-    {
-      "key": "polymarket:612757",
-      "venue": "Polymarket (international)",
-      "id": "612757",
-      "title": "Counter-Strike: Isurus vs MIBR Academy (BO3) - Thunderpick World Championship South American Series #1 Group A",
-      "stage": "qualifier/series",
-      "status": "closed",
-      "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-24T19:56:13Z",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "review_url": "https://polymarket.com/event/cs2-isg-mibra-2026-06-24"
     }
   ],
   "quotes": [],
-  "alerts": [
-    {
-      "code": "truncated_search",
-      "message": "polymarket_history may have more pages/results; scope limited to this query.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[FURIA]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=FURIA"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[Team Falcons]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=Team+Falcons"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[Falcons]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=Falcons"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[Aurora]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=Aurora"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[BetBoom Team]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=BetBoom+Team"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[BetBoom]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=BetBoom"
-    },
-    {
-      "code": "truncated_search",
-      "message": "polymarket_teams[9z Team]: more pages may exist; scope limited.",
-      "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=9z+Team"
-    }
-  ],
-  "last_completed_utc": "2026-09-24T19:56:14Z"
+  "alerts": [],
+  "last_completed_utc": "2026-09-24T17:10:00Z"
 }
