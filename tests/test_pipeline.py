@@ -248,6 +248,34 @@ class CollectorTests(unittest.TestCase):
         self.assertEqual(doc["checks"][0]["status"], "ok")
         self.assertIn("0 TWC", doc["checks"][0]["detail"])
 
+    def test_live_poly_team_pass_runs_one_bounded_search_per_finalist_form(self):
+        # Regression: TEAM_NAMES was referenced but never defined, which crashed
+        # the live collector (offline replay never executes this branch).
+        from urllib.parse import urlencode as uq
+        doc = c.empty()
+        doc["events"].append({"key": "polymarket:1", "status": "closed", "title": "old qualifier"})
+        mapping = {c.POLY_TEAM_SEARCH + uq({"q": name}): {"events": [], "pagination": {"totalResults": 0}}
+                   for name in c.TEAM_NAMES}
+        fetcher = FakeFetcher(mapping)
+        c.collect_poly_teams(doc, fetcher, NOW, "live")
+        row = next(k for k in doc["checks"] if k["source"] == "polymarket_teams")
+        self.assertEqual(row["status"], "partial")
+        self.assertEqual(len(fetcher.calls), len(c.TEAM_NAMES))
+        self.assertGreaterEqual(len(c.TEAM_NAMES), 8)  # at least one query per finalist
+        self.assertLessEqual(len(c.TEAM_NAMES), 13)  # stays bounded
+
+    def test_live_poly_team_pass_skips_when_keyed_search_found_open_event(self):
+        doc = c.empty()
+        doc["events"].append({"key": "polymarket:2", "status": "open", "title": "TWC finals",
+                              "last_seen_utc": c.stamp(NOW)})
+        doc["last_attempt_utc"] = c.stamp(NOW)
+        fetcher = FakeFetcher({})
+        c.collect_poly_teams(doc, fetcher, NOW, "live")
+        row = next(k for k in doc["checks"] if k["source"] == "polymarket_teams")
+        self.assertEqual(row["status"], "ok")
+        self.assertIn("skipped", row["detail"])
+        self.assertEqual(fetcher.calls, [])
+
 
 class CompetitionTests(unittest.TestCase):
     def test_two_atomic_forward_only_paper_decisions_with_exact_receipts(self):

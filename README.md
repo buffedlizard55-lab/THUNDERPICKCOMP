@@ -351,6 +351,16 @@ does not prevent a transient stale public page. Recheck after the next push.
   checks (`hltv_crosscheck`, `polymarket_teams`) and the settle/archive steps
   still require a successful post-merge Actions run before being called
   verified in production.
+- **Post-merge incident (fixed in PR #8):** the first live run of the new
+  pipeline (Actions run 36048173182) failed in the collect step —
+  `collect_poly_teams` referenced an undefined `TEAM_NAMES` module constant,
+  and the offline tests never execute that live-only branch, so it survived
+  the whole suite. Fixed by deriving `TEAM_NAMES` from `data/teams.json`
+  (display name + short form, ≤13 bounded searches) and adding two live-branch
+  regression tests (suite 49). Until that fix deploys, the live site can
+  transiently show the tracked offline seed (legacy Pages build won the race);
+  the hourly run after the fix merge republishes the live journal from the
+  19:17Z checkpoint artifact.
 
 ### 2026-09-24 — Prompt re-alignment, design port & 20-claim expansion
 
