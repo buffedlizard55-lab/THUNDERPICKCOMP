@@ -1,0 +1,49 @@
+{
+ "cursor": "",
+ "markets": [
+  {
+   "can_close_early": true,
+   "close_time": "2026-07-25T21:09:31Z",
+   "created_time": "2026-07-25T13:45:39.859995Z",
+   "event_ticker": "KXCS2GAME-26JUL251415GBCAURYB",
+   "expected_expiration_time": "2026-07-25T22:15:00Z",
+   "expiration_value": "Aurora Young Blood",
+   "market_type": "binary",
+   "no_sub_title": "Aurora Young Blood",
+   "occurrence_datetime": "2026-07-25T22:15:00Z",
+   "open_time": "2026-07-25T13:50:00Z",
+   "result": "no",
+   "rules_primary": "If Gothboiclique wins the CCT Europe Contenders #7 2026: Gothboiclique vs. Aurora Young Blood CS2 match originally scheduled for Jul 25, 2026 at 2:15 PM EDT, then the market resolves to Yes.",
+   "rules_secondary": "The following market refers to the full match in the CCT Europe Contenders #7 2026: Gothboiclique vs. Aurora Young Blood CS2 match originally scheduled for Jul 25, 2026 at 2:15 PM EDT\nIf the relevant match is postponed and not completed within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\nIf the relevant match is forfeited before any play occurs, the market will resolve to the fair market price.\nIf the relevant match begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+   "settlement_ts": "2026-07-25T21:12:36.004978Z",
+   "settlement_value_dollars": "0.0000",
+   "status": "finalized",
+   "ticker": "KXCS2GAME-26JUL251415GBCAURYB-GBC",
+   "title": "Will Gothboiclique win the Gothboiclique vs. Aurora Young Blood CS2 match?",
+   "volume_fp": "26542.88",
+   "yes_sub_title": "Gothboiclique"
+  },
+  {
+   "can_close_early": true,
+   "close_time": "2026-07-25T21:09:31Z",
+   "created_time": "2026-07-25T13:45:39.859995Z",
+   "event_ticker": "KXCS2GAME-26JUL251415GBCAURYB",
+   "expected_expiration_time": "2026-07-25T22:15:00Z",
+   "expiration_value": "Aurora Young Blood",
+   "market_type": "binary",
+   "no_sub_title": "Gothboiclique",
+   "occurrence_datetime": "2026-07-25T22:15:00Z",
+   "open_time": "2026-07-25T13:50:00Z",
+   "result": "yes",
+   "rules_primary": "If Aurora Young Blood wins the CCT Europe Contenders #7 2026: Gothboiclique vs. Aurora Young Blood CS2 match originally scheduled for Jul 25, 2026 at 2:15 PM EDT, then the market resolves to Yes.",
+   "rules_secondary": "The following market refers to the full match in the CCT Europe Contenders #7 2026: Gothboiclique vs. Aurora Young Blood CS2 match originally scheduled for Jul 25, 2026 at 2:15 PM EDT\nIf the relevant match is postponed and not completed within 48 hours of its originally scheduled start time, the market will resolve to the fair market price.\nIf the relevant match is cancelled before play begins, the market will resolve to the fair market price.\nIf the relevant match is forfeited before any play occurs, the market will resolve to the fair market price.\nIf the relevant match begins and is subsequently forfeited, the market will resolve according to the official result published by the governing body or tournament organizer.\n\nKalshi is not affiliated, associated, authorized, endorsed by, or in any way officially connected with the Governing League. All trademarks, logos, and brand names are the property of their respective owners.",
+   "settlement_ts": "2026-07-25T21:12:36.004978Z",
+   "settlement_value_dollars": "1.0000",
+   "status": "finalized",
+   "ticker": "KXCS2GAME-26JUL251415GBCAURYB-AURYB",
+   "title": "Will Aurora Young Blood win the Gothboiclique vs. Aurora Young Blood CS2 match?",
+   "volume_fp": "26352.27",
+   "yes_sub_title": "Aurora Young Blood"
+  }
+ ]
+}

@@ -1,0 +1,30 @@
+[
+ {
+  "id": "4543708",
+  "question": "Counter-Strike: Esport BERG vs NEXORA (BO3) - ESEA Advanced Europe Playoffs",
+  "conditionId": "0xdbaf4b0eb91d580c1d250ad731afdb6af013554045b092cf6d0f71a31dae1664",
+  "slug": "cs2-berg-nexora-2026-09-14",
+  "resolutionSource": "https://hltv.org",
+  "endDate": "2026-09-14T23:45:00Z",
+  "startDate": "2026-09-13T23:05:55Z",
+  "description": "This market refers to the Counter-Strike Lower bracket round 4 match between Esport BERG and NEXORA in the ESEA Advanced Europe Playoffs, initially scheduled for September 14, 2026 at 1:30 PM ET.\n\nThis market will resolve to \"Esport BERG\" if Esport BERG win the match against NEXORA.\n\nThis market will resolve to \"NEXORA\" if NEXORA win the match against Esport BERG.\n\nIf the match is canceled (not played at all) or ends in a tie, this market will resolve to 50-50.",
+  "outcomes": "[\"Esport BERG\", \"NEXORA\"]",
+  "outcomePrices": "[\"1\", \"0\"]",
+  "volume": "1103.754882",
+  "active": true,
+  "closed": true,
+  "createdAt": "2026-09-13T23:05:43.120972Z",
+  "closedTime": "2026-09-14 21:12:55+00",
+  "groupItemTitle": "Match Winner",
+  "umaResolutionStatus": "resolved",
+  "gameStartTime": "2026-09-14 17:45:00+00",
+  "clobTokenIds": "[\"104870834821895930303774678255607450824025516517685228490204527544922312641270\", \"9790223126964230448840981544261457497510871138916094949866124965044700276807\"]",
+  "events": [
+   {
+    "id": "1020009",
+    "slug": "cs2-berg-nexora-2026-09-14",
+    "title": "Counter-Strike: Esport BERG vs NEXORA (BO3) - ESEA Advanced Europe Playoffs"
+   }
+  ]
+ }
+]
