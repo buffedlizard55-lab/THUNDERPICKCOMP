@@ -34,6 +34,16 @@ def main() -> None:
         # matches scripts.collect.SOURCE_IDS. Mutating the committed seed
         # instead would silently rot whenever the collector's check set grows
         # (this exact drift broke CI when the ninth check rule was added).
+        # If the committed seed is already live (checked in to unblock legacy
+        # Pages publishing), remove it so fixture replay can run — collect.py
+        # refuses to overwrite a live journal with fixtures.
+        if observations.exists():
+            try:
+                _doc = json.loads(observations.read_text(encoding="utf-8"))
+                if _doc.get("mode") == "live":
+                    observations.unlink()
+            except Exception:
+                observations.unlink()
         from scripts.collect import SOURCE_IDS
         subprocess.run(
             ("python3", "-m", "scripts.collect", "--fixtures", "--as-of", "2026-09-24T18:12:00Z"),
