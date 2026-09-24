@@ -27,7 +27,24 @@ def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def build(out_dir: Path, run_id: str = "", commit_url: str = "") -> dict:
+def build(out_dir: Path, run_id: str = "", commit_url: str = "",
+          data_dir: Path | None = None, expect_mode: str | None = None) -> dict:
+    """Archive the journal in `data_dir` (default ROOT/data) into `out_dir`.
+
+    `expect_mode` refuses to archive anything but the given observations mode:
+    the deployment job's fresh checkout contains the *committed offline seed*,
+    so archiving without this guard would quietly archive the wrong journal
+    (that happened on the first archive commit, run 36050952696).
+    """
+    if data_dir is None:
+        data_dir = ROOT / "data"
+    if expect_mode is not None:
+        obs_path = data_dir / "observations.json"
+        if not obs_path.exists():
+            raise SystemExit(f"archive refused: {obs_path} is missing")
+        mode = json.loads(obs_path.read_text(encoding="utf-8")).get("mode")
+        if mode != expect_mode:
+            raise SystemExit(f"archive refused: observations mode is {mode!r}, expected {expect_mode!r}")
     out_dir.mkdir(parents=True, exist_ok=True)
     manifest = {
         "manifest_version": 1,
@@ -38,7 +55,7 @@ def build(out_dir: Path, run_id: str = "", commit_url: str = "") -> dict:
         "retention": "journal-archive branch history; one commit per successful publication run",
     }
     for name in JOURNAL_FILES:
-        source = ROOT / "data" / name
+        source = data_dir / name
         if source.exists():
             shutil.copy2(source, out_dir / name)
             manifest["files"][name] = digest(out_dir / name)
@@ -58,7 +75,7 @@ def build(out_dir: Path, run_id: str = "", commit_url: str = "") -> dict:
             "events": len(obs.get("events", [])),
         }
     (out_dir / "MANIFEST.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    (ROOT / "data" / "archive_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (data_dir / "archive_manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return manifest
 
 
@@ -66,8 +83,12 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, required=True, help="directory to receive the archive snapshot")
     parser.add_argument("--run-id", default="", help="GitHub Actions run id for the manifest")
+    parser.add_argument("--commit-url", default="", help="link to the run/commit this snapshot belongs to")
+    parser.add_argument("--data-dir", type=Path, default=None, help="journal directory to archive (default: <repo>/data)")
+    parser.add_argument("--expect-mode", default=None, help="refuse to archive unless observations.json has this mode")
     args = parser.parse_args(argv)
-    manifest = build(args.out, run_id=args.run_id)
+    manifest = build(args.out, run_id=args.run_id, commit_url=args.commit_url,
+                     data_dir=args.data_dir, expect_mode=args.expect_mode)
     print(f"Archive snapshot written to {args.out} ({len(manifest['files'])} files, "
           f"{manifest.get('settlement_rows', 0)} settlement receipts, chain head {str(manifest.get('settlement_chain_head'))[:12]}…).")
     return 0

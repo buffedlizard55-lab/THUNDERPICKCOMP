@@ -98,6 +98,41 @@ jobs:
           python3 -m unittest discover -s tests -v
           node --check assets/app.js
           node tests/test_ui.cjs
+      - name: Archive the live journal (refuses anything but mode=live)
+        run: |
+          set -euo pipefail
+          python3 -m scripts.archive --out /tmp/journal-archive --run-id "$GITHUB_RUN_ID" \
+            --commit-url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            --expect-mode live
+          # data/ here holds the exact validated journal this run is about to
+          # publish; a deploy-job checkout would have archived the committed
+          # offline seed instead (bug of run 36050952696's first archive commit).
+          git config user.name "thunderpickcomp-journal-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git fetch origin journal-archive 2>/dev/null || true
+          if git rev-parse --verify FETCH_HEAD 2>/dev/null; then
+            git checkout --force -B journal-archive FETCH_HEAD
+          else
+            git checkout --orphan journal-archive
+            git rm -rf --quiet . 2>/dev/null || true
+          fi
+          rm -f MANIFEST.json observations.json ledger.json settlements.json
+          cp /tmp/journal-archive/MANIFEST.json /tmp/journal-archive/observations.json \
+             /tmp/journal-archive/ledger.json /tmp/journal-archive/settlements.json .
+          git add MANIFEST.json observations.json ledger.json settlements.json
+          if git diff --cached --quiet; then
+            echo "Archive unchanged; nothing to commit."
+          else
+            git commit -m "Journal archive: run $GITHUB_RUN_ID [skip ci]"
+            git push origin journal-archive
+          fi
+          # Return to the deployment content so the site package is unaffected.
+          git checkout --force -B main "$GITHUB_SHA"
+          # The branch switch restored the committed archive manifest; put the
+          # fresh one (identical content) back so the published site shows the
+          # real archive state of this run.
+          mkdir -p data
+          cp /tmp/journal-archive/MANIFEST.json data/archive_manifest.json
       - name: Save short-lived recovery artifact
         uses: actions/upload-artifact@v4
         with:
@@ -123,29 +158,5 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - uses: actions/checkout@v4
       - id: deployment
         uses: actions/deploy-pages@v4
-      - name: Append versioned journal archive (outlives 30-day artifacts)
-        run: |
-          set -euo pipefail
-          python3 -m scripts.archive --out /tmp/journal-archive --run-id "$GITHUB_RUN_ID"
-          git config user.name "thunderpickcomp-journal-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git fetch origin journal-archive 2>/dev/null || true
-          if git rev-parse --verify FETCH_HEAD 2>/dev/null; then
-            git checkout --force -B journal-archive FETCH_HEAD
-          else
-            git checkout --orphan journal-archive
-            git rm -rf --quiet . 2>/dev/null || true
-          fi
-          rm -f MANIFEST.json observations.json ledger.json settlements.json
-          cp /tmp/journal-archive/MANIFEST.json /tmp/journal-archive/observations.json \
-             /tmp/journal-archive/ledger.json /tmp/journal-archive/settlements.json .
-          git add MANIFEST.json observations.json ledger.json settlements.json
-          if git diff --cached --quiet; then
-            echo "Archive unchanged; nothing to commit."
-          else
-            git commit -m "Journal archive: run $GITHUB_RUN_ID [skip ci]"
-            git push origin journal-archive
-          fi

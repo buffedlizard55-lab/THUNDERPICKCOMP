@@ -21,7 +21,7 @@ if str(ROOT) not in sys.path:  # allow `python3 tests/smoke_live_copy.py`
 def main() -> None:
     with tempfile.TemporaryDirectory(prefix="thunderpick-synthetic-live-") as tmp:
         copy = Path(tmp)
-        for folder in ("assets", "data", "scripts", "tests"):
+        for folder in ("assets", "data", "scripts", "tests", ".github"):
             shutil.copytree(ROOT / folder, copy / folder,
                             ignore=shutil.ignore_patterns("__pycache__"))
         for html in ROOT.glob("*.html"):
