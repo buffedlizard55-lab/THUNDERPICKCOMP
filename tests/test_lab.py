@@ -64,6 +64,89 @@ class LineStoreTests(unittest.TestCase):
             hl.build_poly_line(market, hl.FixtureFetcher())
 
 
+def kalshi_pair():
+    doc = json.loads((hl.FIXTURES / "kalshi_historical_markets.json").read_text())
+    return [dict(m, _tier="historical") for m in doc["markets"]]
+
+
+class KalshiParsingTests(unittest.TestCase):
+    """Real recorded markets, mutated in memory to reproduce formats observed in the 2026-09-24 backfill."""
+
+    def test_competition_with_colons_parses_teams_after_last_colon(self):
+        pair = kalshi_pair()
+        for m in pair:
+            m["rules_primary"] = m["rules_primary"].replace(
+                "CCT Europe Contenders #7 2026:", "Thunderpick World Championship: Closed Qualifier 2026:")
+        line = hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+        self.assertEqual(line["competition"], "Thunderpick World Championship: Closed Qualifier 2026")
+        self.assertEqual(set(line["teams"]), {"Gothboiclique", "Aurora Young Blood"})
+
+    def test_punctuation_only_team_spelling_is_flagged_not_excluded(self):
+        pair = kalshi_pair()
+        for m in pair:
+            m["rules_primary"] = m["rules_primary"].replace("Aurora Young Blood", "Aurora_Young-Blood")
+        line = hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+        self.assertIn("team_name_spelling_differs_in_rules", line["flags"])
+        for m in pair:
+            m["rules_primary"] = m["rules_primary"].replace("Aurora_Young-Blood", "Somebody Else")
+        with self.assertRaisesRegex(hl.LineError, "rules teams"):
+            hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+
+    def test_date_only_rules_are_excluded_with_precise_reason(self):
+        rules = ("If Z7 Esports wins the Parken Challenger Championship 2026: Z7 Esports vs. maquinas CS2 match "
+                 "originally scheduled for Mar 31, 2026, then the market resolves to Yes.")  # verbatim, KXCS2GAME-26MAR31Z7MAQ
+        with self.assertRaisesRegex(hl.LineError, "only a scheduled DATE"):
+            hl.kalshi_start(rules, "KXCS2GAME-26MAR31Z7MAQ")
+        self.assertIsNone(hl.RETRY_EXCLUSIONS.search("rules state only a scheduled DATE (no time); x"))
+
+    def test_scalar_fair_price_settlement_is_final_and_flagged(self):
+        pair = kalshi_pair()
+        for m, value in zip(pair, ("0.1300", "0.8700")):  # values of KXCS2GAME-26SEP241200ZETMEI (forfeit)
+            m.update(result="scalar", settlement_value_dollars=value)
+        line = hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+        self.assertIsNone(line["winner"])
+        self.assertEqual(sorted(line["settlement"]), ["0.1300", "0.8700"])  # sides are ordered by ticker
+        self.assertIn("non_binary_settlement", line["flags"])
+        pair[0]["settlement_value_dollars"] = "0.5000"
+        with self.assertRaisesRegex(hl.LineError, "sum to 1"):
+            hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+        pair[0].update(status="closed", result="")
+        with self.assertRaises(hl.NotYetFinal):
+            hl.build_kalshi_line(pair, hl.FixtureFetcher(), "2026-07-25T00:00:00Z")
+
+    def test_exclusions_from_older_versions_are_retried(self):
+        store = hl.empty_store()
+        store["excluded"] = {"kalshi": {
+            "KXCS2GAME-26JUL251415GBCAURYB": "KXCS2GAME-26JUL251415GBCAURYB-GBC not finally settled (status=finalized, result=scalar)",
+            "KXCS2GAME-OLD": "rules state only a scheduled DATE (no time); no-look-ahead cutoff cannot be established"}}
+        out = hl.collect(store, hl.FixtureFetcher(), budget_seconds=60, mode="offline-fixture")
+        self.assertIn("K:KXCS2GAME-26JUL251415GBCAURYB", {r["line_id"] for r in out["lines"]})
+        self.assertIn("KXCS2GAME-OLD", out["excluded"]["kalshi"])
+
+
+class PolymarketListingTests(unittest.TestCase):
+    def test_windows_split_instead_of_paging_past_the_offset_cap(self):
+        class Busy:
+            def __init__(self):
+                self.urls = []
+
+            def get(self, url):
+                self.urls.append(url)
+                if "offset=" in url and int(url.split("offset=")[1].split("&")[0]) >= hl.POLY_MAX_OFFSET:
+                    raise AssertionError("queried past the offset cap")
+                if "2026-09-1" in url:  # one busy window: full pages until split small enough
+                    lo = url.split("end_date_min=")[1].split("&")[0]
+                    hi = url.split("end_date_max=")[1].split("&")[0]
+                    if hl.parse_iso(hi.replace("%3A", ":")) - hl.parse_iso(lo.replace("%3A", ":")) > hl.timedelta(hours=12):
+                        return [{"id": i} for i in range(500)]
+                return []
+        fetcher = Busy()
+        coverage = {}
+        hl.poly_markets(fetcher, set(), coverage)
+        self.assertGreater(coverage["listing_requests"], 2 * ((hl.now_utc() - hl.POLY_EPOCH).days // 3))
+        self.assertNotIn("truncated", coverage)
+
+
 class LabMathTests(unittest.TestCase):
     def test_kalshi_integer_contracts_and_round_up_fee(self):
         contracts, cost, fee = lab.position("kalshi", 10.0, 0.62)
@@ -145,6 +228,35 @@ class LabRunTests(unittest.TestCase):
                 a, b = m["norm"]
                 expect = (sum(a in x["norm"] for x in prior), sum(b in x["norm"] for x in prior))
                 self.assertEqual(table[m["id"]][label][1:], expect)
+
+    def test_form_fatigue_and_h2h_are_walk_forward(self):
+        matches = self.result["matches"]
+        form = lab.form_tables(matches)
+        for m in matches[::11]:
+            for label in lab.CP_LABELS:
+                t = m["cutoff"] - lab.CP_BACK[label]
+                done = sorted((x for x in matches if x["winner"] is not None and x["settled"] < t),
+                              key=lambda x: (x["settled"], x["id"]))
+                sa, sb, ga, gb, h2h = form[m["id"]][label]
+                for team, got in zip(m["norm"], (sa, sb)):
+                    results = [x["norm"][x["winner"]] == team for x in done if team in x["norm"]]
+                    expect = 0
+                    for won in reversed(results):
+                        if expect == 0:
+                            expect = 1 if won else -1
+                        elif (expect > 0) == won:
+                            expect += 1 if won else -1
+                        else:
+                            break
+                    self.assertEqual(got, expect)
+                for team, got in zip(m["norm"], (ga, gb)):
+                    prev = [x["cutoff"] for x in matches if team in x["norm"] and x["cutoff"] < t and x["cutoff"] < m["cutoff"]]
+                    self.assertEqual(got, (t - max(prev)) / 3600 if prev else None)
+                meet = [x for x in done if set(x["norm"]) == set(m["norm"])]
+                if meet:
+                    self.assertEqual(h2h, m["norm"].index(meet[-1]["norm"][meet[-1]["winner"]]))
+                else:
+                    self.assertIsNone(h2h)
 
     def test_leaderboard_is_ranked_and_deterministic(self):
         rows = self.result["rows"]

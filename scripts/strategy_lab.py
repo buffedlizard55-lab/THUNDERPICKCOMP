@@ -288,6 +288,42 @@ def elo_tables(matches: list[dict], ks=(16, 32, 48)) -> dict:
     return out
 
 
+def form_tables(matches: list[dict]) -> dict:
+    """form[match_id][label] = (streak_a, streak_b, hours_since_prev_start_a, hours_since_prev_start_b, h2h_winner)
+
+    Walk-forward: streaks and head-to-head use only matches SETTLED before the decision time; the
+    fatigue gap uses only matches that STARTED (cutoff) before it. Streak > 0 = consecutive wins,
+    < 0 = consecutive losses. h2h_winner is the side (of this match) that won the last settled meeting.
+    """
+    settled = sorted((m for m in matches if m["winner"] is not None), key=lambda m: (m["settled"], m["id"]))
+    starts = sorted(matches, key=lambda m: (m["cutoff"], m["id"]))
+    decisions = sorted(((m["cutoff"] - CP_BACK[label], m["id"], label, m) for m in matches for label in CP_LABELS),
+                       key=lambda d: (d[0], d[1], d[2]))
+    streak: Counter = Counter()
+    last_start: dict[str, int] = {}
+    h2h: dict[frozenset, str] = {}
+    table: dict[str, dict] = defaultdict(dict)
+    i = j = 0
+    for t, mid, label, m in decisions:
+        while i < len(settled) and settled[i]["settled"] < t:
+            x = settled[i]
+            w, l = x["norm"][x["winner"]], x["norm"][1 - x["winner"]]
+            streak[w] = streak[w] + 1 if streak[w] > 0 else 1
+            streak[l] = streak[l] - 1 if streak[l] < 0 else -1
+            h2h[frozenset(x["norm"])] = w
+            i += 1
+        while j < len(starts) and starts[j]["cutoff"] < t:
+            for team in starts[j]["norm"]:
+                last_start[team] = starts[j]["cutoff"]
+            j += 1
+        a, b = m["norm"]
+        gap = [None if team not in last_start or last_start[team] >= m["cutoff"] else (t - last_start[team]) / 3600
+               for team in (a, b)]
+        winner = h2h.get(frozenset((a, b)))
+        table[mid][label] = (streak[a], streak[b], gap[0], gap[1], None if winner is None else (0 if winner == a else 1))
+    return table
+
+
 # --------------------------------------------------------------------------- strategy universe
 
 ADJ = ["Frosty", "Silent", "Rapid", "Lucky", "Sharp", "Calm", "Bold", "Clutch", "Steady", "Wild", "Cold", "Quiet",
@@ -300,6 +336,7 @@ NOUN = ["AWP", "Deagle", "Smoke", "Flash", "Molly", "Entry", "Lurker", "Anchor",
         "Mid", "Ramp", "Short", "Long", "Site", "Spawn", "Timing"]
 STAKES = {"flat": "flat 10u", "pct": "2% of cash (max 50u)", "fixed_win": "stake to win 10u (max 50u)",
           "kelly": "quarter-Kelly (max 5% of cash, max 50u)"}
+SESSIONS = {"asia": (0, 8), "europe": (8, 16), "americas": (16, 24)}
 VENUES = {"kalshi": "Kalshi ask", "polymarket": "Polymarket ref+1c", "best": "best price of Kalshi/Polymarket"}
 
 
@@ -350,6 +387,24 @@ def strategy_universe() -> list[dict]:
             for cp in CP_LABELS:
                 for stake in ("flat", "pct"):
                     specs.append(("tight_spread", {"max_spread": spread, "side": side, "cp": cp, "venue": "kalshi", "stake": stake}))
+    for mode in ("follow", "fade"):
+        for n in (2, 3, 4):
+            for cp in ("T-6h", "T-1h", "T-0"):
+                for venue in VENUES:
+                    specs.append(("form_streak", {"mode": mode, "n": n, "cp": cp, "venue": venue, "stake": "flat"}))
+    for hours in (6, 12):
+        for only_dog in (False, True):
+            for cp in ("T-6h", "T-1h", "T-0"):
+                for venue in VENUES:
+                    specs.append(("fatigue", {"hours": hours, "only_underdog": only_dog, "cp": cp, "venue": venue, "stake": "flat"}))
+    for mode in ("repeat", "revenge"):
+        for cp in ("T-6h", "T-1h", "T-0"):
+            for venue in VENUES:
+                specs.append(("head_to_head", {"mode": mode, "cp": cp, "venue": venue, "stake": "flat"}))
+    for session in ("asia", "europe", "americas"):
+        for side in ("favorite", "underdog"):
+            for cp in CP_LABELS:
+                specs.append(("session", {"session": session, "side": side, "cp": cp, "venue": "best", "stake": "flat"}))
     specs.append(("control_no_bet", {"cp": "T-0", "venue": "best", "stake": "flat"}))
     for seed in (1, 2, 3):
         for venue in VENUES:
@@ -399,6 +454,21 @@ def describe(family: str, p: dict) -> str:
         return f"Back the market {p['side']} in {label} competitions" + tail
     if family == "tight_spread":
         return f"Back the market {p['side']} only when the Kalshi bid/ask spread on it is ≤ {p['max_spread']:.2f}" + tail
+    if family == "form_streak":
+        verb = "Back" if p["mode"] == "follow" else "Fade (back the opponent of)"
+        return (f"{verb} a team on a ≥{p['n']}-match win streak (walk-forward, settled results only) "
+                f"when its opponent is not on a win streak") + tail
+    if family == "fatigue":
+        dog = " only when the rested team is the market underdog" if p["only_underdog"] else ""
+        return (f"Back the rested team when its opponent started another match within the previous {p['hours']}h "
+                f"and it did not{dog}") + tail
+    if family == "head_to_head":
+        who = "last meeting's winner (repeat)" if p["mode"] == "repeat" else "last meeting's loser (revenge)"
+        return f"Back the {who} when the two teams have a prior settled meeting in the dataset" + tail
+    if family == "session":
+        hours = SESSIONS[p["session"]]
+        return (f"Back the market {p['side']} in matches starting {hours[0]:02d}:00–{hours[1]:02d}:00 UTC "
+                f"({p['session']} session)") + tail
     if family == "control_no_bet":
         return "Control: never bets (bankroll must stay exactly 1,000u)."
     if family == "control_coin_flip":
@@ -466,6 +536,29 @@ def decide(s: dict, m: dict, elo: dict) -> tuple[int, dict, float | None] | None
         side = fav if p["side"] == "favorite" else 1 - fav
     elif fam == "tier":
         if m["tier"] != p["tier"] or fav is None:
+            return None
+        side = fav if p["side"] == "favorite" else 1 - fav
+    elif fam in ("form_streak", "fatigue", "head_to_head"):
+        sa, sb, ga, gb, h2h = elo["form"][m["id"]][cp]
+        if fam == "form_streak":
+            hot = [sd for sd, (mine, theirs) in enumerate(((sa, sb), (sb, sa))) if mine >= p["n"] and theirs <= 0]
+            if len(hot) != 1:
+                return None
+            side = hot[0] if p["mode"] == "follow" else 1 - hot[0]
+        elif fam == "fatigue":
+            tired = [g is not None and g <= p["hours"] for g in (ga, gb)]
+            if tired.count(True) != 1:
+                return None
+            side = tired.index(False)
+            if p["only_underdog"] and (fav is None or side == fav):
+                return None
+        else:
+            if h2h is None:
+                return None
+            side = h2h if p["mode"] == "repeat" else 1 - h2h
+    elif fam == "session":
+        lo, hi = SESSIONS[p["session"]]
+        if not lo <= datetime.fromtimestamp(m["cutoff"], tz=timezone.utc).hour < hi or fav is None:
             return None
         side = fav if p["side"] == "favorite" else 1 - fav
     elif fam == "tight_spread":
@@ -686,6 +779,7 @@ def run(lab: Path) -> dict:
                         m["_dropped_late_quotes"] += 1
         m["_q"] = cache
     elo = elo_tables(matches)
+    elo["form"] = form_tables(matches)
     closing = closing_prices(matches)
     strategies = strategy_universe()
     cutoffs = sorted(m["cutoff"] for m in matches)

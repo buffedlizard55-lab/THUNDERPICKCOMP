@@ -1,4 +1,4 @@
-# Evidence and money schema — THUNDERPICKCOMP (v3 — backtesting added)
+# Evidence and money schema — THUNDERPICKCOMP (v4 — real-line strategy lab added)
 
 Read [README.md](../README.md) first. The site is static HTML/JS over the JSON files
 in `data/`. **A source URL and observation time are receipts, not a guarantee that
@@ -205,3 +205,43 @@ Client code flags the feed as stale after 2 hours (hourly job may be delayed)
 and marks quote observations as historical after 30 minutes. Old Valve snapshots
 stay labelled with their own publication date. Historic organizer and HLTV
 ranks are never silently updated or labeled as live.
+
+## Real-line strategy lab — `data/lab/` (v4)
+
+Receipts are append-only and committed by `.github/workflows/historical-lines.yml` (daily cron on
+`main`, push on `arena/**`, manual dispatch). Everything else in `data/lab/` is derived and is
+rebuilt deterministically by `python3 -m scripts.strategy_lab`.
+
+| File | Kind | Contents |
+|---|---|---|
+| `lines/YYYY-MM.json` | receipts (committed) | One JSON line per settled match-winner market, grouped by the month of `cutoff_utc`. A shard may only contain its own month; `line_id` is unique across shards. |
+| `lines_meta.json` | receipts (committed) | Collector config (checkpoints, staleness, gates, source docs), `coverage` per venue (`lines_stored`, `added_this_run`, `pending_after_run`, `not_yet_final_this_run`, `excluded_total`, `complete`), `excluded` (permanent exclusions with the reason), `errors` (transient), `shards`. |
+| `audit.json` | receipts (committed) | Random sample of stored lines re-fetched from the venue and re-derived with the same code; any difference is a `MISMATCH` and fails the workflow. |
+| `strategies.json` | derived (committed) | 1,447 simulated strategies: `id` (`S####`), `username` (`sim_…`), `family`, `params`, `definition_hash`, plain-English `rule`. |
+| `leaderboard.json` | derived (committed) | One row per strategy (one row per text line): `all`/`train`/`test` metrics, `rank`, `qualified` (≥30 bets), `spark` (≤24 equity points), `selection_fingerprint`, `ledger_published`. |
+| `analytics.json` | derived (committed) | Dataset coverage, distinctness counts, multiple-testing summary, out-of-sample Spearman, market calibration, family/venue/checkpoint/stake summaries, irregularities (with `review_urls`), assumptions. |
+| `matches.json`, `ledgers/S####.json` | build artifacts (git-ignored) | Linked match table and the bet ledgers of featured strategies (top 30, best 20 out-of-sample, bottom 10, best of each family). Rebuilt at every Pages deploy. Any other strategy: `python3 -m scripts.strategy_lab --ledger S0123`. |
+
+**Line record.** `line_id` (`K:<event_ticker>` or `P:<gamma market id>`), `venue`, `market_ids`,
+`competition`, `format` (BO1/BO3/BO5 only when the venue title says so), `teams` (venue spelling),
+`cutoff_utc` (earliest credible scheduled start: Kalshi rules time cross-checked with the ticker
+clock; Polymarket `min(gameStartTime, description time)`), `start_evidence`, `settled_utc`,
+`settlement` (venue final value per side, strings), `winner` (side index or `null` for a 50/50 or
+fair-price settlement), `volume`, `quotes`, `price_urls` (the exact free API query per side),
+`market_urls`, `review_url`, `flags`.
+
+**Quotes.** `quotes[label] = [sideA, sideB]` for `T-24h`, `T-6h`, `T-1h`, `T-0` (300 s before the
+cutoff). Kalshi: `{t, ask, bid, last, vol}` from the last hourly candle whose end ≤ the checkpoint;
+`ask`/`bid` are top of book (depth unknown). Polymarket: `{t, p}` from CLOB `prices-history`, the
+last point ≤ the checkpoint. `p` is a **reference price, not a confirmed executable ask**. A quote
+older than 90 minutes is `null`. Settled 0/1 prices and post-settlement books are never stored as
+quotes.
+
+**Ledger columns.** `match_idx` (index into `matches.json`), `venue` (`k`/`p`), `side` (index into
+the match's `teams`; venue side = `side_map[side]`), `quote_t`, `price` (Kalshi ask; Polymarket
+`min(0.99, p + 0.01)`), `contracts` (integer on Kalshi; shares floored to 0.01 on Polymarket),
+`cost = contracts × price`, `fee` (Kalshi `ceil_centicent(0.07·C·P·(1−P))`; Polymarket
+`round(0.05·C·p·(1−p), 5)`), `settle` (venue final value), `payout = contracts × settle`,
+`pnl = payout − cost − fee`, `model_prob`, `equity_after_settle`. `validate.py` recomputes cost,
+fee, payout and P/L for every published ledger, rejects any `quote_t` after the strategy's decision
+time, and rejects any stake above the 50-unit cap.

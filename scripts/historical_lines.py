@@ -174,10 +174,15 @@ class FixtureFetcher:
 
 # --------------------------------------------------------------------------- Kalshi parsing
 
+# Competition names can themselves contain ": " ("…Championship: Closed Qualifier 2026: A vs. B"),
+# so the competition group is greedy and team A is the text after the LAST ": " before " vs. ".
 KALSHI_RULE = re.compile(
-    r"wins the (?P<comp>.+?): (?P<a>.+?) vs\. (?P<b>.+?) CS2 match originally scheduled for "
+    r"wins the (?P<comp>.+): (?P<a>.+?) vs\. (?P<b>.+?) CS2 match originally scheduled for "
     r"(?P<mon>[A-Z][a-z]{2}) (?P<day>\d{1,2}), (?P<year>\d{4}) at (?P<h>\d{1,2}):(?P<m>\d{2}) "
     r"(?P<ampm>AM|PM) (?P<tz>EDT|EST)\b")
+KALSHI_DATE_ONLY = re.compile(r"CS2 match originally scheduled for [A-Z][a-z]{2} \d{1,2}, \d{4}, then")
+# Reasons recorded by earlier collector versions that this version handles; such events are retried.
+RETRY_EXCLUSIONS = re.compile(r"not finally settled|^rules teams |lacks an explicit scheduled time")
 KALSHI_TICKER_TIME = re.compile(r"^KXCS2GAME-(\d{2})([A-Z]{3})(\d{2})(\d{2})(\d{2})")
 
 
@@ -185,7 +190,11 @@ def kalshi_start(rules: str, event_ticker: str) -> tuple[datetime, str]:
     """Scheduled start from the rules text, cross-checked against the event-ticker clock (ET)."""
     m = KALSHI_RULE.search(rules)
     if not m:
-        raise LineError("rules text lacks an explicit scheduled time with EDT/EST")
+        if KALSHI_DATE_ONLY.search(rules):
+            # Older Kalshi rules (before ~Apr 2026) give only a date. Without a start time no
+            # look-ahead-free checkpoint can be defined, so the event is excluded, not estimated.
+            raise LineError("rules state only a scheduled DATE (no time); no-look-ahead cutoff cannot be established")
+        raise LineError("rules text has no recognised scheduled date/time")
     hour = int(m["h"]) % 12 + (12 if m["ampm"] == "PM" else 0)
     offset = -4 if m["tz"] == "EDT" else -5
     local = datetime(int(m["year"]), MONTHS[m["mon"]], int(m["day"]), hour, int(m["m"]))
@@ -202,6 +211,10 @@ def kalshi_start(rules: str, event_ticker: str) -> tuple[datetime, str]:
     if real != timedelta(hours=offset):
         raise LineError(f"rules say {m['tz']} but New York offset on {local.date()} is {real}")
     return start, m.group(0)
+
+
+def squash(name: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", name.lower())
 
 
 def dec(value) -> str | None:
@@ -263,14 +276,20 @@ def build_kalshi_line(markets: list[dict], fetcher, cutoff_ts: str) -> dict:
     if start_b != start:
         raise LineError("team markets disagree on scheduled time")
     rule = KALSHI_RULE.search(a["rules_primary"])
+    name_flags = []
     if {rule["a"].strip(), rule["b"].strip()} != set(teams):
-        raise LineError(f"rules teams {rule['a']!r}/{rule['b']!r} != yes_sub_titles {teams}")
+        # Tolerate only punctuation/case differences ("JustPlayers" vs "Just_Players").
+        if {squash(rule["a"]), squash(rule["b"])} != {squash(t) for t in teams}:
+            raise LineError(f"rules teams {rule['a']!r}/{rule['b']!r} != yes_sub_titles {teams}")
+        name_flags.append("team_name_spelling_differs_in_rules")
     for m in (a, b):
-        if m.get("status") not in ("finalized", "settled") or m.get("result") not in ("yes", "no"):
+        if m.get("status") not in ("finalized", "settled") or m.get("result") not in ("yes", "no", "scalar"):
             raise NotYetFinal(f"{m['ticker']} not finally settled (status={m.get('status')}, result={m.get('result')})")
     sv = [dec(a.get("settlement_value_dollars")), dec(b.get("settlement_value_dollars"))]
     if None in sv:
         raise LineError("settlement value missing")
+    if abs(float(sv[0]) + float(sv[1]) - 1.0) > 0.0001:
+        raise LineError(f"team settlement values {sv} do not sum to 1")
     winner = None
     if sv == ["1.0000", "0.0000"]:
         winner = 0
@@ -297,8 +316,9 @@ def build_kalshi_line(markets: list[dict], fetcher, cutoff_ts: str) -> dict:
             for label, q in kalshi_checkpoint((payload or {}).get("candlesticks") or [], cutoff).items():
                 quotes[label][side] = q
     comp = rule["comp"].strip()
-    flags = []
+    flags = list(name_flags)
     if winner is None:
+        # Kalshi settles cancelled/forfeited-before-play matches at the "fair market price" (rules_secondary).
         flags.append("non_binary_settlement")
     if not any(any(q) for q in quotes.values()):
         flags.append("no_prestart_quotes")
@@ -461,28 +481,50 @@ def build_poly_line(m: dict, fetcher) -> dict:
     }
 
 
+POLY_EPOCH = datetime(2025, 9, 1, tzinfo=timezone.utc)   # Polymarket's Counter-Strike series began Sep 2025
+POLY_WINDOW = timedelta(days=3)
+POLY_MAX_OFFSET = 1500   # Gamma rejects deep offsets (HTTP 422 observed at offset 2100): split the window instead
+
+
 def poly_markets(fetcher, known: set[str], coverage: dict) -> list[dict]:
+    """Closed CS2 match-winner markets, listed by endDate windows (newest first) so no query pages deep."""
     seen: dict[str, dict] = {}
-    for tag in POLY_TAG_IDS:
-        offset, limit, page_ids = 0, 500, set()
+    requests = [0]
+
+    def window(tag: int, lo: datetime, hi: datetime) -> None:
+        offset, limit = 0, 500
         while True:
-            url = f"{GAMMA}/markets?" + urlencode({"tag_id": tag, "closed": "true", "limit": limit, "offset": offset,
-                                                   "order": "id", "ascending": "false"})
+            if offset >= POLY_MAX_OFFSET:
+                if hi - lo > timedelta(hours=1):
+                    mid = lo + (hi - lo) / 2
+                    window(tag, mid, hi)
+                    window(tag, lo, mid)
+                else:
+                    coverage.setdefault("truncated", []).append(f"tag {tag} {iso(lo.timestamp())}")
+                return
+            url = f"{GAMMA}/markets?" + urlencode({
+                "tag_id": tag, "closed": "true", "sports_market_types": "moneyline", "limit": limit, "offset": offset,
+                "end_date_min": iso(lo.timestamp()), "end_date_max": iso(hi.timestamp()),
+                "order": "id", "ascending": "false"})
+            requests[0] += 1
             page = fetcher.get(url) or []
             if not isinstance(page, list):
                 raise LineError("unexpected Gamma markets payload")
-            ids = {str(m.get("id")) for m in page}
-            if not page or ids <= page_ids:
-                break  # exhausted (or server ignored offset): stop without assuming page size
-            page_ids |= ids
             for m in page:
                 if poly_candidate(m):
                     seen.setdefault(str(m["id"]), m)
+            if len(page) < limit:
+                return
             offset += len(page)
-            if offset >= 150_000:
-                coverage.setdefault("truncated", []).append(tag)
-                break
+
+    hi = now_utc() + timedelta(days=2)
+    for tag in POLY_TAG_IDS:
+        top = hi
+        while top > POLY_EPOCH:
+            window(tag, max(POLY_EPOCH, top - POLY_WINDOW), top)
+            top -= POLY_WINDOW
     coverage["markets_listed"] = len(seen)
+    coverage["listing_requests"] = requests[0]
     return [m for mid, m in sorted(seen.items(), key=lambda kv: int(kv[0])) if f"P:{mid}" not in known]
 
 
@@ -562,6 +604,10 @@ def collect(store: dict, fetcher, *, budget_seconds: float, mode: str) -> dict:
     not_final = {"kalshi": 0, "polymarket": 0}
     errors: list[str] = []
     transient: list[str] = []
+
+    for venue_bucket in excluded.values():
+        for key in [k for k, why in venue_bucket.items() if RETRY_EXCLUSIONS.search(str(why))]:
+            del venue_bucket[key]
 
     def exclude(venue: str, key: str, reason: str) -> None:
         bucket = excluded.setdefault(venue, {})

@@ -6,6 +6,7 @@
 > 3. Apply **Core Values as the decision filter** on every tradeoff: **Maximize P(Win)** and **Own the Outcome** (see below). Prefer the path that maximizes the project's chance of becoming a genuinely useful, trustworthy hub; own results end-to-end and fix what can be fixed.
 > 4. No hallucinations, verify claim-by-claim with source links, keep an audit trail, use only free public sources, and fail visibly. See "Non-negotiable information standards" below.
 > 5. Run the three-pass method (implement → bug/edge-case review → charter re-check) and report verified work, uncertainty, and next steps.
+> 6. Read the **standing session briefs** below (original project brief + "Session brief — 2026-09-24 historical backtesting"). Both remain active requirements.
 
 ## Mission
 
@@ -121,6 +122,35 @@ The following preserves the **full project prompt** supplied by the owner. This 
 >
 > Do not stop after the first pass. Each pass must build on the previous one. Before finishing, verify that the final result fully satisfies the original request. Work line by line verify everything no hallucinations.
 
+## Session brief — 2026-09-24 historical backtesting (standing requirement)
+
+> Recorded from the 2026-09-24 session request. The exact wording was not retained, so this is a
+> condensed restatement; every requirement is kept and the wording is lightly normalized. It
+> extends the original brief above and does not replace it.
+>
+> Review the repository. Determine whether **historical backtesting of Counter-Strike matches** is
+> possible using **real, verified betting lines, dates, pricing and simulated amounts**. Generate
+> **competition-leaderboard-style data and analytics**, stored on the site for future analysis and
+> strategy building. Generate **at least 100, aiming for 1,000, distinct and unique competitive
+> CS betting strategies**. Put this prompt into the README and read the README at the start of
+> every session: the product must solve the manual-checking problem and give an up-to-date current
+> feed. Keep the Core Values (**Maximize P(Win)**, **Own the Outcome**) as the focal point. No
+> hallucinations: verify line by line from official or trusted sources, with links for manual
+> review, and flag irregularities. Use free public sources only, with no manual input. Simulated
+> users, strategies and amounts must be clearly labeled as simulated, while lines, dates, prices
+> and outcomes must be real and verifiable. Create a PR, merge it to main, and suggest remaining
+> work and limitations. Run three passes: implement and verify; review for bugs and edge cases;
+> re-check against the request.
+
+**Answer (feasibility): yes, with free public data only and no API keys.**
+- **Kalshi** `KXCS2GAME` (CS2 game-winner markets) provides hourly bid/ask candles and official
+  settlement for settled markets, in both its live and historical API tiers.
+- **Polymarket** Counter-Strike match-winner markets provide CLOB price history plus the scheduled
+  start and the best-of format.
+- The implementation (`scripts/historical_lines.py`, `scripts/strategy_lab.py`, and the
+  `backtest.html` strategy lab) and its limitations are described in the runbook and the session
+  log below.
+
 ## Repository map (as of 2026-09-24 — backtesting session)
 
 The repository now contains a static, responsive, **ten-page** Pages site (added `backtest.html`), a
@@ -142,7 +172,29 @@ and a new historical backtesting pipeline with 22 verified matches and 69 simula
 - `data/backtest_results.json` — backtest summary: meta (generated_utc, 22 matches, 69 bets), analytics (total, inter-finalist 9, date_range Jun 21–Sep 20, VRS ranks ML-008, odds policy), strategies[] sorted by bankroll: favorite_backer 22 bets 19W-3L +126.1 profit +22.93% ROI bankroll 1126.1; underdog_hunter 22 bets 3W-19L -156.18 ROI -47.33%; etc. Control flat_observer stays 1000.00.
 - `data/backtest_ledger.json` — **69 detailed simulated bets**: entry_id BT-{HIST}-{username}, username, match_id, event, date, teams, winner, pick, decimal_odds, stake, profit, result win/loss, odds_type MODELED, odds_detail, fair_probs, market_implied, reason, sources[] — stored for future analysis and strategy building.
 - `data/player_stats.json` — dated player-stat window policy (HLTV Rating 3.0, trailing 90 days, ≥40 maps). Ships empty.
-- `data/schema.md` — v3, now includes backtesting provenance, modeled odds labeling, and money math for both forward and historical ledgers.
+- `data/schema.md` — v4: forward journal, ledgers, settlements, legacy modeled backtest, and the real-line strategy lab (`data/lab/`).
+- **Real-line strategy lab (added 2026-09-24):**
+  - `scripts/historical_lines.py` collects **real settled CS2 match-winner markets**:
+    - Kalshi `KXCS2GAME`: hourly yes_ask/yes_bid candles and official settlement.
+    - Polymarket Counter-Strike match winner: CLOB `prices-history` plus the scheduled start.
+    - Quotes are taken at T-24h / T-6h / T-1h / T-0, where T-0 is 5 minutes before the earliest credible start.
+    - Collection is bounded, rate-limited and incremental. Unresolved markets are retried, and permanent exclusions are recorded with a reason.
+    - `--audit N` re-fetches a random sample of stored lines and requires an exact match.
+    - Receipts go to `data/lab/lines/YYYY-MM.json` (monthly shards) plus `lines_meta.json` and `audit.json`.
+  - `scripts/strategy_lab.py` replays **1,447 simulated strategies** on those receipts:
+    - Families: price bands, walk-forward Elo value / consensus / contrarian, line movement, best-of format, tier, spread, form streaks, fatigue (the opponent played within the last 6/12 h), head-to-head revenge or repeat, regional session, and controls (no-bet, coin flips).
+    - Execution uses real venue fee formulas, whole Kalshi contracts, cash locked until settlement, and a 50-unit per-bet cap.
+    - Evaluation uses a 70/30 train/test split, Bonferroni and Spearman overfitting checks, and market calibration.
+    - Outputs (derived): `data/lab/strategies.json`, `data/lab/leaderboard.json`, `data/lab/analytics.json`.
+    - Git-ignored build artifacts, rebuilt at every deploy: `data/lab/matches.json`, `data/lab/ledgers/`.
+  - `.github/workflows/historical-lines.yml` runs collect, audit, lab build, validation, then commits the receipts.
+    - It runs daily at 05:41 UTC on `main`, and on pushes to `arena/**`.
+    - To run it on demand, dispatch it manually or edit `data/lab/collect-trigger.txt`.
+  - `backtest.html` shows the lab UI:
+    - a filterable and sortable competition leaderboard with equity sparklines;
+    - a per-strategy bet ledger with receipt links;
+    - calibration, family, venue, checkpoint and staking analytics, plus flagged irregularities.
+  - The legacy modeled backtest is kept in a collapsed section.
 - `scripts/collect.py` — bounded read-only collection from Valve GitHub API, Liquipedia wiki API, Kalshi (KXCS2GAME/KXCS2, 200 limit, 3 pages), Polymarket Gamma/CLOB (Thunderpick active 25, CS tag 60, history 20, per-finalist 10 each when no open TWC event). No paid API, no sportsbook scraper.
 - `scripts/competition.py` — forward-only outright + six match strategies with gates (double-sourced fixture + pre-start + depth + unambiguous association + budget).
 - `scripts/backtest.py` — **NEW**: historical backtesting engine — loads historical_matches, VRS ranks (ML-008), strategies; computes modeled odds (VRS-gap + deterministic noise + 4% overround) where no real free line; simulates each strategy's decisions in chronological order; generates backtest_results.json + backtest_ledger.json with full audit trail. No real lines invented as facts.
@@ -158,8 +210,17 @@ python3 scripts/validate.py
 python3 -m unittest discover -s tests -v
 node --check assets/app.js && node tests/test_ui.cjs
 python3 -m scripts.collect --fixtures --as-of 2026-09-24T17:10:00Z --output /tmp/observations-replay.json
+python3 -m scripts.strategy_lab              # rebuild data/lab leaderboard/analytics/ledgers from committed receipts
+python3 -m scripts.strategy_lab --ledger S0123   # full ledger of ANY strategy as JSON
+python3 -m scripts.historical_lines --fixtures --lab-dir /tmp/lab   # offline replay of recorded real responses
 python3 -m http.server 8000 --bind 0.0.0.0  # local preview (serve from repo root)
 ```
+
+Live line collection (`python3 -m scripts.historical_lines [--budget-minutes 45] [--audit 40]`)
+needs direct internet access to Kalshi and Polymarket, so it runs on GitHub Actions
+(`historical-lines.yml`). Build the lab (`python3 -m scripts.strategy_lab`) before
+`node tests/test_ui.cjs`, because the backtest page needs `data/lab/*.json`. CI and Pages do this
+automatically.
 
 The **live** collector (`python3 -m scripts.collect`) accesses only free public
 endpoints; the sandbox used for this work does not permit direct curl/urllib to

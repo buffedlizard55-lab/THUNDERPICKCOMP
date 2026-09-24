@@ -880,7 +880,10 @@ def check_lab(lab_dir=None, allow_synthetic=False):
         if len(line.get("teams") or []) != 2 or not ISO.match(line.get("cutoff_utc") or ""):
             err(f"{w}: teams/cutoff malformed")
             continue
-        if not allow_synthetic and any(not u.startswith(prefixes) for u in line.get("price_urls") or [""]):
+        urls = line.get("price_urls") or []
+        if not urls and "no_prestart_quotes" not in (line.get("flags") or []):
+            err(f"{w}: no price_urls but not flagged no_prestart_quotes")
+        if not allow_synthetic and any(not u.startswith(prefixes) for u in urls):
             err(f"{w}: price_url outside the free-source allowlist")
         cutoff = hl.parse_iso(line["cutoff_utc"]).timestamp()
         settle = [float(x) if x is not None else None for x in line.get("settlement") or []]
