@@ -98,49 +98,135 @@ The following preserves the project requirements supplied by the owner. Treat it
 
 ## Repository map (as of 2026-09-24)
 
-Static site (repo root, deployed to GitHub Pages) + verified JSON data:
+The repository already contained a static, responsive, eight-page Pages site, a
+32-entry sourced baseline, eight simulated policy definitions and an empty
+paper ledger when this continuation began. **That earlier site was not an
+up-to-date feed**: it had static timestamps and no collector. This session
+adds the first forward-only, scoped, free-source monitoring pipeline.
 
-- `index.html` — overview: event facts, teams, matches/feed, leaderboard preview
-- `teams.html`, `markets.html`, `leaderboard.html`, `ledger.html`, `changes.html`, `master-list.html`, `methodology.html`
-- `assets/style.css`, `assets/app.js` — styling + JSON rendering (single source of truth = `data/*.json`)
-- `data/master_list.json` — 32 verified claims (ML-001–ML-032), each with sources + timestamps
-- `data/teams.json` — 8 finalists: rosters, coaches, VRS/HLTV ranks
-- `data/matches.json` — qualifier final standings + Finals draw status (TBD)
-- `data/market_sources.json` — free price/result sources (Kalshi, Polymarket, HLTV, Liquipedia)
-- `data/strategies.json` — 8 SIMULATED users with deterministic rules
-- `data/ledger.json` — SIMULATED ledger (empty by policy until verified prices exist)
-- `data/schema.md` — record schema, provenance rules, money math
-- `scripts/validate.py` — schema/provenance/reference/money-math checks (runs in CI + before deploy)
-- `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — validation + Pages deploy
+- `index.html`, `teams.html`, `guide.html`, `markets.html`, `leaderboard.html`,
+  `ledger.html`, `changes.html`, `master-list.html`, `methodology.html` — nine-page
+  public hub (including sourced CS2/market explainers).
+- `assets/app.js`, `assets/style.css` — accessible static UI over JSON, including
+  actual UTC freshness/source-error status and links for manual review.
+- `data/master_list.json` — 36 dated sourced claims (ML-001–ML-036). Four new
+  primary-source entries cover a Sep 17 PARIVISION bench/signing, Valve VRS
+  Sep 7 and an actual **closed** Polymarket qualifier market; an older absence
+  statement was corrected, not silently left in place.
+- `data/teams.json`, `data/matches.json`, `data/roster_changes.json` — dated
+  team/event snapshot, an outright reference + draw status and verified moves.
+- `data/observations.json` — forward, append-only quote/VRS/signal journal with
+  exact query scopes, timestamps, alerts and source links. Initially an
+  **offline, partial research replay**; it is NOT a successful scheduled feed
+  until Pages' first live deployment completes.
+- `data/ledger.json`, `data/strategies.json` — 8 simulated accounts: one active
+  conditional outright policy, one no-bet control, six paused match policies.
+  Ledger is intentionally empty until forward, first-party eligible quotes.
+- `data/schema.md` — exact provenance, limitations, source scope and money math.
+- `scripts/collect.py` — bounded read-only collection from Valve GitHub API,
+  Liquipedia wiki API (fixture *signals* only), Kalshi and Polymarket Gamma/CLOB.
+  Does not use a paid API or a sportsbook scraper. Does not claim exhaustive
+  coverage from a zero-result query.
+- `scripts/competition.py` — forward-only two-position outright paper strategy,
+  dependent on same-run first-party best asks, sizes and source timestamps.
+- `scripts/restore.py` — refuses to reset the prior published Pages quote/ledger
+  journal; immutable receipts survive scheduled deployments.
+- `scripts/validate.py`, `tests/` — schema/source/duplicate/gross-money checks,
+  unit tests and documented **partial** real-response excerpts for offline
+  replay (not betting inputs).
+- `.github/workflows/ci.yml`, `.github/workflows/pages.yml` — test on PR,
+  and attempt live collection, validation and Pages deployment on main + hourly
+  schedule. A cron is best effort, not a tick-by-tick live feed.
 
 ## Runbook
 
 ```bash
-python3 scripts/validate.py        # must pass before any PR
-python3 -m http.server 8000       # local preview at http://localhost:8000
+python3 scripts/validate.py
+python3 -m unittest discover -s tests -v
+node --check assets/app.js && node tests/test_ui.cjs
+python3 -m scripts.collect --fixtures --as-of 2026-09-24T17:10:00Z --output /tmp/observations-replay.json
+python3 -m http.server 8000 --bind 0.0.0.0  # local preview (serve from repo root)
 ```
 
-GitHub Pages serves this repo's root on `main` (via Actions workflow `pages.yml`).
-Expected URL pattern: `https://<owner>.github.io/THUNDERPICKCOMP/`.
+The **live** collector (`python3 -m scripts.collect`) accesses only free public
+endpoints; the sandbox used for this work does not permit direct curl/urllib to
+these hosts, so local live execution is not claimed. Verified first-party pages
+and API results were inspected with the page-fetch tool during research. Offline
+fixture replay must never create paper positions. When Pages deploy runs on an
+internet-connected GitHub runner it reports each query's success or failure;
+inspect `markets.html#source-checks` and the Actions run before relying on the
+feed. If all sources fail, the site must show errors/staleness, not a false 0.
+
+Published site: [buffedlizard55-lab.github.io/THUNDERPICKCOMP/](https://buffedlizard55-lab.github.io/THUNDERPICKCOMP/).
+A successful deployment after merge is required before the **new** UI/data is
+published; the prior site may remain visible if Pages settings or permissions
+block deployment. No feature here is a real wager or investment advice.
+
+### Durability and the "no manual checking" goal
+
+Pages alone is static. The workflow restores its *previously published* JSON
+history from the same HTTPS site before each scheduled run, then republishes a
+new immutable receipt journal. If restoration fails, it must **stop** rather
+than discard historical prices/bets. The one-time bootstrap is tied to the
+prior `main` commit, not a standing permission to reset data. Workflows retain
+an artifact for recovery for the platform retention period; a long-term,
+versioned free archive is **not implemented**. This is a scoped first step
+against manual checking, not a promise of full match/odds/roster coverage.
 
 ## Session log
 
-### 2026-09-24 — Initial build (charter → working hub + competition)
+### 2026-09-24 — Initial build (existing baseline)
 
-- Read README + AGENTS.md first, per repo instructions; reviewed tree (README + AGENTS.md only).
-- Researched from free public sources and verified **32 master-list entries line by line** (ML-001–ML-032) against fetched pages: 2× Thunderpick/PRNewswire releases, HLTV event/news/qualifier pages, Liquipedia tournament page, Kalshi + Polymarket API docs. Exceeds the requested 20 new entries; duplicates checked (each ID = one claim).
-- Built the static site (8 pages), the JSON data layer, the simulated 8-user leaderboard with published strategy rules, the empty-by-policy ledger, the market tracker, and the change tracker baseline.
-- Validation: `scripts/validate.py` passes; CI + Pages workflows added.
-- Three passes completed: (1) implement + verify, (2) review for bugs/gaps/assumptions, (3) re-check against this charter.
-- Deliberate honest gaps (see Methodology page): no verified TWC 2026 prices yet, group draw TBD, roster history unverified, no player-stats pipeline, no absence list (not re-verified), manual refresh.
+- Prior session wrote this charter and repository instructions, researched
+  ML-001–ML-032, built the eight-page static site and baseline JSON, configured
+  GitHub Pages, and recorded no prices/positions. Read the dated records for
+  evidence; this log is not independent verification of every earlier claim.
 
-## Highest-value next steps (updated 2026-09-24)
+### 2026-09-24 — Forward collection and correctness review
 
-1. ~~Choose a maintainable static-site/data architecture~~ — done: root static site + JSON data + validation.
-2. ~~Define a source and record schema~~ — done: `data/schema.md` + `scripts/validate.py`.
-3. ~~Research and test a small end-to-end data path~~ — done for tournament/teams/qualifier facts + free market-API access paths; NOT yet done for actual TWC 2026 prices.
-4. Run the first market-discovery pass on Kalshi + Polymarket free APIs; record TWC 2026 markets or auditable "none found" snapshots.
-5. Record the group draw + fixtures the day they publish; open the first ledger entries if verified prices exist.
-6. Verify roster-move history for the eight finalists one announcement at a time; backfill the change tracker.
-7. Add scheduled freshness checks (CI cron) that flag stale ranks/prices automatically.
-8. Define and verify a minimal player-stats policy (which stats, which source, which window) before recording any number.
+- Read README and AGENTS.md; reviewed the full tree, CI, UI, data and validator.
+  Primary sources re-opened: Thunderpick team release, HLTV event page,
+  Liquipedia event/wiki API, Valve's Sep 7 Global VRS, Polymarket Gamma API,
+  Kalshi public API, and two Sep 17 team-issued PARIVISION posts.
+- Important correction: Polymarket Gamma event `1000135` is a real, now-closed
+  TWC 2026 **Closed Qualifier** market. No historical pre-match quote was
+  captured here, so its 0/1 resolution prices cannot backfill a paper bet.
+  `ML-030` no longer implies no market was ever available.
+- Primary team announcements individually confirm slaxejezzz's bench (he
+  remains with PARIVISION and is available for loan) and HObbit's permanent
+  main-roster addition on Sep 17. Their evidence is in `roster_changes.json`
+  and ML-033/034. Valve Sep 7 ranks (ML-035) are a *different date* from the
+  organizer's Sep 16 reveal, not an error to flatten or an active-lineup claim.
+- Built a bounded free-source collector, conservative fixture signals,
+  immutable price receipts, a conditional forward-only paper outright engine,
+  scoped check/error UI, unit tests, strengthened Decimal validator and
+  scheduled Pages build with guarded history restoration. **Initial seeded
+  observations are an offline, partial research replay.** Real future market
+  prices and simulated trades remain zero until independently captured.
+- Three required passes: **(1)** implement the nine-page hub, source collector,
+  dated receipts and conditional outright paper rule, then run offline source
+  replay; **(2)** catch and fix stale hard-coded labels, an incorrect market-
+  absence claim, quote receipt-time drift, history reset risk, pending-position
+  math, and a dangerous match-winner-versus-champion classification edge case;
+  **(3)** recheck primary links, prevent resolved-market backfilling, smoke-test
+  all pages including failed-feed/XSS states, and run full validation/14
+  Python cases/Node renderer checks/diff checks. See PR/checks for actual
+  CI results; local fixture tests do **not** prove the remote hourly run worked.
+
+## Next highest-value work / limitations
+
+1. **Verify a successful scheduled Pages live run** after merge: real external
+   API access, Pages permissions, rolling journal recovery and UI freshness.
+   Fix any host/API/rate failure instead of silently calling it zero coverage.
+2. **Match pipeline:** cross-check *both* official-data fixture pages/results,
+   dates and outcome IDs (HLTV + Liquipedia), then implement and unpause the
+   six match strategies with reproducible pre-start depth checks. No invented
+   opponent, fixture, result or price.
+3. **Settlement journal:** append-only venue-resolution receipts and independent
+   result confirmation, including canceled/forfeit/partial cases. Never turn
+   a 50/50 resolution into a presumed refund.
+4. **Durability:** versioned public storage for rolling quote/decision history
+   beyond Pages plus alerting when jobs stall. Actions artifacts expire.
+5. **Coverage:** broader free, terms-compliant market discovery, researched
+   reserve players and additional primary team-change statements, sourced
+   player stats with a clearly specified time window, and sourced CS2 analysis.

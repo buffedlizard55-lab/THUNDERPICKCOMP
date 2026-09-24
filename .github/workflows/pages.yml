@@ -1,8 +1,11 @@
-name: Deploy static site to GitHub Pages
+name: Collect verified sources and deploy Pages
 
 on:
   push:
     branches: ["main"]
+  schedule:
+    # GitHub Actions cron is best effort; browser displays staleness if delayed.
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -11,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: "pages-journal"
   cancel-in-progress: false
 
 jobs:
@@ -22,12 +25,62 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate data before deploy
-        run: python3 scripts/validate.py
+      - name: Restore previous published quote + paper-decision journal
+        env:
+          BEFORE: ${{ github.event.before }}
+          EVENT: ${{ github.event_name }}
+          PAGES_BASE: https://${{ github.repository_owner }}.github.io/THUNDERPICKCOMP
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/previous-thunderpickcomp
+          observations_url="$PAGES_BASE/data/observations.json?run=$GITHUB_RUN_ID"
+          status=$(curl --silent --show-error --location --max-time 35 --retry 2 \
+            --output /tmp/previous-thunderpickcomp/observations.json \
+            --write-out '%{http_code}' "$observations_url")
+          if [[ "$status" == "404" && "$EVENT" == "push" && "$BEFORE" == "345872fa2a636ad029b400f96891525de60c8afd" ]]; then
+            echo "One-time initial deployment: older site had no observations journal. Using tracked offline research seed."
+          elif [[ "$status" == "200" ]]; then
+            ledger_status=$(curl --silent --show-error --location --max-time 35 --retry 2 \
+              --output /tmp/previous-thunderpickcomp/ledger.json \
+              --write-out '%{http_code}' "$PAGES_BASE/data/ledger.json?run=$GITHUB_RUN_ID")
+            if [[ "$ledger_status" != "200" ]]; then
+              echo "Published ledger unavailable ($ledger_status). Refusing to reset history." >&2
+              exit 1
+            fi
+            python3 -m scripts.restore \
+              --observations /tmp/previous-thunderpickcomp/observations.json \
+              --ledger /tmp/previous-thunderpickcomp/ledger.json
+          else
+            echo "Published observations unavailable ($status). Refusing to reset history." >&2
+            exit 1
+          fi
+      - name: Collect read-only free public APIs (record failures, never fake zero)
+        run: python3 -m scripts.collect
+      - name: Apply eligible forward-only simulated outright decisions
+        run: python3 -m scripts.competition
+      - name: Validate data and regression tests before publishing
+        run: |
+          python3 scripts/validate.py
+          python3 -m unittest discover -s tests -v
+          node --check assets/app.js
+          node tests/test_ui.cjs
+      - name: Save short-lived recovery artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-${{ github.run_id }}
+          path: |
+            data/observations.json
+            data/ledger.json
+          retention-days: 30
+      - name: Package only public site files
+        run: |
+          mkdir -p _site
+          cp .nojekyll *.html _site/
+          cp -R assets data _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: _site
   deploy:
     environment:
       name: github-pages

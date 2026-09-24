@@ -24,6 +24,7 @@
     <div class="wrap">
       <a href="index.html">Overview</a>
       <a href="teams.html">Teams</a>
+      <a href="guide.html">CS2 Guide</a>
       <a href="markets.html">Markets</a>
       <a href="leaderboard.html">Leaderboard</a>
       <a href="ledger.html">Ledger</a>
@@ -51,37 +52,38 @@
         </ol>
       </section>
       <section class="card">
-        <h2>Settlement &amp; reproducibility</h2>
+        <h2>Settlement, source scope &amp; reproducibility</h2>
         <ul>
-          <li>Leaderboard math: <span class="mono">profit = payout − stake</span>; win → <span class="mono">stake × decimal_odds</span>; loss → 0; void → stake. Bankroll = start + Σ profit. Recomputed live from <span class="mono">data/ledger.json</span> on the <a href="leaderboard.html">Leaderboard page</a>.</li>
-          <li>Prediction shares (0–1, settle $1/$0) convert via <span class="mono">decimal_odds = 1 / share_price</span>; raw price + venue are always kept.</li>
-          <li>Settlement requires the market's own rule plus an HLTV result cross-checked on Liquipedia. Conflicts block settlement.</li>
-          <li><span class="mono">scripts/validate.py</span> re-checks schemas, provenance, references and all money math on every change (CI).</li>
+          <li><strong>What is automatically collected:</strong> Valve's latest published Global VRS file (ranked rosters, not live event starters); a conservative Liquipedia fixture-template signal; bounded Polymarket event searches and outcome-specific CLOB best asks; bounded Kalshi CS2 game/outright series and first-party Yes asks. Each query's scope, timestamp and failure are published on <a href="markets.html#source-checks">Markets</a>.</li>
+          <li><strong>What is simulated:</strong> only the FURIA/Falcons outright policy can create two atomic paper decisions from fresh, adequately sized best asks before the Finals. It does not claim a real fill; the six match strategies are paused and the control account never bets.</li>
+          <li><strong>Gross math:</strong> a $1-winning share at ask <span class="mono">p</span> has modeled decimal factor <span class="mono">1/p</span>; on confirmed win the gross paper payout is <span class="mono">stake/p</span> rounded to cents. Real fees, slippage, order size and tax are not modeled. Settled P/L is payout − stake; pending stakes are locked, with no realized ROI.</li>
+          <li><strong>Settlement:</strong> not yet automated. Require the venue’s actual resolution <em>and</em> independent HLTV/Liquipedia result checks. A canceled/forfeited match may resolve at fair-market-price or 50/50 rather than refund; do not assume a void. Pending entries stay pending until an immutable settlement journal is built.</li>
+          <li><span class="mono">scripts/validate.py</span> checks schemas, provenance, references, duplicate IDs and gross math. Offline unit tests use explicitly <em>partial</em> captured source excerpts and synthetic decision cases that never enter published data.</li>
         </ul>
       </section>
       <section class="card">
         <h2>Limitations &amp; what blocks us</h2>
         <div class="table-scroll"><table class="data">
-          <thead><tr><th>Limitation</th><th>Impact</th><th>Plan</th></tr></thead>
+          <thead><tr><th>Gap</th><th>Impact</th><th>Next step</th></tr></thead>
           <tbody>
-            <tr><td>No verified TWC 2026 prices yet</td><td>Ledger empty; competition can't start for real.</td><td>Poll Kalshi/Polymarket free APIs for event markets; capture first prices with full provenance.</td></tr>
-            <tr><td>Group draw TBD</td><td>No fixtures, no match-level markets to track.</td><td>Watch HLTV/Liquipedia event pages; record draw the day it publishes.</td></tr>
-            <tr><td>No free sportsbook odds API</td><td>Traditional book lines unavailable without scraping (terms issues).</td><td>Prediction markets first; add books only via terms-compliant capture.</td></tr>
-            <tr><td>Roster history unverified</td><td>Change tracker has baseline only, no history.</td><td>Verify each 2026 move from its announcement, one by one.</td></tr>
-            <tr><td>No player stats pipeline</td><td>Ratings/form absent from team pages.</td><td>Define a per-stat source policy (HLTV player pages) before recording any number.</td></tr>
-            <tr><td>Manual refresh</td><td>Data updates only when a session runs.</td><td>Scheduled CI freshness checks + visible staleness badges (badges exist; scheduler is next).</td></tr>
+            <tr><td>Not all markets enumerated</td><td>First-page/series/page caps and incomplete sportsbook coverage mean “zero in a query” is not “none anywhere.”</td><td>Broaden bounded discovery and monitor market schema/rate limits; respect terms.</td></tr>
+            <tr><td>Not every match is confirmed by both sources</td><td>Liquipedia fixture signals are unconfirmed until the HLTV match content agrees; no match-paper engine runs.</td><td>Build and test HLTV + Liquipedia fixture/result cross-check before activating match strategies.</td></tr>
+            <tr><td>No automatic settlements/corrections</td><td>Paper positions stay pending; no misleading realized leaderboard results.</td><td>Add append-only venue-resolution/result journal with market-specific partial/void rules and regression tests.</td></tr>
+            <tr><td>Pages history is not a permanent database</td><td>On each scheduled build, prior published JSON is restored over HTTPS before appending. A missing/corrupt prior journal must block publication. Actions artifacts have limited retention; no independent durable backup yet.</td><td>Add a versioned, free, tamper-evident long-term archive of quote/decision receipts.</td></tr>
+            <tr><td>Scheduled jobs are best effort</td><td>GitHub Actions may run late or fail. A website cannot promise tick-level live quotes; visible UTC age and source errors replace the word “live”.</td><td>Add failure notifications and verify scheduled deploys after merge.</td></tr>
+            <tr><td>Roster history/bench and player stats are incomplete</td><td>Two official Sep 17 PARIVISION announcements are verified; no comprehensive reserve list or player-form metrics.</td><td>Verify more primary team statements; set a dated stat-source/window policy before adding any ratings.</td></tr>
           </tbody>
         </table></div>
       </section>
       <section class="card">
         <h2>Suggested next work (priority order)</h2>
         <ol>
-          <li>Run the first market-discovery pass on Kalshi + Polymarket free APIs; record TWC 2026 markets or auditable “none found” snapshots.</li>
-          <li>Verify roster-move history for the eight finalists, one announcement at a time; backfill the change tracker.</li>
-          <li>Record the group draw + fixtures the day they publish; open the first ledger entries if prices exist.</li>
-          <li>Add scheduled freshness checks (CI cron) that flag stale ranks/prices automatically.</li>
-          <li>Define and verify a minimal player-stats policy (which stats, which source, which window).</li>
-          <li>Publish short verified explainers (VRS invites/seeding, GSL format math, map-pool veto basics) — each claim sourced before it ships.</li>
+          <li>Confirm the first scheduled GitHub Pages collector deployment and inspect its exact source statuses, event URLs and UTC freshness.</li>
+          <li>Build independent fixture/result verification and activate match strategies only with pre-start quote depth and source agreement.</li>
+          <li>Implement immutable venue settlement/correction records, including 50/50 outcomes and fee-aware alternatives, before crediting realized P/L.</li>
+          <li>Add durable, versioned free storage for rolling Pages quote history and automated alerts for missed runs.</li>
+          <li>Verify additional team-issued roster announcements; build source-compliant automated watch for team/coach/reserve updates.</li>
+          <li>Define a sourced player-stat window and provide sourced analysis of favorites/dark horses without treating heuristics as facts.</li>
         </ol>
       </section>
     </div>
@@ -89,7 +91,7 @@
   <footer class="site-footer">
     <div class="wrap">
       <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
-      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Last collection finished <span data-today>2026-09-24</span></p>
     </div>
   </footer>
   <script src="assets/app.js"></script>

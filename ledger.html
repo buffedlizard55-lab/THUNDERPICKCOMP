@@ -24,6 +24,7 @@
     <div class="wrap">
       <a href="index.html">Overview</a>
       <a href="teams.html">Teams</a>
+      <a href="guide.html">CS2 Guide</a>
       <a href="markets.html">Markets</a>
       <a href="leaderboard.html">Leaderboard</a>
       <a href="ledger.html" aria-current="page">Ledger</a>
@@ -39,27 +40,27 @@
         <div data-render="ledger"><p class="muted">Loading ledger…</p></div>
       </section>
       <section class="card">
-        <h2>Ledger schema (what each future entry carries)</h2>
+        <h2>Audit trail: what each paper decision must include</h2>
         <div class="table-scroll"><table class="data">
           <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
           <tbody>
-            <tr><td class="mono">entry_id / username / match_id</td><td>Unique bet id, simulated user, and the match record it belongs to.</td></tr>
-            <tr><td class="mono">market / selection</td><td>E.g. match-winner / map-winner / outright, and the side taken.</td></tr>
-            <tr><td class="mono">decimal_odds / stake</td><td>Price at capture and units risked. Prediction shares keep raw price + venue too.</td></tr>
-            <tr><td class="mono">placed_utc / price_source</td><td>When the price was observed; venue + ticker/market id so anyone can re-check.</td></tr>
-            <tr><td class="mono">settlement.rule</td><td>The market's own settlement rule, quoted or linked — a result alone never settles a bet.</td></tr>
-            <tr><td class="mono">settlement.result / settled_utc</td><td>win / loss / void / pending, and when it was settled.</td></tr>
-            <tr><td class="mono">payout / profit</td><td>Computed: win → stake × odds; loss → 0; void → stake. profit = payout − stake.</td></tr>
+            <tr><td class="mono">entry_id / username / match_id</td><td>Immutable paper decision ID, simulated username, and a Finals match or the explicit tournament-winner reference (not a fixture).</td></tr>
+            <tr><td class="mono">market / selection</td><td>The market’s exact question and chosen outcome; a Yes contract is distinct from a No contract.</td></tr>
+            <tr><td class="mono">decimal_odds / stake</td><td>Gross 1 / raw best ask and exact simulated stake. The first-party raw ask and displayed top-of-book size are retained.</td></tr>
+            <tr><td class="mono">placed_utc / price_source</td><td>Paper decision and quote receipt time; venue, market ID, quote ID and original API URL. Reopening a live URL later will not reproduce its past book.</td></tr>
+            <tr><td class="mono">settlement.rule</td><td>Full first-party resolution rule captured with the ask; the outcome cannot be assumed from a match score alone.</td></tr>
+            <tr><td class="mono">settlement.result / settled_utc</td><td>pending until independently checked; later win / loss / void / partial only with venue resolution and independently verified tournament outcome.</td></tr>
+            <tr><td class="mono">payout / profit</td><td>Null while pending. Gross win → stake / raw ask, loss → 0, verified void → stake; a 50/50 market payout is not necessarily a void. Fees/slippage excluded.</td></tr>
           </tbody>
         </table></div>
-        <p class="small muted">Validation: <span class="mono">scripts/validate.py</span> recomputes every payout and fails the build on any mismatch, missing source, or reference to an unknown match/user.</p>
+        <p class="small muted">Validation: <span class="mono">scripts/validate.py</span> cross-checks each decision with its preserved quote ID, venue, size and time, and recomputes settled gross payout. Independent result/settlement journaling is not yet implemented, so all created positions remain pending. <a href="markets.html">View source receipts</a>.</p>
       </section>
     </div>
   </main>
   <footer class="site-footer">
     <div class="wrap">
       <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
-      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Last collection finished <span data-today>2026-09-24</span></p>
     </div>
   </footer>
   <script src="assets/app.js"></script>

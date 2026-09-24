@@ -24,6 +24,7 @@
     <div class="wrap">
       <a href="index.html">Overview</a>
       <a href="teams.html">Teams</a>
+      <a href="guide.html">CS2 Guide</a>
       <a href="markets.html">Markets</a>
       <a href="leaderboard.html">Leaderboard</a>
       <a href="ledger.html">Ledger</a>
@@ -36,39 +37,38 @@
     <div class="wrap">
       <section class="card">
         <h2>Baseline snapshot — Sep 24, 2026</h2>
-        <div class="notice"><strong>What this page guarantees:</strong> the eight current lineups below were each verified against HLTV/Liquipedia event pages on Sep 24, 2026. Anything that changes after that must arrive here as its own sourced entry — otherwise it stays off this page.</div>
+        <div class="notice"><strong>What this page guarantees:</strong> the eight current lineups below were each verified against HLTV/Liquipedia event pages on Sep 24, 2026. Future roster differences from Valve snapshot files are flagged automatically; transfers require a separate primary announcement to be labeled verified.</div>
         <div data-render="teams-table"><p class="muted">Loading baseline rosters…</p></div>
         <p class="small muted">Master-list refs: ML-020 – ML-027 (rosters), ML-032 (baseline policy).</p>
       </section>
       <section class="card">
-        <h2>Verified changes since baseline</h2>
-        <div class="notice good"><strong>None recorded yet.</strong> No post-baseline roster move, substitution, coach change, withdrawal, format change or schedule change has been verified. When one is, it lands here with the announcement link, effective date, and affected team/match.</div>
+        <h2>Verified announcements &amp; snapshot signals</h2><p class="muted small">The confirmed PARIVISION statements below are Sep 17 — <em>before</em> the Sep 24 event-lineup baseline. This is a partial history, not a no-change certificate. Valve ranking-roster differences are <em>signals</em>, not verified transfer announcements.</p><div data-render="changes"><p class="muted">Loading sourced roster changes…</p></div>
       </section>
       <section class="card">
         <h2>Watchlist — what we're monitoring</h2>
         <div class="table-scroll"><table class="data">
           <thead><tr><th>Signal</th><th>Why it matters</th><th>Where we check (free)</th></tr></thead>
           <tbody>
-            <tr><td>Starting-five changes, benchings, stand-ins</td><td>VRS points attach to the five-man roster; a stand-in can void or reshape markets.</td><td>Team announcements, HLTV news, Liquipedia transfers</td></tr>
-            <tr><td>Coach changes</td><td>Mid-season coach swaps correlate with veto/structure shifts.</td><td>Team announcements, HLTV news</td></tr>
+            <tr><td>Starting-five changes, benchings, stand-ins</td><td>Roster identity can affect rankings and venue-specific void rules; verify before drawing conclusions.</td><td>Team announcements, HLTV news, Liquipedia transfers</td></tr>
+            <tr><td>Coach changes</td><td>May affect preparation and veto decisions (analysis, not a measured correlation).</td><td>Team announcements, HLTV news</td></tr>
             <tr><td>Withdrawals / replacements</td><td>A replacement team resets outright markets and group odds.</td><td>Thunderpick announcements, HLTV event page</td></tr>
-            <tr><td>Group draw publication</td><td>Unlocks the first real fixtures and prices (currently TBD, ML-031).</td><td>HLTV event page, Liquipedia</td></tr>
+            <tr><td>Group draw publication</td><td>Enables fixture verification and match-market linkage; outright markets may exist earlier.</td><td>HLTV event page, Liquipedia</td></tr>
             <tr><td>CS2 gameplay / map-pool patches</td><td>Pool or mechanics changes hit map-win markets hardest.</td><td>Valve update notes, Liquipedia</td></tr>
-            <tr><td>New prediction markets (Kalshi/Polymarket)</td><td>First verified TWC 2026 price starts the simulated competition for real.</td><td>Free public APIs (see <a href="markets.html">Markets</a>)</td></tr>
+            <tr><td>New prediction markets (Kalshi/Polymarket)</td><td>A first-party pre-event ask with enough depth could enable a paper decision, subject to all eligibility checks.</td><td>Free public APIs (see <a href="markets.html">Markets</a>)</td></tr>
           </tbody>
         </table></div>
       </section>
       <section class="card">
         <h2>Deliberately excluded: unverified history &amp; rumors</h2>
-        <p>Roster-move histories, “drama”, and substitute-player claims circulate widely — including on the design-reference hub that inspired this site's layout. We treat all of it as <span class="badge unverified">Unverified</span> until each move is re-checked against its own announcement. Repeating unsourced claims would launder them into apparent facts, so this page stays short on purpose.</p>
-        <p class="small muted">Next data session: verify 2026 roster moves for the eight finalists one by one (announcement URL + date + direction), then backfill this page's history section.</p>
+        <p>Other roster moves, “drama”, reserves, and substitute-player claims remain <span class="badge unverified">Unverified</span> until checked against their own primary announcements. We do not extrapolate from a VRS ranking-roster row to an exact transfer date or claim the history above is complete.</p>
+        <p class="small muted">Next: verify more team-issued announcements one by one (URL, published date, direction), then build a source-compliant automated change feed. X does not provide a free dependable historical search API for this project.</p>
       </section>
     </div>
   </main>
   <footer class="site-footer">
     <div class="wrap">
       <p><strong>THUNDERPICKCOMP</strong> — all competition activity is simulated (no real money). Facts link to public sources; missing data is labeled unknown/TBD.</p>
-      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Data as of <span data-today>2026-09-24</span></p>
+      <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Last collection finished <span data-today>2026-09-24</span></p>
     </div>
   </footer>
   <script src="assets/app.js"></script>

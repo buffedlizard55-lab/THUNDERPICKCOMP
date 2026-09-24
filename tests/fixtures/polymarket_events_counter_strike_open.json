@@ -1,0 +1,27 @@
+[
+  {
+    "id": "574158",
+    "ticker": "will-valve-add-sticker-trade-ups-before-november-20260608173609897",
+    "slug": "will-valve-add-sticker-trade-ups-before-november-20260608173609897",
+    "title": "Will Valve add sticker trade-ups before November?",
+    "startDate": "2026-06-08T22:24:12.899439Z",
+    "endDate": "2026-11-01T03:59:00Z",
+    "active": true,
+    "closed": false,
+    "updatedAt": "2026-09-24T16:42:47.846126Z",
+    "markets": [
+      {
+        "id": "2473852",
+        "question": "Will Valve add sticker trade-ups before November?",
+        "outcomes": "[\"Yes\", \"No\"]",
+        "outcomePrices": "[\"0.055\", \"0.945\"]",
+        "active": true,
+        "closed": false
+      }
+    ],
+    "tags": [
+      {"id": "100677", "label": "CS2", "slug": "cs2"},
+      {"id": "100602", "label": "counter-strike", "slug": "counter-strike"}
+    ]
+  }
+]

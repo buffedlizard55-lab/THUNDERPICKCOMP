@@ -210,8 +210,8 @@
   {
     "id": "ML-009",
     "category": "team",
-    "claim": "Field strength: Falcons and FURIA are the only top-five sides; Legacy and Aurora complete four top-10 teams",
-    "detail": "HLTV (Sep 16, 2026): 'Falcons and FURIA headline the team list as the only top-five sides in attendance, while FISSURE Playground 3 champions Legacy, and Aurora round out the top-10 representation.' South American 9z plus Russian BETBOOM and PARIVISION complete the invite list; Virtus.pro qualified.",
+    "claim": "Field strength at HLTV Sep 16 snapshot: Falcons/FURIA top-five; Legacy/Aurora round out four top-ten sides",
+    "detail": "At the time of HLTV’s Sep 16, 2026 report (not an ongoing live ranking): 'Falcons and FURIA headline the team list as the only top-five sides in attendance, while FISSURE Playground 3 champions Legacy, and Aurora round out the top-10 representation.' South American 9z plus Russian BETBOOM and PARIVISION complete the invite list; Virtus.pro qualified.",
     "sources": [
       {
         "label": "HLTV — Falcons and FURIA headline Thunderpick World Championship team list (Sep 16, 2026)",
@@ -434,7 +434,7 @@
   {
     "id": "ML-020",
     "category": "roster",
-    "claim": "FURIA roster (current): FalleN, yuurih, YEKINDAR, KSCERATO, molodoy; coach sidde",
+    "claim": "FURIA Sep 24 event-roster snapshot: FalleN, yuurih, YEKINDAR, KSCERATO, molodoy; coach sidde",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): FalleN (BR), yuurih (BR), YEKINDAR (LV), KSCERATO (BR), molodoy (KZ); coach sidde (BR). Liquipedia participants list the same five handles + sidde.",
     "sources": [
       {
@@ -458,7 +458,7 @@
   {
     "id": "ML-021",
     "category": "roster",
-    "claim": "Falcons roster (current): karrigan, NiKo, TeSeS, m0NESY, kyousuke; coach zonic",
+    "claim": "Falcons Sep 24 event-roster snapshot: karrigan, NiKo, TeSeS, m0NESY, kyousuke; coach zonic",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): karrigan (DK), NiKo (BA), TeSeS (DK), m0NESY (RU), kyousuke (RU); coach zonic (DK). Liquipedia participants list the same five handles + zonic.",
     "sources": [
       {
@@ -482,7 +482,7 @@
   {
     "id": "ML-022",
     "category": "roster",
-    "claim": "Legacy roster (current): arT, dumau, latto, n1ssim, try; coach adrrr/adr (spelling varies)",
+    "claim": "Legacy Sep 24 event-roster snapshot: arT, dumau, latto, n1ssim, try; coach adrrr/adr (spelling varies)",
     "detail": "Liquipedia participants: latto, dumau, n1ssim, arT (all BR), try (AR); coach adr (BR). HLTV's event page shows the same five handles with coach 'adrrr'. Coach handle spelling differs by source ('adrrr' vs 'adr').",
     "sources": [
       {
@@ -508,7 +508,7 @@
   {
     "id": "ML-023",
     "category": "roster",
-    "claim": "Aurora roster (current): XANTARES, woxic, Jimpphat, kyxsan, Wicadia; coach ash",
+    "claim": "Aurora Sep 24 event-roster snapshot: XANTARES, woxic, Jimpphat, kyxsan, Wicadia; coach ash",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): XANTARES (TR), woxic (TR), Jimpphat (FI), kyxsan (MK), Wicadia (TR); coach ash (GB).",
     "sources": [
       {
@@ -526,7 +526,7 @@
   {
     "id": "ML-024",
     "category": "roster",
-    "claim": "BETBOOM roster (current): Boombl4, zorte, S1ren, d1Ledez, Magnojez; coach Fierce",
+    "claim": "BETBOOM Sep 24 event-roster snapshot: Boombl4, zorte, S1ren, d1Ledez, Magnojez; coach Fierce",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): Boombl4, zorte, S1ren, d1Ledez, Magnojez (all RU); coach Fierce (RU).",
     "sources": [
       {
@@ -544,7 +544,7 @@
   {
     "id": "ML-025",
     "category": "roster",
-    "claim": "9z roster (current): max, dgt, meyern, luchov, HUASOPEEK; coach BIT",
+    "claim": "9z Sep 24 event-roster snapshot: max, dgt, meyern, luchov, HUASOPEEK; coach BIT",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): max (UY), dgt (UY), meyern (AR), luchov (AR), HUASOPEEK (CL); coach BIT (BR). Liquipedia participants list the same five handles + BIT.",
     "sources": [
       {
@@ -568,7 +568,7 @@
   {
     "id": "ML-026",
     "category": "roster",
-    "claim": "PARIVISION roster (current): HObbit, FL1T, Jame, xiELO, zweih; coach dastan",
+    "claim": "PARIVISION Sep 24 event-roster snapshot: HObbit, FL1T, Jame, xiELO, zweih; coach dastan",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): HObbit (KZ), FL1T (RU), Jame (RU), xiELO (RU), zweih (RU); coach dastan (KZ).",
     "sources": [
       {
@@ -586,7 +586,7 @@
   {
     "id": "ML-027",
     "category": "roster",
-    "claim": "Virtus.pro roster (current): mir, b1st, F0R3VER, AquaRS, tO0RO; coach ProbLeM",
+    "claim": "Virtus.pro Sep 24 event-roster snapshot: mir, b1st, F0R3VER, AquaRS, tO0RO; coach ProbLeM",
     "detail": "As shown on HLTV's TWC 2026 event page (retrieved Sep 24, 2026): mir (RU), b1st (RU), F0R3VER (KZ), AquaRS (RU), tO0RO (RU); coach ProbLeM (RU). HLTV's Sep 16 report gives full names: Vladimir 'b1st' Krasikov, Vadim 'tO0RO' Arkov.",
     "sources": [
       {
@@ -611,16 +611,22 @@
     "id": "ML-028",
     "category": "market-data",
     "claim": "Kalshi offers free public market-data API access without authentication",
-    "detail": "Kalshi's official API documentation includes 'Quick Start: Market Data — Learn how to access real-time market data without authentication', plus public endpoints for markets, orderbooks, trades and candlesticks. No TWC-2026-specific Kalshi market has been verified as of Sep 24, 2026.",
+    "detail": "Kalshi's official API documentation has a market-data quick start with unauthenticated read access and public endpoints for markets and order books. The query plan in this repository checks two CS2 series (game-winner and tournament-winner); it does NOT establish exchange-wide absence of a Finals market. No paid API is used.",
     "sources": [
       {
         "label": "Kalshi API documentation index",
         "url": "https://docs.kalshi.com/llms.txt",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:40:41Z",
+        "type": "primary"
+      },
+      {
+        "label": "Kalshi official Get Series List API documentation (public access and exact filters)",
+        "url": "https://docs.kalshi.com/api-reference/market/get-series-list",
+        "accessed_utc": "2026-09-24T17:40:41Z",
         "type": "primary"
       }
     ],
-    "verified_utc": "2026-09-24T05:00:00Z",
+    "verified_utc": "2026-09-24T17:40:41Z",
     "status": "verified",
     "flags": [],
     "notes": "Free access path confirmed; event-specific coverage still to be checked."
@@ -629,16 +635,22 @@
     "id": "ML-029",
     "category": "market-data",
     "claim": "Polymarket offers free public market-data API access",
-    "detail": "Polymarket's official documentation: 'Build on the world's largest prediction market. Trade, integrate, and access real-time market data with the Polymarket API', with a Market Data section (discover markets, market details, prices and order books, analytics, real-time data). No TWC-2026-specific Polymarket market has been verified as of Sep 24, 2026.",
+    "detail": "Polymarket's official market-data API documentation exposes public discovery, market details and order-book endpoints. A historical TWC 2026 Closed Qualifier event IS verified (event 1000135, see ML-036); the API's current 0/1 resolution values are not pre-match asks. A limited active Finals search had zero hits on Sep 24, but this does not prove market absence.",
     "sources": [
       {
         "label": "Polymarket documentation index",
         "url": "https://docs.polymarket.com/llms.txt",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:40:41Z",
+        "type": "primary"
+      },
+      {
+        "label": "Polymarket Gamma official TWC 2026 qualifier event id 1000135",
+        "url": "https://gamma-api.polymarket.com/events/1000135",
+        "accessed_utc": "2026-09-24T17:40:41Z",
         "type": "primary"
       }
     ],
-    "verified_utc": "2026-09-24T05:00:00Z",
+    "verified_utc": "2026-09-24T17:40:41Z",
     "status": "verified",
     "flags": [],
     "notes": "Free access path confirmed; event-specific coverage still to be checked."
@@ -646,41 +658,47 @@
   {
     "id": "ML-030",
     "category": "market-data",
-    "claim": "No verified TWC 2026 odds or prediction-market prices exist in this repo yet (verified absence)",
-    "detail": "As of Sep 24, 2026, this repository holds zero odds/price records because none have been captured line-by-line from a citable public source with ticker, price, and timestamp. The ledger and markets tracker are therefore intentionally empty. This is a verified statement about the repo's own state, not a claim that no markets exist anywhere.",
+    "claim": "Repository price history: no captured pre-match TWC 2026 prices as of Sep 24, 2026",
+    "detail": "As of the Sep 24 research replay at 17:10 UTC, this repository had zero stored pre-event ask snapshots and an empty simulated ledger. Polymarket DOES have historical TWC 2026 Closed Qualifier markets (ML-036); their current 0/1 resolution values are not pre-match asks. This claim is about the dated repository state, not a prediction about later markets or an exchange-wide absence claim. For new receipts inspect observations.json.",
     "sources": [
       {
         "label": "This repository — data/ledger.json (empty by policy)",
         "url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/blob/main/data/ledger.json",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      },
+      {
+        "label": "This repository — data/observations.json (dated research seed)",
+        "url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/blob/main/data/observations.json",
+        "accessed_utc": "2026-09-24T17:40:41Z",
         "type": "primary"
       }
     ],
-    "verified_utc": "2026-09-24T05:00:00Z",
+    "verified_utc": "2026-09-24T17:40:41Z",
     "status": "verified",
     "flags": [],
-    "notes": "First prices may only enter via the schema in data/schema.md with full provenance."
+    "notes": "API market discovery is scoped; never claim the entire exchange lacks a market. An empty ledger also does not prove a quote was never published."
   },
   {
     "id": "ML-031",
     "category": "match",
-    "claim": "Finals group draw is TBD and no Finals matches are scheduled or scored (as of Sep 24, 2026)",
+    "claim": "Finals group draw TBD and no Finals fixtures/results on HLTV and Liquipedia (Sep 24, 2026 check)",
     "detail": "HLTV's TWC 2026 event page shows all Group A/B bracket slots as TBD with no fixtures; Liquipedia's results/participants sections show TBD throughout. No Finals match can therefore be recorded as scheduled or final yet.",
     "sources": [
       {
         "label": "HLTV — Thunderpick World Championship 2026 event page",
         "url": "https://www.hltv.org/events/8932/thunderpick-world-championship-2026",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:16:10Z",
         "type": "official-data"
       },
       {
         "label": "Liquipedia — Thunderpick World Championship 2026",
         "url": "https://liquipedia.net/counterstrike/Thunderpick/World_Championship/2026",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:16:10Z",
         "type": "official-data"
       }
     ],
-    "verified_utc": "2026-09-24T05:00:00Z",
+    "verified_utc": "2026-09-24T17:16:10Z",
     "status": "verified",
     "flags": [],
     "notes": "Match records unlock once the draw is published."
@@ -688,19 +706,91 @@
   {
     "id": "ML-032",
     "category": "roster",
-    "claim": "Roster baseline snapshot: Sep 24, 2026 — historical change log not yet verified change-by-change",
-    "detail": "The eight current rosters (ML-020–ML-027) are a Sep 24, 2026 baseline. A historical log of who joined/left/benched when has NOT been verified change-by-change against primary sources, so no historical roster-change claims are made in this repo yet.",
+    "claim": "Eight finalist rosters form a Sep 24 baseline; roster-move history is incomplete",
+    "detail": "teams.json is a dated Sep 24 lineup snapshot, not a full history of moves. Two Sep 17 PARIVISION team announcements are verified individually (ML-033, ML-034); other historical moves are not presented as verified.",
     "sources": [
       {
         "label": "This repository — data/teams.json (baseline snapshot)",
         "url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/blob/main/data/teams.json",
-        "accessed_utc": "2026-09-24T05:00:00Z",
+        "accessed_utc": "2026-09-24T17:16:10Z",
         "type": "primary"
       }
     ],
-    "verified_utc": "2026-09-24T05:00:00Z",
+    "verified_utc": "2026-09-24T17:16:10Z",
     "status": "verified",
     "flags": [],
-    "notes": "Next data session: verify roster moves one by one from team/HLTV announcements."
+    "notes": "Compare snapshots and check team statements before asserting a transfer date or permanent status. The change tracker is not comprehensive."
+  },
+  {
+    "id": "ML-033",
+    "category": "roster",
+    "claim": "PARIVISION benched slaxejezzz on September 17, 2026",
+    "detail": "The team announced at 12:00 UTC that Vyacheslav “slaxejezzz” Vinokurov was benched and available for loan; it explicitly said it is not considering selling him and that he remains part of PARIVISION. This is a bench move, NOT confirmation of departure from the organization.",
+    "sources": [
+      {
+        "label": "PARIVISION official X post (Sep 17, 2026 12:00 UTC)",
+        "url": "https://x.com/parivisiongg/status/2100555368153903362",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Primary team statement; reflects announcement, not a claim that he is on the Finals starting five."
+  },
+  {
+    "id": "ML-034",
+    "category": "roster",
+    "claim": "HObbit joined PARIVISION’s main roster on September 17, 2026",
+    "detail": "PARIVISION announced at 12:01 UTC that Abay “HObbit” Khassenov joined its main roster on a permanent basis; the announcement says he had previously played as a stand-in that summer. This does not by itself identify which player was replaced; read alongside ML-033.",
+    "sources": [
+      {
+        "label": "PARIVISION official X post (Sep 17, 2026 12:01 UTC)",
+        "url": "https://x.com/parivisiongg/status/2100555617832149185",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Primary team statement; standings/roster sources independently show the Sep 24 starting-five snapshot."
+  },
+  {
+    "id": "ML-035",
+    "category": "team",
+    "claim": "Valve Global VRS Sep 7 snapshot: Falcons #3, Legacy #6, FURIA #7, 9z #9, Aurora #12, BETBOOM #15, PARIVISION #18, Virtus.pro #40",
+    "detail": "These are the exact ranks in Valve’s official 2026-09-07 Global VRS file. This is a different dated snapshot from the organizer’s Sep 16 reveal ranks (ML-008); do not display either as a live rank. The file’s ranked-roster column may differ from the event’s later starting five (e.g. PARIVISION), and is not evidence of a transfer date.",
+    "sources": [
+      {
+        "label": "ValveSoftware official Global VRS standings (snapshot Sep 7, 2026)",
+        "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Primary snapshot; tracked automatically from the public ValveSoftware GitHub repository."
+  },
+  {
+    "id": "ML-036",
+    "category": "market-data",
+    "claim": "Polymarket listed at least one TWC 2026 Closed Qualifier match market (3DMAX vs 100 Thieves)",
+    "detail": "Official Gamma event id 1000135 / ticker cs2-3dmax-100t-2026-09-11 identifies a Thunderpick World Championship Closed Qualifier Group C BO3. The event is now closed; the Map 1 market id 4443130 shows resolution prices 0/1. No PRE-MATCH price for this event was captured by this repository. Never treat 0/1 settlement values as an earlier trade or simulation.",
+    "sources": [
+      {
+        "label": "Polymarket Gamma public event 1000135 (closed)",
+        "url": "https://gamma-api.polymarket.com/events/1000135",
+        "accessed_utc": "2026-09-24T17:16:10Z",
+        "type": "primary"
+      }
+    ],
+    "verified_utc": "2026-09-24T17:16:10Z",
+    "status": "verified",
+    "flags": [],
+    "notes": "Evidence of market coverage, NOT evidence of a pre-match price, a fill, or current Finals coverage."
   }
 ]
