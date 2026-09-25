@@ -548,21 +548,45 @@ does not prevent a transient stale public page. Recheck after the next push.
   because two lines legitimately had no price URLs (markets opened after the scheduled start). Nothing
   was committed. The validator now accepts that case only when the line is flagged `no_prestart_quotes`.
 
+- **Full backfill** (run 36072289325, commit 5ea3274). The previous run (36066736198) collected the
+  same data, but its commit was blocked by a ledger-rounding drift of more than 0.01 in 6 strategies.
+  That is fixed (6-decimal ledger, regression test), and receipts are now committed even when derived
+  outputs fail.
+  - **12,664 verified lines:** Kalshi 4,995 and Polymarket 7,669, for matches from 2026-01-15 to
+    2026-09-24.
+  - **8,704 matches simulated.** 3,258 are listed on both venues, and on 3,046 of those both venues
+    report the winner. **1 result conflict** is flagged for manual review (see `venue_result_conflicts`
+    in `data/lab/analytics.json`).
+  - **Audit: 40/40 exact**, re-fetched from both venues.
+  - Kalshi exclusions fell from 1,873 to 1,108; 1,105 of them are date-only rules.
+  - Line flags: 334 non-binary (fair-price) settlements, 566 lines resolved 50/50, and 683 lines with
+    no pre-start quotes.
+  - 6,706 quotes were dropped because they fell after the match cutoff. When two venues list the same
+    match, the earlier start time is used as the cutoff, so a quote timed against the other venue's
+    later start could be in-play.
+- **Full-data lab result:** 1,447 strategies with **1,266 distinct bet-selection sets** (goal: ≥1,000
+  ✅). 1,442 qualified.
+  - 12 reached p<0.05, against ~72 expected by chance; **0 survive Bonferroni**.
+  - The top 20 by train ROI returned **+10.1% in-sample and −10.2% out of sample**.
+  - **Maximize P(Win):** after fees there is still no evidence of a durable edge. The most useful
+    output so far is knowing what *not* to bet on (for example, the longshot buckets priced below
+    0.30 lose 19.5–35.3% flat after fees at T-1h on Kalshi: bucket 0–0.1 −35.3%, 0.1–0.2 −31.7%, 0.2–0.3 −19.5%; see `calibration`).
+
 ## Next highest-value work / limitations
 
-1. **Confirm the Polymarket backfill.** Check `data/lab/lines_meta.json` coverage: Polymarket
-   `lines_stored` > 0, no `truncated` windows, and that `audit.json` shows 0 mismatches. It needs roughly
-   2 CLOB requests per market, so the daily 05:41 UTC cron (or manual dispatches) may take several runs
-   to finish; `pending_after_run` shows the backlog.
+1. **Keep the backfill current.** The first full Polymarket backfill is complete (7,669 lines, 0 truncated
+   windows, audit 40/40). The daily 05:41 UTC cron on `main` appends newly settled matches. After each
+   run, check that `audit.json` shows 0 mismatches and `coverage.*.errors` is empty. Also review the
+   flagged cross-venue result conflict.
 2. **Admin action: switch Pages Source to "GitHub Actions"** (Settings → Pages). Legacy branch
    publishing is still active; the app token cannot change it (HTTP 403).
 3. **Verify the first hourly Pages run after merge:**
    - restore picks `journal-archive` and applies the 19 `first_seen` repairs;
    - the manifest shows `mode: live`;
    - the lab page shows real data.
-4. **Distinctness:** once Polymarket lands, re-read `analytics.json → distinctness`. If there are
-   still fewer than 1,000 unique bet-selection sets, add families. Each new family needs a look-ahead
-   test and must keep the ≥100 floor.
+4. **Distinctness:** 1,266 unique bet-selection sets on the full data. Every new family needs a
+   look-ahead test and must keep the ≥100 floor. It should also add *new* selections; check
+   `analytics.json → distinctness` rather than just the definition count.
 5. **Forward-test the leaders.** Freeze the current top strategies by train-period ROI and score them
    only on matches settled after the freeze. That is the honest test the in-sample leaderboard cannot give.
 
