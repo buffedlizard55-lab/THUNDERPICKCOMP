@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Historical Backtesting — Thunderpick WC 2026 Hub</title>
-  <meta name="description" content="Historical backtesting for Thunderpick World Championship 2026 finalists: verified match results, modeled vs real betting lines, simulated leaderboard and analytics for strategy building.">
+  <meta name="description" content="Historical CS2 backtesting on real, re-verifiable Kalshi and Polymarket match-winner prices: 1,447 simulated strategies, competition leaderboard, exact bet ledgers and analytics for strategy building.">
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
         <span class="brand-mark" aria-hidden="true">⚡</span>
         <div>
           <h1>Historical Backtesting <span class="badge sim">SIMULATED</span></h1>
-          <p class="tagline">22 verified matches · real result sources · modeled odds where no free public line exists · full ledger for strategy research.</p>
+          <p class="tagline">Real historical CS2 match-winner prices from Kalshi + Polymarket · 1,447 simulated strategies · exact bets, fees, receipts · out-of-sample checks.</p>
         </div>
       </div>
     </div>
@@ -37,19 +37,33 @@
   <main id="main-content">
     <div class="wrap">
       <section class="hero">
-        <h2><span class="bolt">⚡</span> Backtesting: what if we had bet the last 90 days?</h2>
-        <p>This page solves the <strong>manual checking problem</strong> for strategy research: instead of manually checking HLTV results and guessing at odds, we store <strong>verified match results with source links</strong>, generate <strong>transparent modeled odds</strong> where no free public betting line exists (clearly labeled MODELED), and simulate every strategy's exact bets — dates, pricing, amounts, outcome — so you can verify everything line by line.</p>
+        <h2><span class="bolt">⚡</span> Strategy lab: every CS2 strategy, replayed on real historical prices</h2>
+        <p>Maximize P(Win) starts with knowing what actually worked. Instead of checking results by hand and guessing at odds, a scheduled job stores <strong>real settled CS2 match-winner markets</strong> from free public APIs (Kalshi <span class="mono">KXCS2GAME</span> hourly bid/ask candles; Polymarket CLOB price history), each with the exact query URL so any number can be re-checked. It then replays <strong>1,447 simulated strategies</strong> on those prices with the venues' real fee formulas. Every user, bankroll and bet here is <span class="badge sim">SIMULATED</span>; every price, date and result comes from the venue's own data.</p>
         <div class="fact-grid">
-          <div class="fact"><div class="k">Matches</div><div class="v" data-backtest-matches>22</div></div>
-          <div class="fact"><div class="k">Simulated bets</div><div class="v" data-backtest-bets>69</div></div>
-          <div class="fact"><div class="k">Strategies</div><div class="v">8</div></div>
-          <div class="fact"><div class="k">Real market receipts</div><div class="v">1 closed</div></div>
-          <div class="fact"><div class="k">Date range</div><div class="v">Jun–Sep 2026</div></div>
-          <div class="fact"><div class="k">Odds policy</div><div class="v">MODELED + 4% overround</div></div>
+          <div class="fact"><div class="k">Real lines stored</div><div class="v" data-lab-fact="lines">—</div></div>
+          <div class="fact"><div class="k">Matches simulated</div><div class="v" data-lab-fact="matches">—</div></div>
+          <div class="fact"><div class="k">Date range</div><div class="v" data-lab-fact="range">—</div></div>
+          <div class="fact"><div class="k">Strategies</div><div class="v" data-lab-fact="strategies">—</div></div>
+          <div class="fact"><div class="k">Distinct bet sets / ledgers</div><div class="v" data-lab-fact="selections">—</div></div>
+          <div class="fact"><div class="k">Lines last collected</div><div class="v" data-lab-fact="updated">—</div></div>
         </div>
-        <div class="notice good"><strong>No hallucinations:</strong> every historical match links to HLTV/Liquipedia. Real betting lines are in <a href="markets.html">Markets</a> + <code>historical_odds.json</code>. Modeled odds are labeled <span class="badge sim">MODELED</span> and use VRS-gap + deterministic noise — never presented as real lines. <span data-backtest-meta></span></div>
+        <div class="notice good"><strong>Own the Outcome:</strong> each bet is placed only with information available at its checkpoint (T-24h, T-6h, T-1h or T-0 = 5 minutes before the earliest credible start). Any quote timestamped after that is refused. Kalshi buys at the ask in whole contracts; Polymarket at the reference price plus 1¢. Fees follow the published schedules, and no bet exceeds 50 units because order-book depth is unknown. A random sample of stored prices is re-fetched from the venues on every run and must match exactly (<a href="data/lab/audit.json">latest audit</a>).</div>
       </section>
 
+      <section class="card">
+        <h2>Competition leaderboard — simulated strategies on real lines</h2>
+        <p class="small muted">Each simulated user follows one written rule for every match in the dataset. Filter by family, venue, checkpoint or staking; sort by bankroll, out-of-sample ROI, closing-line value or statistical evidence. <strong>A high in-sample rank alone is not evidence of skill</strong>: check "Test ROI" (last 30% of matches, never used for ranking) and the analytics below. Data: <a href="data/lab/leaderboard.json">leaderboard.json</a> · <a href="data/lab/strategies.json">strategies.json</a> · <a href="data/lab/analytics.json">analytics.json</a> · receipts in <span class="mono">data/lab/lines/</span>.</p>
+        <div data-render="lab-leaderboard"><p class="muted">Loading strategy lab…</p></div>
+      </section>
+
+      <section class="card">
+        <h2>Analytics — calibration, families, and is any of it real?</h2>
+        <div data-render="lab-analytics"><p class="muted">Loading analytics…</p></div>
+      </section>
+
+      <details class="card legacy">
+        <summary>Legacy: modeled-odds backtest of the 8 TWC finalists (22 matches, MODELED odds — superseded)</summary>
+        <p class="notice warn"><strong>Superseded.</strong> This older backtest pre-dates the real-line collector. It uses verified results but <span class="badge sim">MODELED</span> odds (VRS gap + deterministic noise + 4% overround), which are not real betting lines. Kept for continuity only; use the strategy lab above for any strategy decision.</p>
       <section class="card">
         <h2>Backtest leaderboard — 22 verified matches</h2>
         <p class="small muted">Sorted by realized bankroll. ROI = profit / staked. All stakes flat per strategy (see <a href="leaderboard.html">Leaderboard</a> rules). Control account <span class="mono">sim_flat_observer</span> stays at 1000.00. <span class="badge sim">SIM</span> — no real money.</p>
@@ -98,11 +112,12 @@
         </ol>
         <p class="small muted">All files are static JSON, versioned in git, published on GitHub Pages. No paid API, no paywall bypass, no ToS violation. Missing data = unknown/TBD, never guessed.</p>
       </section>
+      </details>
     </div>
   </main>
   <footer class="site-footer">
     <div class="wrap">
-      <p><strong>THUNDERPICKCOMP</strong> — historical backtesting is simulated (no real money). Verified results link to public sources; modeled odds are labeled MODELED and not real betting lines.</p>
+      <p><strong>THUNDERPICKCOMP</strong> — all users, bankrolls and bets are simulated (no real money). Prices, dates and results come from free public venue APIs with receipt links; the legacy modeled odds are labeled MODELED and are not real betting lines.</p>
       <p><a href="methodology.html">Methodology</a> · <a href="master-list.html">Master list</a> · <a href="https://github.com/buffedlizard55-lab/THUNDERPICKCOMP">GitHub repository</a> · Backtest generated <span data-today>2026-09-24</span></p>
     </div>
   </footer>

@@ -415,6 +415,162 @@
     }));
   }
 
+
+  /* ---- Real-line strategy lab (data/lab/*.json, built by scripts/strategy_lab.py) ---- */
+  function pct(x) { return x === null || x === undefined ? "—" : (x * 100).toFixed(1) + "%"; }
+  function num(x, d) { return x === null || x === undefined ? "—" : Number(x).toFixed(d); }
+  function isoTime(t) { return new Date(t * 1000).toISOString().replace(".000Z", "Z"); }
+  function spark(points, start) {
+    if (!Array.isArray(points) || points.length < 2) return '<span class="muted small">no bets</span>';
+    var all = points.concat([start]), min = Math.min.apply(null, all), max = Math.max.apply(null, all);
+    var span = max - min || 1, w = 90, h = 24;
+    var d = points.map(function (v, i) { return (i * w / (points.length - 1)).toFixed(1) + "," + (h - (v - min) / span * h).toFixed(1); }).join(" ");
+    var base = (h - (start - min) / span * h).toFixed(1);
+    return '<svg class="spark" viewBox="0 0 90 24" width="90" height="24" role="img" aria-label="Equity curve, ' + esc(points[0]) + ' to ' + esc(points[points.length - 1]) + ' units">' +
+      '<line x1="0" x2="90" y1="' + base + '" y2="' + base + '" class="spark-base"></line>' +
+      '<polyline points="' + d + '" class="' + (points[points.length - 1] >= start ? "spark-up" : "spark-down") + '"></polyline></svg>';
+  }
+  function options(values, label) {
+    return '<option value="">All ' + esc(label) + '</option>' + values.map(function (v) { return '<option value="' + esc(v) + '">' + esc(v) + '</option>'; }).join("");
+  }
+  function labFacts(a) {
+    var d = a.dataset || {}, x = a.distinctness || {};
+    var facts = {
+      lines: (d.lines_total || 0) + " (" + Object.keys(d.lines_by_venue || {}).map(function (k) { return k + " " + d.lines_by_venue[k]; }).join(" · ") + ")",
+      matches: String(d.matches_simulated || 0), range: d.first_cutoff_utc ? d.first_cutoff_utc.slice(0, 10) + " → " + d.last_cutoff_utc.slice(0, 10) : "not collected yet",
+      strategies: String(x.strategy_definitions || 0), selections: String(x.unique_bet_selection_sets || 0) + " / " + String(x.unique_ledgers_incl_stakes || 0),
+      qualified: String(x.qualified || 0), updated: a.generated_from_lines_run_utc || "never"
+    };
+    document.querySelectorAll("[data-lab-fact]").forEach(function (node) { node.textContent = facts[node.getAttribute("data-lab-fact")] || "—"; });
+  }
+  function labLeaderboard(el) {
+    show(el, Promise.all([load("lab/leaderboard"), load("lab/strategies")]).then(function (pair) {
+      var board = pair[0], rules = {}, start = board.start_bankroll || 1000;
+      pair[1].strategies.forEach(function (s) { rules[s.id] = s; });
+      var rows = board.rows || [];
+      if (!rows.length) { el.innerHTML = '<div class="notice warn">No strategies yet.</div>'; return; }
+      var uniq = function (key) { return rows.map(function (r) { return r[key]; }).filter(function (v, i, arr) { return arr.indexOf(v) === i; }).sort(); };
+      var anyQualified = rows.some(function (r) { return r.qualified; });
+      var state = { family: "", venue: "", checkpoint: "", stake: "", q: "", qualified: anyQualified, sort: "bankroll", limit: 50 };
+      var sorters = {
+        bankroll: function (r) { return -r.all.final_bankroll; }, roi: function (r) { return -(r.all.roi === null ? -9 : r.all.roi); },
+        test_roi: function (r) { return -(r.test.roi === null ? -9 : r.test.roi); }, clv: function (r) { return -(r.all.avg_clv === null ? -9 : r.all.avg_clv); },
+        bets: function (r) { return -r.all.bets; }, p: function (r) { return r.all.p_value === null ? 9 : r.all.p_value; },
+        drawdown: function (r) { return r.all.max_drawdown === undefined || r.all.max_drawdown === null ? 9 : r.all.max_drawdown; }
+      };
+      el.innerHTML = '<div class="lab-controls" role="group" aria-label="Filter strategies">' +
+        '<label>Family <select data-f="family">' + options(uniq("family"), "families") + '</select></label>' +
+        '<label>Venue <select data-f="venue">' + options(uniq("venue"), "venues") + '</select></label>' +
+        '<label>Checkpoint <select data-f="checkpoint">' + options(uniq("checkpoint"), "checkpoints") + '</select></label>' +
+        '<label>Staking <select data-f="stake">' + options(uniq("stake"), "staking") + '</select></label>' +
+        '<label>Sort <select data-f="sort"><option value="bankroll">Final bankroll</option><option value="roi">ROI (all)</option><option value="test_roi">Out-of-sample ROI</option><option value="clv">Avg closing-line value</option><option value="p">p-value vs price</option><option value="drawdown">Smallest drawdown</option><option value="bets">Most bets</option></select></label>' +
+        '<label>Search <input type="search" data-f="q" placeholder="user, S0123, rule text"></label>' +
+        '<label class="check"><input type="checkbox" data-f="qualified"' + (anyQualified ? ' checked' : '') + '> Qualified only (≥' + esc(board.qualify_bets) + ' bets)</label></div>' +
+        (anyQualified ? '' : '<div class="notice warn"><strong>No strategy has ' + esc(board.qualify_bets) + '+ bets yet.</strong> The real-line collector has not stored enough settled matches; ranks are provisional (all users start at ' + esc(start) + ' units).</div>') +
+        '<div data-lab-table></div><div data-lab-ledger></div>';
+      var tableEl = el.querySelector ? el.querySelector("[data-lab-table]") : null;
+      var ledgerEl = el.querySelector ? el.querySelector("[data-lab-ledger]") : null;
+      function draw() {
+        var q = state.q.toLowerCase();
+        var list = rows.filter(function (r) {
+          return (!state.family || r.family === state.family) && (!state.venue || r.venue === state.venue) &&
+            (!state.checkpoint || r.checkpoint === state.checkpoint) && (!state.stake || r.stake === state.stake) &&
+            (!state.qualified || r.qualified) &&
+            (!q || (r.id + " " + r.username + " " + ((rules[r.id] || {}).rule || "")).toLowerCase().indexOf(q) !== -1);
+        });
+        var key = sorters[state.sort] || sorters.bankroll;
+        list.sort(function (a, b) { return key(a) - key(b) || a.rank - b.rank; });
+        var html = '<p class="small muted">' + list.length + ' of ' + rows.length + ' simulated strategies match. Rank = competition rank by final bankroll across all strategies.</p>' +
+          '<div class="table-scroll"><table class="data lab-table"><thead><tr><th scope="col">Rank</th><th scope="col">Simulated user / rule</th><th scope="col">Bets (W-L)</th><th scope="col">ROI</th><th scope="col" title="Out-of-sample: last 30% of matches by date">Test ROI</th><th scope="col" title="Average (T-0 buy price − entry price)">CLV</th><th scope="col" title="One-sided p-value of P/L vs the entry prices themselves">p</th><th scope="col">Max DD</th><th scope="col">Bankroll</th><th scope="col">Curve</th><th scope="col">Ledger</th></tr></thead><tbody>' +
+          list.slice(0, state.limit).map(function (r) {
+            var a = r.all, s = rules[r.id] || {};
+            return '<tr><td>#' + esc(r.rank) + (r.qualified ? '' : '<br><span class="badge tbd">&lt;' + esc(board.qualify_bets) + '</span>') + '</td>' +
+              '<td><span class="mono">' + esc(r.username) + '</span> <span class="badge sim">SIM</span> <span class="small muted mono">' + esc(r.id) + ' · ' + esc(r.family) + '</span><br><span class="small">' + esc(s.rule) + '</span></td>' +
+              '<td>' + esc(a.bets) + '<br><span class="small muted">' + esc(a.wins) + '-' + esc(a.losses) + '</span></td>' +
+              '<td class="' + (a.roi < 0 ? 'negative' : '') + '">' + pct(a.roi) + '</td>' +
+              '<td class="' + (r.test.roi < 0 ? 'negative' : '') + '">' + pct(r.test.roi) + '<br><span class="small muted">' + esc(r.test.bets) + ' bets</span></td>' +
+              '<td>' + num(a.avg_clv, 3) + '</td><td>' + num(a.p_value, 4) + '</td><td>' + pct(a.max_drawdown) + '</td>' +
+              '<td><strong>' + fmt(a.final_bankroll) + '</strong></td><td>' + spark(r.spark, start) + '</td>' +
+              '<td>' + (r.ledger_published ? '<button type="button" class="btn-small" data-ledger="' + esc(r.id) + '">View bets</button>' : '<span class="small muted">CLI: <span class="mono">--ledger ' + esc(r.id) + '</span></span>') + '</td></tr>';
+          }).join("") + '</tbody></table></div>' +
+          (list.length > state.limit ? '<p><button type="button" class="btn-small" data-more>Show 50 more</button></p>' : '');
+        if (tableEl) tableEl.innerHTML = html; else el.innerHTML += html;
+      }
+      function ledger(sid) {
+        if (!ledgerEl) return;
+        ledgerEl.innerHTML = '<p class="muted">Loading ledger ' + esc(sid) + '…</p>';
+        Promise.all([load("lab/matches"), load("lab/ledgers/" + sid)]).then(function (pair) {
+          var table = pair[0].matches, led = pair[1], col = {};
+          led.columns.forEach(function (c, i) { col[c] = i; });
+          var s = rules[sid] || {};
+          ledgerEl.innerHTML = '<h3 id="lab-ledger-title">Every bet of <span class="mono">' + esc(s.username) + '</span> (' + esc(sid) + ') <span class="badge sim">SIMULATED</span></h3><p class="small">' + esc(s.rule) + '</p>' +
+            '<div class="table-scroll"><table class="data"><thead><tr><th scope="col">Match (cutoff UTC)</th><th scope="col">Pick</th><th scope="col">Quote used</th><th scope="col">Amount</th><th scope="col">Outcome</th><th scope="col">Equity</th><th scope="col">Receipts</th></tr></thead><tbody>' +
+            led.bets.map(function (b) {
+              var m = table[b[col.match_idx]], venue = b[col.venue] === "k" ? "kalshi" : "polymarket", line = m.lines[venue] || {};
+              var vside = line.side_map ? line.side_map[b[col.side]] : b[col.side];
+              return '<tr><td>' + esc(m.teams[0]) + ' vs ' + esc(m.teams[1]) + '<br><span class="small muted">' + esc(m.competition) + (m.format ? ' · ' + esc(m.format) : '') + ' · ' + esc(m.cutoff_utc) + (m.cross_checked ? ' · results cross-checked on both venues' : '') + '</span></td>' +
+                '<td><strong>' + esc(m.teams[b[col.side]]) + '</strong></td>' +
+                '<td>' + esc(venue) + ' ' + (venue === "kalshi" ? 'ask' : 'ref+1c') + ' <strong>' + num(b[col.price], 4) + '</strong><br><span class="small muted">quote ' + esc(isoTime(b[col.quote_t])) + '</span>' + (b[col.model_prob] !== null ? '<br><span class="small">model ' + num(b[col.model_prob], 3) + '</span>' : '') + '</td>' +
+                '<td>' + esc(b[col.contracts]) + ' × ' + num(b[col.price], 4) + ' = ' + num(b[col.cost], 2) + '<br><span class="small muted">fee ' + num(b[col.fee], 4) + '</span></td>' +
+                '<td>' + (b[col.settle] === 1 ? badge("win") : b[col.settle] === 0 ? badge("loss") : badge("partial")) + ' settle ' + esc(b[col.settle]) + '<br>P/L <span class="' + (b[col.pnl] < 0 ? 'negative' : '') + '">' + num(b[col.pnl], 2) + '</span><br><span class="small muted">settled ' + esc(m.settled_utc) + '</span></td>' +
+                '<td>' + num(b[col.equity_after_settle], 2) + '</td>' +
+                '<td class="small">' + link((line.price_urls || [])[vside], "Price history ↗") + '<br>' + link(line.review_url, "Market page ↗") + '</td></tr>';
+            }).join("") + '</tbody></table></div><p class="small muted">Equity = cash plus open positions at cost, recorded when the bet settled. Receipts are the exact free public API queries the quote was read from.</p>';
+        }).catch(function (error) {
+          ledgerEl.innerHTML = '<div class="error-box" role="alert"><strong>Ledger unavailable.</strong> Ledgers are generated at deploy time (run <span class="mono">python3 -m scripts.strategy_lab</span> locally). ' + esc(error && error.message ? error.message : error) + '</div>';
+        });
+      }
+      if (el.addEventListener) {
+        var update = function (event) {
+          var f = event.target.getAttribute && event.target.getAttribute("data-f");
+          if (!f) return;
+          state[f] = event.target.type === "checkbox" ? event.target.checked : event.target.value;
+          state.limit = 50;
+          draw();
+        };
+        el.addEventListener("change", update);
+        el.addEventListener("input", update);
+        el.addEventListener("click", function (event) {
+          var t = event.target;
+          if (t.hasAttribute && t.hasAttribute("data-more")) { state.limit += 50; draw(); }
+          var sid = t.getAttribute && t.getAttribute("data-ledger");
+          if (sid) { ledger(sid); if (ledgerEl.scrollIntoView) ledgerEl.scrollIntoView({ behavior: "smooth" }); }
+        });
+      }
+      draw();
+    }));
+  }
+  function groupTable(title, list) {
+    return '<h3>' + esc(title) + '</h3><div class="table-scroll"><table class="data"><thead><tr><th scope="col">Group</th><th scope="col">Strategies (qualified)</th><th scope="col">Median ROI</th><th scope="col">Best ROI</th><th scope="col">Share profitable</th><th scope="col">Median test ROI</th></tr></thead><tbody>' +
+      (list || []).map(function (g) {
+        return '<tr><td class="mono">' + esc(g.group) + '</td><td>' + esc(g.strategies) + ' (' + esc(g.qualified) + ')</td><td>' + pct(g.median_roi) + '</td><td>' + pct(g.best_roi) + '</td><td>' + pct(g.share_profitable) + '</td><td>' + pct(g.median_test_roi) + '</td></tr>';
+      }).join("") + '</tbody></table></div>';
+  }
+  function labAnalytics(el) {
+    show(el, load("lab/analytics").then(function (a) {
+      labFacts(a);
+      var d = a.dataset || {}, x = a.distinctness || {}, mt = a.multiple_testing || {}, oos = a.out_of_sample || {};
+      var cal = (a.calibration || []).filter(function (c) { return c.checkpoint === "T-1h" || c.checkpoint === "T-0"; });
+      el.innerHTML = '<div class="grid-2"><div><h3>Dataset</h3><ul class="small">' +
+        '<li>Real lines stored: ' + esc(d.lines_total) + ' · matches simulated: ' + esc(d.matches_simulated) + ' (' + esc(d.matches_cross_venue) + ' on both venues, ' + esc(d.matches_cross_checked_results) + ' results cross-checked)</li>' +
+        '<li>Range: ' + utc(d.first_cutoff_utc) + ' → ' + utc(d.last_cutoff_utc) + ' · train/test split ' + utc(d.train_test_split_utc) + '</li>' +
+        '<li>Venue result conflicts excluded: ' + esc(d.venue_result_conflicts) + ' · late cross-venue quotes dropped: ' + esc(d.quotes_dropped_after_match_cutoff) + '</li></ul>' +
+        '<h3>Distinct strategies</h3><ul class="small"><li>' + esc(x.strategy_definitions) + ' unique definitions (' + esc(x.unique_definition_hashes) + ' hashes)</li><li>' + esc(x.unique_bet_selection_sets) + ' distinct sets of bets · ' + esc(x.unique_ledgers_incl_stakes) + ' distinct ledgers including stakes</li><li>' + esc(x.qualified) + ' qualified with ≥' + esc(x.qualified_strategies_min_bets) + ' bets</li></ul></div>' +
+        '<div><h3>Is any of it real skill?</h3><ul class="small"><li>' + esc(mt.p_below_0_05) + ' of ' + esc(mt.tested) + ' strategies have p &lt; 0.05 — about ' + esc(mt.expected_false_positives_at_0_05) + ' would by pure chance.</li>' +
+        '<li>Bonferroni survivors (p &lt; ' + num(mt.bonferroni_threshold, 6) + '): <strong>' + esc(mt.pass_bonferroni) + '</strong></li>' +
+        '<li>Train→test ROI rank correlation (Spearman): <strong>' + num(oos.spearman_train_vs_test_roi, 3) + '</strong> over ' + esc(oos.pairs) + ' strategies</li>' +
+        '<li>Top 20 by in-sample ROI: ' + pct(oos.top20_by_train_roi_mean_train) + ' in-sample → <strong>' + pct(oos.top20_by_train_roi_mean_test) + '</strong> out-of-sample</li></ul>' +
+        '<p class="small muted">' + esc(mt.note) + '</p></div></div>' +
+        '<h3>Market calibration (T-1h and T-0)</h3><p class="small muted">Do prices mean what they say? Win rate by implied-probability bucket, and flat-stake ROI after the documented fees for backing every side in that bucket.</p>' +
+        '<div class="table-scroll"><table class="data"><thead><tr><th scope="col">Venue</th><th scope="col">Checkpoint</th><th scope="col">Implied bucket</th><th scope="col">n</th><th scope="col">Avg implied</th><th scope="col">Win rate</th><th scope="col">Avg buy</th><th scope="col">Flat ROI after fees</th></tr></thead><tbody>' +
+        cal.map(function (c) { return '<tr><td>' + esc(c.venue) + '</td><td>' + esc(c.checkpoint) + '</td><td>' + esc(c.bucket) + '</td><td>' + esc(c.n) + '</td><td>' + num(c.avg_implied, 3) + '</td><td>' + num(c.win_rate, 3) + '</td><td>' + num(c.avg_buy, 3) + '</td><td class="' + (c.flat_roi_after_fees < 0 ? 'negative' : '') + '">' + pct(c.flat_roi_after_fees) + '</td></tr>'; }).join("") + '</tbody></table></div>' +
+        groupTable("By strategy family", a.by_family) + groupTable("By venue", a.by_venue) + groupTable("By decision checkpoint", a.by_checkpoint) + groupTable("By staking method", a.by_stake) +
+        '<h3>Irregularities flagged for review (' + esc(a.irregularities_total) + ')</h3><ul class="signal-list small">' +
+        (a.irregularities || []).slice(0, 40).map(function (i) { return '<li><span class="badge flagged">' + esc(i.type) + '</span> ' + esc(i.line_id || (i.lines || []).join(", ")) + (i.detail ? ' — ' + esc(i.detail) : '') + ' ' + (i.review_urls || []).map(function (u) { return link(u, "review ↗"); }).join(" ") + '</li>'; }).join("") + '</ul>' +
+        '<details><summary>Simulation assumptions (read before trusting any number)</summary><ul class="small">' + (a.assumptions || []).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("") + '</ul></details>';
+    }));
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var types = { "master-list": masterList, teams: teamCards, "teams-table": teamTable,
       "vrs-snapshot": vrsSnapshot, matches: matches, "fixture-signals": fixtureSignals,
@@ -423,7 +579,8 @@
       leaderboard: leaderboard, strategies: strategies, ledger: ledger,
       "archive-status": archiveStatus,
       "backtest-leaderboard": backtestLeaderboard, "backtest-analytics": backtestAnalytics,
-      "backtest-ledger": backtestLedger, "historical-matches": historicalMatches };
+      "backtest-ledger": backtestLedger, "historical-matches": historicalMatches,
+      "lab-leaderboard": labLeaderboard, "lab-analytics": labAnalytics };
     document.querySelectorAll("[data-render]").forEach(function (el) {
       var fn = types[el.getAttribute("data-render")];
       if (fn) fn(el);

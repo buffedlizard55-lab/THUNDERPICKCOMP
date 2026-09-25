@@ -850,7 +850,120 @@ def check_html_refs():
             err(f"{p.name}: missing assets/style.css reference")
 
 
+def check_lab(lab_dir=None, allow_synthetic=False, receipts_only=False):
+    """Real-line strategy lab: receipts (append-only shards) and the derived leaderboard/ledgers.
+
+    Receipts: known venue, allowlisted source URLs, no quote after its checkpoint (no look-ahead) or
+    older than the staleness window, prices strictly inside (0,1), winner consistent with settlement.
+    Derived: every simulated user labeled, ranks/bankrolls consistent, and each published ledger's
+    cost/fee/P&L recomputed with the documented venue fee formulas.
+    """
+    from scripts import historical_lines as hl
+    from scripts import strategy_lab as sl
+    lab_dir = Path(lab_dir) if lab_dir else DATA / "lab"
+    if not (lab_dir / "lines_meta.json").exists() and not (lab_dir / "lines.json").exists():
+        return  # lab not collected yet; nothing to check
+    try:
+        store = hl.load_store(lab_dir)
+    except (hl.LineError, json.JSONDecodeError, KeyError) as e:
+        err(f"lab lines: {e}")
+        return
+    if store.get("mode") not in ("live", "offline-fixture") and not allow_synthetic:
+        err(f"lab lines: unexpected mode {store.get('mode')!r}")
+    prefixes = (hl.KALSHI + "/", hl.GAMMA + "/", hl.CLOB + "/")
+    backs = dict(hl.CHECKPOINTS)
+    for line in store["lines"]:
+        w = f"lab line {line.get('line_id')}"
+        if line.get("venue") not in ("kalshi", "polymarket"):
+            err(f"{w}: unknown venue")
+            continue
+        if len(line.get("teams") or []) != 2 or not ISO.match(line.get("cutoff_utc") or ""):
+            err(f"{w}: teams/cutoff malformed")
+            continue
+        urls = line.get("price_urls") or []
+        if not urls and "no_prestart_quotes" not in (line.get("flags") or []):
+            err(f"{w}: no price_urls but not flagged no_prestart_quotes")
+        if not allow_synthetic and any(not u.startswith(prefixes) for u in urls):
+            err(f"{w}: price_url outside the free-source allowlist")
+        cutoff = hl.parse_iso(line["cutoff_utc"]).timestamp()
+        settle = [float(x) if x is not None else None for x in line.get("settlement") or []]
+        win = line.get("winner")
+        if win not in (0, 1, None) or (win is not None and (len(settle) != 2 or settle[win] != 1.0)):
+            err(f"{w}: winner {win} inconsistent with settlement {line.get('settlement')}")
+        for label, pair in (line.get("quotes") or {}).items():
+            if label not in backs or not isinstance(pair, list) or len(pair) != 2:
+                err(f"{w}: malformed checkpoint {label}")
+                continue
+            for q in pair:
+                if not q:
+                    continue
+                decision = cutoff - backs[label]
+                if not (decision - hl.MAX_STALENESS <= q["t"] <= decision):
+                    err(f"{w} {label}: quote time {q['t']} outside [{decision - hl.MAX_STALENESS}, {decision}] (look-ahead/stale)")
+                for f in ("ask", "bid", "p"):
+                    if q.get(f) is not None and not (0 <= float(q[f]) <= 1):
+                        err(f"{w} {label}: {f} {q[f]} outside [0,1]")
+    if receipts_only:
+        return
+    board_path = lab_dir / "leaderboard.json"
+    if not board_path.exists():
+        return
+    board = json.loads(board_path.read_text(encoding="utf-8"))
+    strategies = json.loads((lab_dir / "strategies.json").read_text(encoding="utf-8"))
+    rows, strats = board.get("rows", []), strategies.get("strategies", [])
+    if not board.get("simulated") or not strategies.get("simulated"):
+        err("lab leaderboard/strategies: must be labeled simulated")
+    if len(strats) < 100 or len(rows) != len(strats):
+        err(f"lab: expected >=100 strategies with one leaderboard row each, got {len(strats)}/{len(rows)}")
+    if len({x["definition_hash"] for x in strats}) != len(strats) or len({x["username"] for x in strats}) != len(strats):
+        err("lab strategies: duplicate definition or username")
+    if any(not x["username"].startswith("sim_") for x in strats):
+        err("lab strategies: simulated usernames must start with sim_")
+    start = board.get("start_bankroll", 1000.0)
+    last = None
+    for i, r in enumerate(rows, 1):
+        a = r["all"]
+        if r.get("rank") != i or (last is not None and a["final_bankroll"] > last + 1e-9):
+            err(f"lab leaderboard: rank/order broken at {r.get('id')}")
+        last = a["final_bankroll"]
+        if abs(start + a["pnl"] - a["final_bankroll"]) > 0.01 or a["final_bankroll"] < -1e-6:
+            err(f"lab leaderboard {r['id']}: final bankroll != start + pnl, or negative")
+    matches_path = lab_dir / "matches.json"
+    if not matches_path.exists():
+        return
+    table = json.loads(matches_path.read_text(encoding="utf-8"))["matches"]
+    cps = {x["id"]: x["params"]["cp"] for x in strats}
+    for led_path in sorted((lab_dir / "ledgers").glob("S*.json")):
+        led = json.loads(led_path.read_text(encoding="utf-8"))
+        sid = led.get("strategy_id")
+        col = {c: i for i, c in enumerate(led["columns"])}
+        for b in led["bets"]:
+            w = f"lab ledger {sid} match {b[col['match_idx']]}"
+            m = table[b[col["match_idx"]]]
+            decision = hl.parse_iso(m["cutoff_utc"]).timestamp() - backs[cps[sid]]
+            if b[col["quote_t"]] > decision:
+                err(f"{w}: quote after decision time (look-ahead)")
+            price, n = b[col["price"]], b[col["contracts"]]
+            venue = "kalshi" if b[col["venue"]] == "k" else "polymarket"
+            fee = sl.kalshi_fee(int(n), price) if venue == "kalshi" else sl.poly_fee(n, price)
+            if venue == "kalshi" and n != int(n):
+                err(f"{w}: fractional Kalshi contracts")
+            if abs(b[col["cost"]] - round(n * price, 4)) > 1e-4 or abs(b[col["fee"]] - fee) > 1e-4:
+                err(f"{w}: cost/fee do not recompute")
+            if abs(b[col["payout"]] - round(n * b[col["settle"]], 4)) > 1e-4 or \
+                    abs(b[col["pnl"]] - (b[col["payout"]] - b[col["cost"]] - b[col["fee"]])) > 1e-3:
+                err(f"{w}: payout/P&L do not recompute")
+            if b[col["cost"]] > sl.MAX_STAKE + 1e-6:
+                err(f"{w}: stake above the documented cap")
+
+
 def main():
+    if "--lab-receipts-only" in sys.argv[1:]:
+        check_lab(receipts_only=True)
+        for e in ERRORS:
+            print(" -", e)
+        print(f"lab receipts: {'VALIDATION FAILED: %d error(s)' % len(ERRORS) if ERRORS else 'OK'}")
+        return 1 if ERRORS else 0
     master = load("master_list.json")
     teams = load("teams.json")
     matches = load("matches.json")
@@ -883,6 +996,7 @@ def main():
     historical_ids = {m.get("id") for m in (historical_matches or []) if isinstance(m, dict) and m.get("id")}
     check_backtest_results(backtest_results, strategies)
     check_backtest_ledger(backtest_ledger, historical_ids)
+    check_lab()
     check_html_refs()
 
     # Required static assets

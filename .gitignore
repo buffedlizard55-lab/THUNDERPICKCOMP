@@ -3,3 +3,8 @@ __pycache__/
 *.py[cod]
 *.tmp
 .DS_Store
+
+# Strategy-lab build artifacts: regenerated deterministically from data/lab/lines/ at every Pages
+# deploy (and by `python3 -m scripts.strategy_lab`). Committing them daily would bloat history.
+data/lab/ledgers/
+data/lab/matches.json

@@ -308,3 +308,18 @@ details summary { cursor: pointer; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
+
+/* Strategy lab */
+.lab-controls { display: flex; flex-wrap: wrap; gap: .5rem .9rem; align-items: end; margin: .4rem 0 .8rem; }
+.lab-controls label { display: flex; flex-direction: column; font-size: .78rem; font-weight: 600; color: var(--muted); gap: .2rem; }
+.lab-controls label.check { flex-direction: row; align-items: center; gap: .35rem; }
+.lab-controls select, .lab-controls input[type="search"] { font: inherit; font-size: .88rem; padding: .3rem .45rem; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); min-width: 8rem; }
+.btn-small { font: inherit; font-size: .8rem; padding: .25rem .6rem; border-radius: 6px; border: 1px solid var(--accent); background: var(--blue-soft); color: var(--accent); cursor: pointer; white-space: nowrap; }
+.btn-small:hover, .btn-small:focus-visible { background: var(--accent); color: var(--accent-ink); }
+.spark { display: block; }
+.spark polyline { fill: none; stroke-width: 1.6; }
+.spark .spark-up { stroke: var(--good); }
+.spark .spark-down { stroke: var(--bad); }
+.spark .spark-base { stroke: var(--line); stroke-dasharray: 2 2; }
+.lab-table td { vertical-align: top; }
+details.legacy > summary { cursor: pointer; font-weight: 700; font-size: 1.05rem; }

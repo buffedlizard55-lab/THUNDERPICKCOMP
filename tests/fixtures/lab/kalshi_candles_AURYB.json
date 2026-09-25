@@ -1,0 +1,130 @@
+{
+ "candlesticks": [
+  {
+   "end_period_ts": 1784988000,
+   "open_interest": "0.00",
+   "price": {
+    "close": null,
+    "high": null,
+    "low": null,
+    "mean": null,
+    "open": null,
+    "previous": null
+   },
+   "volume": "0.00",
+   "yes_ask": {
+    "close": "0.9200",
+    "high": "0.9900",
+    "low": "0.9200",
+    "open": "0.9900"
+   },
+   "yes_bid": {
+    "close": "0.0300",
+    "high": "0.0300",
+    "low": "0.0000",
+    "open": "0.0000"
+   }
+  },
+  {
+   "end_period_ts": 1784991600,
+   "open_interest": "0.00",
+   "price": {
+    "close": null,
+    "high": null,
+    "low": null,
+    "mean": null,
+    "open": null,
+    "previous": null
+   },
+   "volume": "0.00",
+   "yes_ask": {
+    "close": "0.6500",
+    "high": "0.9200",
+    "low": "0.6500",
+    "open": "0.9200"
+   },
+   "yes_bid": {
+    "close": "0.0500",
+    "high": "0.0500",
+    "low": "0.0300",
+    "open": "0.0300"
+   }
+  },
+  {
+   "end_period_ts": 1784995200,
+   "open_interest": "506.85",
+   "price": {
+    "close": "0.5800",
+    "high": "0.5800",
+    "low": "0.5600",
+    "mean": "0.5792",
+    "open": "0.5600",
+    "previous": null
+   },
+   "volume": "506.85",
+   "yes_ask": {
+    "close": "0.6400",
+    "high": "0.6500",
+    "low": "0.6400",
+    "open": "0.6500"
+   },
+   "yes_bid": {
+    "close": "0.5800",
+    "high": "0.5800",
+    "low": "0.0500",
+    "open": "0.0500"
+   }
+  },
+  {
+   "end_period_ts": 1784998800,
+   "open_interest": "646.85",
+   "price": {
+    "close": "0.5700",
+    "high": "0.6400",
+    "low": "0.5700",
+    "mean": "0.5728",
+    "open": "0.5800",
+    "previous": "0.5800"
+   },
+   "volume": "141.00",
+   "yes_ask": {
+    "close": "0.5900",
+    "high": "0.6400",
+    "low": "0.5900",
+    "open": "0.6400"
+   },
+   "yes_bid": {
+    "close": "0.4900",
+    "high": "0.5900",
+    "low": "0.4800",
+    "open": "0.5800"
+   }
+  },
+  {
+   "end_period_ts": 1785002400,
+   "open_interest": "985.05",
+   "price": {
+    "close": "0.4100",
+    "high": "0.5800",
+    "low": "0.3700",
+    "mean": "0.5327",
+    "open": "0.5800",
+    "previous": "0.5700"
+   },
+   "volume": "344.20",
+   "yes_ask": {
+    "close": "0.4500",
+    "high": "0.6200",
+    "low": "0.3600",
+    "open": "0.5900"
+   },
+   "yes_bid": {
+    "close": "0.3600",
+    "high": "0.5800",
+    "low": "0.2200",
+    "open": "0.4900"
+   }
+  }
+ ],
+ "ticker": "KXCS2GAME-26JUL251415GBCAURYB-AURYB"
+}

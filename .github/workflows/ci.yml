@@ -13,7 +13,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate JSON data and site wiring
+      - name: Rebuild the strategy lab from committed real-line receipts (deterministic)
+        run: python3 -m scripts.strategy_lab
+      - name: Validate JSON data and site wiring (incl. lab receipts and recomputed ledgers)
         run: python3 scripts/validate.py
       - name: Test source parsing, quote rules, restoration and simulation
         run: python3 -m unittest discover -s tests -v
@@ -26,4 +28,5 @@ jobs:
       - name: Check for forbidden placeholder leaks
         run: |
           # Fail if common hallucination/placeholder markers leak into data files.
-          ! grep -rniE "lorem ipsum|TODO: (add|verify)|FIXME|xxx" data/ || (echo "placeholder text in data/" && exit 1)
+          # data/lab holds verbatim third-party venue text (tickers, rules), checked by validate.py instead.
+          ! grep -rniE --exclude-dir=lab "lorem ipsum|TODO: (add|verify)|FIXME|xxx" data/ || (echo "placeholder text in data/" && exit 1)
