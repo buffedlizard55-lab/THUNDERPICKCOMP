@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "last_attempt_utc": "2026-09-25T17:08:47Z",
+  "last_attempt_utc": "2026-09-25T20:28:55Z",
   "mode": "live",
   "checks": [
     {
       "source": "valve_vrs",
       "url": "https://raw.githubusercontent.com/ValveSoftware/counter-strike_regional_standings/main/invitation/2026/standings_global_2026_09_07.md",
-      "checked_utc": "2026-09-25T17:08:47Z",
+      "checked_utc": "2026-09-25T20:28:55Z",
       "status": "ok",
       "scope": "Latest published Valve Global VRS snapshot (ranked roster; not necessarily today's starting five). Offline replay contains only finalist rows.",
       "records_checked": 8,
@@ -15,7 +15,7 @@
     {
       "source": "liquipedia_fixtures",
       "url": "https://liquipedia.net/counterstrike/api.php?action=parse&page=Thunderpick%2FWorld_Championship%2F2026&prop=wikitext&format=json",
-      "checked_utc": "2026-09-25T17:08:47Z",
+      "checked_utc": "2026-09-25T20:28:55Z",
       "status": "partial",
       "scope": "Matches with explicit UTC date+time, both finalist names and HLTV id in Liquipedia Results. HLTV match content has NOT been verified by this job.",
       "records_checked": 0,
@@ -24,7 +24,7 @@
     {
       "source": "hltv_crosscheck",
       "url": "https://www.hltv.org/matches/",
-      "checked_utc": "2026-09-25T17:08:47Z",
+      "checked_utc": "2026-09-25T20:28:55Z",
       "status": "ok",
       "scope": "HLTV /matches/<id> pages for Liquipedia-cited fixtures only (max 8/run; robots.txt disallows /matches?* listing URLs, single match pages are permitted). Confirm needs same HLTV id, both teams and the same UTC date; results need HLTV series score + Liquipedia map-score agreement. HLTV start clock is viewer-localized and unused.",
       "records_checked": 0,
@@ -33,7 +33,7 @@
     {
       "source": "polymarket_search",
       "url": "https://gamma-api.polymarket.com/public-search?q=Thunderpick&limit_per_type=25&events_status=active",
-      "checked_utc": "2026-09-25T17:08:48Z",
+      "checked_utc": "2026-09-25T20:28:56Z",
       "status": "ok",
       "scope": "Search Thunderpick active events, first 25 only; not a complete market enumeration.",
       "records_checked": 0,
@@ -42,7 +42,7 @@
     {
       "source": "polymarket_tag",
       "url": "https://gamma-api.polymarket.com/events?closed=false&limit=60&order=startDate&ascending=false&tag_slug=counter-strike",
-      "checked_utc": "2026-09-25T17:08:48Z",
+      "checked_utc": "2026-09-25T20:28:56Z",
       "status": "ok",
       "scope": "First 60 currently open events in the counter-strike tag; other tags/matches may be missed.",
       "records_checked": 1,
@@ -51,7 +51,7 @@
     {
       "source": "polymarket_history",
       "url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
-      "checked_utc": "2026-09-25T17:08:52Z",
+      "checked_utc": "2026-09-25T20:28:56Z",
       "status": "partial",
       "scope": "First 20 search results, including historical qualifier events; never use post-match settlement prices as pre-match quotes.",
       "records_checked": 20,
@@ -60,7 +60,7 @@
     {
       "source": "polymarket_teams",
       "url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=",
-      "checked_utc": "2026-09-25T17:08:52Z",
+      "checked_utc": "2026-09-25T20:28:56Z",
       "status": "partial",
       "scope": "Per-finalist bounded active searches (first 10 each); runs only after the Thunderpick-keyed searches found no open TWC 2026 event.",
       "records_checked": 88,
@@ -69,16 +69,16 @@
     {
       "source": "kalshi_game",
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2GAME&status=open&limit=200",
-      "checked_utc": "2026-09-25T17:08:57Z",
+      "checked_utc": "2026-09-25T20:28:59Z",
       "status": "ok",
       "scope": "First 1 page(s) of OPEN events in KXCS2GAME; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
-      "records_checked": 56,
+      "records_checked": 40,
       "detail": "0 TWC 2026 events confirmed from market rules"
     },
     {
       "source": "kalshi_outright",
       "url": "https://api.elections.kalshi.com/trade-api/v2/events?series_ticker=KXCS2&status=open&limit=200",
-      "checked_utc": "2026-09-25T17:08:57Z",
+      "checked_utc": "2026-09-25T20:28:59Z",
       "status": "ok",
       "scope": "First 1 page(s) of OPEN events in KXCS2; match details checked only when both finalists are named or title says Thunderpick. Does not cover map series/closed events.",
       "records_checked": 0,
@@ -201,7 +201,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T17:10:00Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-3dmax-100t-2026-09-11"
     },
@@ -213,7 +213,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-hero-1win-2026-09-12"
     },
@@ -225,7 +225,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-hotu-100t-2026-09-12"
     },
@@ -237,7 +237,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-fokus-1win-2026-09-10"
     },
@@ -249,7 +249,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-3dmax-ace1-2026-09-09"
     },
@@ -261,7 +261,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-3dmax-bbl1-2026-09-10"
     },
@@ -273,7 +273,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-vp-hero-2026-09-13"
     },
@@ -285,7 +285,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-nem-wc1-2026-09-11"
     },
@@ -297,7 +297,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-1win-nip-2026-09-11"
     },
@@ -309,7 +309,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-lavked-meg1-2026-07-31"
     },
@@ -321,7 +321,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-hero-bst-2026-09-09"
     },
@@ -333,7 +333,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-wc1-eye-2026-09-10"
     },
@@ -345,7 +345,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-bbp-fal-2026-07-27"
     },
@@ -357,7 +357,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-mw-mibra-2026-07-09"
     },
@@ -369,7 +369,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-fokus-vp-2026-09-12"
     },
@@ -381,7 +381,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-isg-uno-2026-07-08"
     },
@@ -393,7 +393,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-fdb-paina-2026-07-08"
     },
@@ -405,7 +405,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-algo1-omega1-2026-05-24"
     },
@@ -417,7 +417,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-blackp-bbp-2026-07-28"
     },
@@ -429,7 +429,7 @@
       "stage": "qualifier/series",
       "status": "closed",
       "first_seen_utc": "2026-09-24T18:00:11Z",
-      "last_seen_utc": "2026-09-25T17:08:52Z",
+      "last_seen_utc": "2026-09-25T20:28:56Z",
       "source_url": "https://gamma-api.polymarket.com/public-search?q=thunderpick&limit_per_type=20",
       "review_url": "https://polymarket.com/event/cs2-isg-mibra-2026-06-24"
     }
@@ -477,5 +477,5 @@
       "source_url": "https://gamma-api.polymarket.com/public-search?limit_per_type=10&events_status=active&q=q=9z+Team"
     }
   ],
-  "last_completed_utc": "2026-09-25T17:08:57Z"
+  "last_completed_utc": "2026-09-25T20:28:59Z"
 }
