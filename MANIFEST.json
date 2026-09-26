@@ -1,10 +1,10 @@
 {
   "manifest_version": 1,
-  "created_utc": "2026-09-26T04:56:24Z",
-  "run_id": "36219260142",
-  "commit_url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36219260142",
+  "created_utc": "2026-09-26T09:52:42Z",
+  "run_id": "36234024050",
+  "commit_url": "https://github.com/buffedlizard55-lab/THUNDERPICKCOMP/actions/runs/36234024050",
   "files": {
-    "observations.json": "8032cfd1c5fbb659fc92a0b0c16aa8c4623173822d37b92f8d9a988dddf83286",
+    "observations.json": "fcba29ac7eb1db05918dbf9de60542c99b807068225b4d0a14f18c1e920f118d",
     "ledger.json": "a361793637894abf0278df96aa028b8cee1112dae47cb7938a389ddcc5af94d3",
     "settlements.json": "b373921272c6adb46d635e6e8b985fd9363b038f532bed5a803381df7aae6a79"
   },
@@ -13,7 +13,7 @@
   "settlement_chain_head": null,
   "journal": {
     "mode": "live",
-    "last_attempt_utc": "2026-09-26T04:55:32Z",
+    "last_attempt_utc": "2026-09-26T09:51:29Z",
     "quotes": 0,
     "fixtures": 0,
     "events": 20
