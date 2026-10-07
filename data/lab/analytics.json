@@ -1,31 +1,31 @@
 {
  "schema_version": 1,
  "simulated": true,
- "generated_from_lines_run_utc": "2026-10-06T12:14:08Z",
+ "generated_from_lines_run_utc": "2026-10-07T12:00:52Z",
  "dataset": {
-  "lines_total": 15044,
+  "lines_total": 15116,
   "lines_by_venue": {
-   "polymarket": 9545,
-   "kalshi": 5499
+   "polymarket": 9573,
+   "kalshi": 5543
   },
   "line_flags": {
-   "no_prestart_quotes": 742,
+   "no_prestart_quotes": 744,
    "resolved_50_50": 719,
    "complement_gap_T-0": 105,
    "complement_gap_T-1h": 9,
    "team_name_spelling_differs_in_rules": 40,
-   "non_binary_settlement": 362,
+   "non_binary_settlement": 372,
    "complement_gap_T-6h": 5,
    "complement_gap_T-24h": 1
   },
-  "matches_simulated": 9915,
-  "matches_cross_venue": 4367,
-  "matches_cross_checked_results": 4075,
+  "matches_simulated": 9958,
+  "matches_cross_venue": 4394,
+  "matches_cross_checked_results": 4101,
   "venue_result_conflicts": 1,
-  "quotes_dropped_after_match_cutoff": 7822,
+  "quotes_dropped_after_match_cutoff": 7824,
   "first_cutoff_utc": "2026-01-16T09:00:00Z",
-  "last_cutoff_utc": "2026-10-06T08:00:00Z",
-  "train_test_split_utc": "2026-08-06T17:00:00Z",
+  "last_cutoff_utc": "2026-10-07T11:00:00Z",
+  "train_test_split_utc": "2026-08-07T09:00:00Z",
   "excluded_by_venue": {
    "kalshi": 1108
   },
@@ -36,31 +36,31 @@
    "rules teams #ex-SportsBetExpert#/#Reign Above# != yes_sub_titles #ex-SportsBetEx": 1
   },
   "collector": {
-   "last_run_utc": "2026-10-06T12:14:08Z",
+   "last_run_utc": "2026-10-07T12:00:52Z",
    "mode": "live",
    "coverage": {
     "kalshi": {
-     "historical_cutoff": "2026-08-07T00:00:00Z",
-     "events_listed": 6607,
-     "lines_stored": 5499,
-     "added_this_run": 21,
+     "historical_cutoff": "2026-08-08T00:00:00Z",
+     "events_listed": 6651,
+     "lines_stored": 5543,
+     "added_this_run": 44,
      "pending_after_run": 0,
      "excluded_total": 1108,
      "not_yet_final_this_run": 0,
      "oldest_cutoff_utc": "2026-03-31T08:00:00Z",
-     "newest_cutoff_utc": "2026-10-06T08:00:00Z",
+     "newest_cutoff_utc": "2026-10-08T01:00:00Z",
      "complete": true
     },
     "polymarket": {
-     "markets_listed": 7968,
+     "markets_listed": 8033,
      "listing_requests": 270,
-     "lines_stored": 9545,
-     "added_this_run": 21,
+     "lines_stored": 9573,
+     "added_this_run": 28,
      "pending_after_run": 0,
      "excluded_total": 0,
      "not_yet_final_this_run": 1,
      "oldest_cutoff_utc": "2026-01-15T23:00:00Z",
-     "newest_cutoff_utc": "2026-10-05T18:00:00Z",
+     "newest_cutoff_utc": "2026-10-07T09:15:00Z",
      "complete": true
     }
    },
@@ -78,17 +78,17 @@
  },
  "multiple_testing": {
   "tested": 1442,
-  "p_below_0_05": 21,
+  "p_below_0_05": 22,
   "expected_false_positives_at_0_05": 72.1,
   "bonferroni_threshold": 3.467406380027739e-05,
   "pass_bonferroni": 0,
   "note": "z compares realised P/L with what the entry prices themselves imply (fair-price null). With hundreds of correlated strategies, some will look 'significant' by chance; only Bonferroni survivors that also hold up out-of-sample deserve further forward testing."
  },
  "out_of_sample": {
-  "spearman_train_vs_test_roi": 0.3616,
-  "pairs": 793,
-  "top20_by_train_roi_mean_train": 0.1049,
-  "top20_by_train_roi_mean_test": -0.1762
+  "spearman_train_vs_test_roi": 0.3247,
+  "pairs": 791,
+  "top20_by_train_roi_mean_train": 0.1047,
+  "top20_by_train_roi_mean_test": -0.1815
  },
  "calibration": [
   {
@@ -105,21 +105,21 @@
    "venue": "kalshi",
    "checkpoint": "T-24h",
    "bucket": "0.1-0.2",
-   "n": 129,
-   "win_rate": 0.1395,
-   "avg_implied": 0.154,
-   "avg_buy": 0.1722,
-   "flat_roi_after_fees": -0.1801
+   "n": 131,
+   "win_rate": 0.1374,
+   "avg_implied": 0.1543,
+   "avg_buy": 0.1727,
+   "flat_roi_after_fees": -0.1926
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-24h",
    "bucket": "0.2-0.3",
-   "n": 180,
-   "win_rate": 0.2111,
-   "avg_implied": 0.2526,
+   "n": 181,
+   "win_rate": 0.2155,
+   "avg_implied": 0.2527,
    "avg_buy": 0.2719,
-   "flat_roi_after_fees": -0.2866
+   "flat_roi_after_fees": -0.2719
   },
   {
    "venue": "kalshi",
@@ -135,11 +135,11 @@
    "venue": "kalshi",
    "checkpoint": "T-24h",
    "bucket": "0.4-0.5",
-   "n": 287,
-   "win_rate": 0.4111,
-   "avg_implied": 0.446,
-   "avg_buy": 0.4636,
-   "flat_roi_after_fees": -0.1385
+   "n": 288,
+   "win_rate": 0.4097,
+   "avg_implied": 0.4461,
+   "avg_buy": 0.4637,
+   "flat_roi_after_fees": -0.1416
   },
   {
    "venue": "kalshi",
@@ -165,21 +165,21 @@
    "venue": "kalshi",
    "checkpoint": "T-24h",
    "bucket": "0.7-0.8",
-   "n": 171,
-   "win_rate": 0.8363,
+   "n": 172,
+   "win_rate": 0.8314,
    "avg_implied": 0.7431,
-   "avg_buy": 0.7614,
-   "flat_roi_after_fees": 0.0787
+   "avg_buy": 0.7613,
+   "flat_roi_after_fees": 0.0724
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-24h",
    "bucket": "0.8-0.9",
-   "n": 121,
-   "win_rate": 0.876,
-   "avg_implied": 0.8429,
-   "avg_buy": 0.8612,
-   "flat_roi_after_fees": 0.0088
+   "n": 123,
+   "win_rate": 0.878,
+   "avg_implied": 0.8426,
+   "avg_buy": 0.8607,
+   "flat_roi_after_fees": 0.0116
   },
   {
    "venue": "kalshi",
@@ -205,81 +205,81 @@
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.1-0.2",
-   "n": 381,
-   "win_rate": 0.1207,
+   "n": 388,
+   "win_rate": 0.1211,
    "avg_implied": 0.1538,
-   "avg_buy": 0.1686,
-   "flat_roi_after_fees": -0.3396
+   "avg_buy": 0.1685,
+   "flat_roi_after_fees": -0.3341
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.2-0.3",
-   "n": 654,
-   "win_rate": 0.2049,
-   "avg_implied": 0.2533,
-   "avg_buy": 0.2682,
-   "flat_roi_after_fees": -0.2864
+   "n": 659,
+   "win_rate": 0.2064,
+   "avg_implied": 0.2532,
+   "avg_buy": 0.2681,
+   "flat_roi_after_fees": -0.2819
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.3-0.4",
-   "n": 1065,
-   "win_rate": 0.3239,
+   "n": 1069,
+   "win_rate": 0.3246,
    "avg_implied": 0.35,
-   "avg_buy": 0.3646,
-   "flat_roi_after_fees": -0.1538
+   "avg_buy": 0.3645,
+   "flat_roi_after_fees": -0.152
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.4-0.5",
-   "n": 1196,
-   "win_rate": 0.4515,
+   "n": 1204,
+   "win_rate": 0.4527,
    "avg_implied": 0.4474,
-   "avg_buy": 0.4617,
-   "flat_roi_after_fees": -0.0557
+   "avg_buy": 0.4616,
+   "flat_roi_after_fees": -0.0529
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.5-0.6",
-   "n": 1178,
-   "win_rate": 0.5424,
-   "avg_implied": 0.5502,
+   "n": 1187,
+   "win_rate": 0.5409,
+   "avg_implied": 0.5503,
    "avg_buy": 0.5645,
-   "flat_roi_after_fees": -0.0649
+   "flat_roi_after_fees": -0.0676
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.6-0.7",
-   "n": 1071,
-   "win_rate": 0.6648,
+   "n": 1075,
+   "win_rate": 0.6642,
    "avg_implied": 0.6459,
-   "avg_buy": 0.6602,
-   "flat_roi_after_fees": -0.017
+   "avg_buy": 0.6603,
+   "flat_roi_after_fees": -0.018
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.7-0.8",
-   "n": 655,
-   "win_rate": 0.8031,
-   "avg_implied": 0.7435,
-   "avg_buy": 0.7589,
-   "flat_roi_after_fees": 0.0398
+   "n": 660,
+   "win_rate": 0.8015,
+   "avg_implied": 0.7436,
+   "avg_buy": 0.759,
+   "flat_roi_after_fees": 0.0377
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-6h",
    "bucket": "0.8-0.9",
-   "n": 375,
-   "win_rate": 0.872,
-   "avg_implied": 0.8424,
+   "n": 382,
+   "win_rate": 0.8717,
+   "avg_implied": 0.8425,
    "avg_buy": 0.8574,
-   "flat_roi_after_fees": 0.0067
+   "flat_roi_after_fees": 0.0064
   },
   {
    "venue": "kalshi",
@@ -295,201 +295,201 @@
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.0-0.1",
-   "n": 145,
-   "win_rate": 0.0483,
-   "avg_implied": 0.0669,
-   "avg_buy": 0.0763,
-   "flat_roi_after_fees": -0.3888
+   "n": 146,
+   "win_rate": 0.0479,
+   "avg_implied": 0.0671,
+   "avg_buy": 0.0765,
+   "flat_roi_after_fees": -0.393
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.1-0.2",
-   "n": 465,
-   "win_rate": 0.1183,
-   "avg_implied": 0.1531,
-   "avg_buy": 0.1668,
-   "flat_roi_after_fees": -0.3163
+   "n": 473,
+   "win_rate": 0.1184,
+   "avg_implied": 0.153,
+   "avg_buy": 0.1667,
+   "flat_roi_after_fees": -0.3136
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.2-0.3",
-   "n": 805,
-   "win_rate": 0.2199,
-   "avg_implied": 0.2544,
+   "n": 812,
+   "win_rate": 0.2217,
+   "avg_implied": 0.2545,
    "avg_buy": 0.2678,
-   "flat_roi_after_fees": -0.2232
+   "flat_roi_after_fees": -0.2172
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.3-0.4",
-   "n": 1224,
-   "win_rate": 0.3243,
+   "n": 1230,
+   "win_rate": 0.3244,
    "avg_implied": 0.3519,
    "avg_buy": 0.3651,
-   "flat_roi_after_fees": -0.1506
+   "flat_roi_after_fees": -0.1505
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.4-0.5",
-   "n": 1380,
-   "win_rate": 0.4645,
+   "n": 1388,
+   "win_rate": 0.4654,
    "avg_implied": 0.4466,
-   "avg_buy": 0.4608,
-   "flat_roi_after_fees": -0.0239
+   "avg_buy": 0.4607,
+   "flat_roi_after_fees": -0.0216
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.5-0.6",
-   "n": 1382,
-   "win_rate": 0.5355,
-   "avg_implied": 0.5494,
+   "n": 1391,
+   "win_rate": 0.5349,
+   "avg_implied": 0.5495,
    "avg_buy": 0.5638,
-   "flat_roi_after_fees": -0.0755
+   "flat_roi_after_fees": -0.0767
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.6-0.7",
-   "n": 1241,
+   "n": 1247,
    "win_rate": 0.672,
-   "avg_implied": 0.6446,
+   "avg_implied": 0.6447,
    "avg_buy": 0.6577,
-   "flat_roi_after_fees": -0.0029
+   "flat_roi_after_fees": -0.0031
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.7-0.8",
-   "n": 793,
-   "win_rate": 0.7844,
+   "n": 800,
+   "win_rate": 0.7825,
    "avg_implied": 0.7433,
    "avg_buy": 0.7573,
-   "flat_roi_after_fees": 0.019
+   "flat_roi_after_fees": 0.0164
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.8-0.9",
-   "n": 457,
+   "n": 465,
    "win_rate": 0.8731,
-   "avg_implied": 0.843,
-   "avg_buy": 0.8572,
-   "flat_roi_after_fees": 0.0108
+   "avg_implied": 0.8432,
+   "avg_buy": 0.8573,
+   "flat_roi_after_fees": 0.0107
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-1h",
    "bucket": "0.9-1.0",
-   "n": 157,
-   "win_rate": 0.949,
-   "avg_implied": 0.9285,
-   "avg_buy": 0.9389,
-   "flat_roi_after_fees": 0.0066
+   "n": 158,
+   "win_rate": 0.9494,
+   "avg_implied": 0.9284,
+   "avg_buy": 0.9388,
+   "flat_roi_after_fees": 0.007
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.0-0.1",
-   "n": 148,
-   "win_rate": 0.0473,
+   "n": 149,
+   "win_rate": 0.047,
    "avg_implied": 0.0663,
    "avg_buy": 0.0758,
-   "flat_roi_after_fees": -0.4011
+   "flat_roi_after_fees": -0.4052
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.1-0.2",
-   "n": 472,
-   "win_rate": 0.1165,
-   "avg_implied": 0.1523,
-   "avg_buy": 0.1658,
-   "flat_roi_after_fees": -0.3127
+   "n": 481,
+   "win_rate": 0.1164,
+   "avg_implied": 0.1522,
+   "avg_buy": 0.1656,
+   "flat_roi_after_fees": -0.3115
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.2-0.3",
-   "n": 822,
-   "win_rate": 0.2202,
+   "n": 827,
+   "win_rate": 0.2213,
    "avg_implied": 0.2538,
-   "avg_buy": 0.2673,
-   "flat_roi_after_fees": -0.222
+   "avg_buy": 0.2674,
+   "flat_roi_after_fees": -0.218
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.3-0.4",
-   "n": 1230,
+   "n": 1236,
    "win_rate": 0.3228,
    "avg_implied": 0.3518,
-   "avg_buy": 0.365,
-   "flat_roi_after_fees": -0.1557
+   "avg_buy": 0.3649,
+   "flat_roi_after_fees": -0.1556
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.4-0.5",
-   "n": 1374,
-   "win_rate": 0.4614,
+   "n": 1382,
+   "win_rate": 0.4624,
    "avg_implied": 0.4462,
-   "avg_buy": 0.4602,
-   "flat_roi_after_fees": -0.0292
+   "avg_buy": 0.4601,
+   "flat_roi_after_fees": -0.027
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.5-0.6",
-   "n": 1380,
-   "win_rate": 0.5391,
+   "n": 1388,
+   "win_rate": 0.5382,
    "avg_implied": 0.5498,
    "avg_buy": 0.5639,
-   "flat_roi_after_fees": -0.0681
+   "flat_roi_after_fees": -0.0698
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.6-0.7",
-   "n": 1249,
+   "n": 1255,
    "win_rate": 0.6701,
    "avg_implied": 0.6448,
-   "avg_buy": 0.6578,
-   "flat_roi_after_fees": -0.0059
+   "avg_buy": 0.6579,
+   "flat_roi_after_fees": -0.0061
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.7-0.8",
-   "n": 821,
-   "win_rate": 0.7881,
+   "n": 827,
+   "win_rate": 0.786,
    "avg_implied": 0.7437,
    "avg_buy": 0.7581,
-   "flat_roi_after_fees": 0.0228
+   "flat_roi_after_fees": 0.0201
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.8-0.9",
-   "n": 460,
-   "win_rate": 0.8739,
-   "avg_implied": 0.8432,
-   "avg_buy": 0.8572,
-   "flat_roi_after_fees": 0.0115
+   "n": 469,
+   "win_rate": 0.8742,
+   "avg_implied": 0.8434,
+   "avg_buy": 0.8574,
+   "flat_roi_after_fees": 0.0116
   },
   {
    "venue": "kalshi",
    "checkpoint": "T-0",
    "bucket": "0.9-1.0",
-   "n": 162,
-   "win_rate": 0.9444,
-   "avg_implied": 0.9281,
+   "n": 163,
+   "win_rate": 0.9448,
+   "avg_implied": 0.9282,
    "avg_buy": 0.9385,
-   "flat_roi_after_fees": 0.002
+   "flat_roi_after_fees": 0.0024
   },
   {
    "venue": "polymarket",
@@ -505,31 +505,31 @@
    "venue": "polymarket",
    "checkpoint": "T-24h",
    "bucket": "0.1-0.2",
-   "n": 171,
-   "win_rate": 0.1228,
-   "avg_implied": 0.1556,
-   "avg_buy": 0.1656,
-   "flat_roi_after_fees": -0.2407
+   "n": 172,
+   "win_rate": 0.1221,
+   "avg_implied": 0.1557,
+   "avg_buy": 0.1657,
+   "flat_roi_after_fees": -0.2451
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-24h",
    "bucket": "0.2-0.3",
-   "n": 348,
-   "win_rate": 0.2011,
+   "n": 350,
+   "win_rate": 0.2029,
    "avg_implied": 0.2549,
    "avg_buy": 0.2649,
-   "flat_roi_after_fees": -0.2543
+   "flat_roi_after_fees": -0.2487
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-24h",
    "bucket": "0.3-0.4",
-   "n": 569,
-   "win_rate": 0.2953,
-   "avg_implied": 0.3489,
-   "avg_buy": 0.3589,
-   "flat_roi_after_fees": -0.2001
+   "n": 570,
+   "win_rate": 0.2947,
+   "avg_implied": 0.3488,
+   "avg_buy": 0.3588,
+   "flat_roi_after_fees": -0.2015
   },
   {
    "venue": "polymarket",
@@ -565,21 +565,21 @@
    "venue": "polymarket",
    "checkpoint": "T-24h",
    "bucket": "0.7-0.8",
-   "n": 361,
-   "win_rate": 0.7812,
-   "avg_implied": 0.741,
-   "avg_buy": 0.751,
-   "flat_roi_after_fees": 0.0373
+   "n": 364,
+   "win_rate": 0.7802,
+   "avg_implied": 0.7409,
+   "avg_buy": 0.7509,
+   "flat_roi_after_fees": 0.0361
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-24h",
    "bucket": "0.8-0.9",
-   "n": 173,
-   "win_rate": 0.8786,
+   "n": 174,
+   "win_rate": 0.8793,
    "avg_implied": 0.8398,
    "avg_buy": 0.8498,
-   "flat_roi_after_fees": 0.0315
+   "flat_roi_after_fees": 0.0323
   },
   {
    "venue": "polymarket",
@@ -605,81 +605,81 @@
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.1-0.2",
-   "n": 559,
-   "win_rate": 0.1055,
-   "avg_implied": 0.1554,
-   "avg_buy": 0.1654,
-   "flat_roi_after_fees": -0.3409
+   "n": 564,
+   "win_rate": 0.1064,
+   "avg_implied": 0.1553,
+   "avg_buy": 0.1653,
+   "flat_roi_after_fees": -0.335
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.2-0.3",
-   "n": 1106,
-   "win_rate": 0.2161,
+   "n": 1107,
+   "win_rate": 0.2159,
    "avg_implied": 0.2558,
    "avg_buy": 0.2658,
-   "flat_roi_after_fees": -0.2058
+   "flat_roi_after_fees": -0.2065
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.3-0.4",
-   "n": 1839,
-   "win_rate": 0.3235,
+   "n": 1844,
+   "win_rate": 0.3243,
    "avg_implied": 0.3521,
    "avg_buy": 0.3621,
-   "flat_roi_after_fees": -0.1243
+   "flat_roi_after_fees": -0.1222
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.4-0.5",
-   "n": 2431,
-   "win_rate": 0.4554,
+   "n": 2442,
+   "win_rate": 0.4566,
    "avg_implied": 0.4518,
    "avg_buy": 0.4618,
-   "flat_roi_after_fees": -0.0246
+   "flat_roi_after_fees": -0.022
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.5-0.6",
-   "n": 2872,
-   "win_rate": 0.5216,
-   "avg_implied": 0.538,
-   "avg_buy": 0.548,
-   "flat_roi_after_fees": -0.0574
+   "n": 2883,
+   "win_rate": 0.5206,
+   "avg_implied": 0.5381,
+   "avg_buy": 0.5481,
+   "flat_roi_after_fees": -0.0591
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.6-0.7",
-   "n": 1864,
-   "win_rate": 0.6679,
+   "n": 1869,
+   "win_rate": 0.6672,
    "avg_implied": 0.6443,
    "avg_buy": 0.6543,
-   "flat_roi_after_fees": 0.0088
+   "flat_roi_after_fees": 0.0077
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.7-0.8",
-   "n": 1135,
-   "win_rate": 0.77,
+   "n": 1136,
+   "win_rate": 0.7702,
    "avg_implied": 0.7407,
    "avg_buy": 0.7507,
-   "flat_roi_after_fees": 0.0183
+   "flat_roi_after_fees": 0.0185
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-6h",
    "bucket": "0.8-0.9",
-   "n": 576,
-   "win_rate": 0.8802,
-   "avg_implied": 0.8414,
-   "avg_buy": 0.8514,
-   "flat_roi_after_fees": 0.0333
+   "n": 581,
+   "win_rate": 0.8795,
+   "avg_implied": 0.8415,
+   "avg_buy": 0.8515,
+   "flat_roi_after_fees": 0.0323
   },
   {
    "venue": "polymarket",
@@ -695,201 +695,201 @@
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.0-0.1",
-   "n": 181,
-   "win_rate": 0.0718,
-   "avg_implied": 0.0687,
-   "avg_buy": 0.0787,
-   "flat_roi_after_fees": -0.1025
+   "n": 182,
+   "win_rate": 0.0714,
+   "avg_implied": 0.0686,
+   "avg_buy": 0.0786,
+   "flat_roi_after_fees": -0.1074
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.1-0.2",
-   "n": 702,
-   "win_rate": 0.1111,
+   "n": 707,
+   "win_rate": 0.1117,
    "avg_implied": 0.1544,
    "avg_buy": 0.1644,
-   "flat_roi_after_fees": -0.3311
+   "flat_roi_after_fees": -0.3265
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.2-0.3",
-   "n": 1266,
-   "win_rate": 0.2093,
+   "n": 1270,
+   "win_rate": 0.2102,
    "avg_implied": 0.255,
    "avg_buy": 0.265,
-   "flat_roi_after_fees": -0.2341
+   "flat_roi_after_fees": -0.2309
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.3-0.4",
-   "n": 2096,
-   "win_rate": 0.3411,
+   "n": 2103,
+   "win_rate": 0.3409,
    "avg_implied": 0.3512,
    "avg_buy": 0.3612,
-   "flat_roi_after_fees": -0.08
+   "flat_roi_after_fees": -0.0806
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.4-0.5",
-   "n": 2485,
-   "win_rate": 0.4402,
-   "avg_implied": 0.4496,
-   "avg_buy": 0.4596,
-   "flat_roi_after_fees": -0.0459
+   "n": 2495,
+   "win_rate": 0.4409,
+   "avg_implied": 0.4495,
+   "avg_buy": 0.4595,
+   "flat_roi_after_fees": -0.0445
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.5-0.6",
-   "n": 2822,
-   "win_rate": 0.5294,
-   "avg_implied": 0.5424,
-   "avg_buy": 0.5524,
-   "flat_roi_after_fees": -0.0442
+   "n": 2834,
+   "win_rate": 0.5289,
+   "avg_implied": 0.5425,
+   "avg_buy": 0.5525,
+   "flat_roi_after_fees": -0.0451
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.6-0.7",
-   "n": 2094,
-   "win_rate": 0.6609,
+   "n": 2101,
+   "win_rate": 0.6611,
    "avg_implied": 0.646,
    "avg_buy": 0.656,
-   "flat_roi_after_fees": -0.0067
+   "flat_roi_after_fees": -0.0065
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.7-0.8",
-   "n": 1297,
-   "win_rate": 0.7749,
+   "n": 1301,
+   "win_rate": 0.774,
    "avg_implied": 0.7418,
    "avg_buy": 0.7518,
-   "flat_roi_after_fees": 0.02
+   "flat_roi_after_fees": 0.019
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.8-0.9",
-   "n": 717,
-   "win_rate": 0.887,
+   "n": 722,
+   "win_rate": 0.8864,
    "avg_implied": 0.843,
    "avg_buy": 0.853,
-   "flat_roi_after_fees": 0.0342
+   "flat_roi_after_fees": 0.0335
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-1h",
    "bucket": "0.9-1.0",
-   "n": 193,
-   "win_rate": 0.9067,
-   "avg_implied": 0.9294,
-   "avg_buy": 0.9394,
-   "flat_roi_after_fees": -0.0273
+   "n": 194,
+   "win_rate": 0.9072,
+   "avg_implied": 0.9295,
+   "avg_buy": 0.9395,
+   "flat_roi_after_fees": -0.0269
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.0-0.1",
-   "n": 198,
-   "win_rate": 0.0707,
+   "n": 199,
+   "win_rate": 0.0704,
    "avg_implied": 0.0677,
    "avg_buy": 0.0777,
-   "flat_roi_after_fees": -0.2523
+   "flat_roi_after_fees": -0.256
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.1-0.2",
-   "n": 724,
-   "win_rate": 0.1119,
-   "avg_implied": 0.1535,
-   "avg_buy": 0.1635,
-   "flat_roi_after_fees": -0.3223
+   "n": 728,
+   "win_rate": 0.1126,
+   "avg_implied": 0.1534,
+   "avg_buy": 0.1634,
+   "flat_roi_after_fees": -0.3169
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.2-0.3",
-   "n": 1275,
-   "win_rate": 0.2259,
+   "n": 1280,
+   "win_rate": 0.2266,
    "avg_implied": 0.2537,
    "avg_buy": 0.2637,
-   "flat_roi_after_fees": -0.1729
+   "flat_roi_after_fees": -0.1698
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.3-0.4",
-   "n": 2053,
+   "n": 2062,
    "win_rate": 0.3259,
-   "avg_implied": 0.3511,
-   "avg_buy": 0.3611,
-   "flat_roi_after_fees": -0.1264
+   "avg_implied": 0.3512,
+   "avg_buy": 0.3612,
+   "flat_roi_after_fees": -0.1265
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.4-0.5",
-   "n": 2545,
-   "win_rate": 0.4397,
+   "n": 2553,
+   "win_rate": 0.4407,
    "avg_implied": 0.4503,
    "avg_buy": 0.4603,
-   "flat_roi_after_fees": -0.0435
+   "flat_roi_after_fees": -0.0415
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.5-0.6",
-   "n": 3409,
-   "win_rate": 0.5251,
+   "n": 3419,
+   "win_rate": 0.5244,
    "avg_implied": 0.5344,
    "avg_buy": 0.5444,
-   "flat_roi_after_fees": -0.0396
+   "flat_roi_after_fees": -0.0409
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.6-0.7",
-   "n": 2079,
-   "win_rate": 0.6696,
+   "n": 2088,
+   "win_rate": 0.6695,
    "avg_implied": 0.6451,
    "avg_buy": 0.6551,
-   "flat_roi_after_fees": 0.0043
+   "flat_roi_after_fees": 0.0042
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.7-0.8",
-   "n": 1306,
+   "n": 1310,
    "win_rate": 0.7611,
    "avg_implied": 0.7426,
    "avg_buy": 0.7526,
-   "flat_roi_after_fees": 0.0008
+   "flat_roi_after_fees": 0.0007
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.8-0.9",
-   "n": 741,
-   "win_rate": 0.8866,
+   "n": 745,
+   "win_rate": 0.8846,
    "avg_implied": 0.8433,
    "avg_buy": 0.8533,
-   "flat_roi_after_fees": 0.0325
+   "flat_roi_after_fees": 0.0301
   },
   {
    "venue": "polymarket",
    "checkpoint": "T-0",
    "bucket": "0.9-1.0",
-   "n": 213,
-   "win_rate": 0.9249,
+   "n": 215,
+   "win_rate": 0.9256,
    "avg_implied": 0.9298,
    "avg_buy": 0.9398,
-   "flat_roi_after_fees": -0.0196
+   "flat_roi_after_fees": -0.0188
   }
  ],
  "by_family": [
@@ -915,10 +915,10 @@
    "group": "elo_consensus",
    "strategies": 108,
    "qualified": 108,
-   "median_roi": -0.0212,
-   "best_roi": 0.0013,
-   "share_profitable": 0.0278,
-   "median_test_roi": -0.0023
+   "median_roi": -0.0218,
+   "best_roi": 0.0005,
+   "share_profitable": 0.0093,
+   "median_test_roi": -0.0046
   },
   {
    "group": "elo_contrarian",
@@ -927,7 +927,7 @@
    "median_roi": -0.0891,
    "best_roi": -0.0374,
    "share_profitable": 0.0,
-   "median_test_roi": -0.1901
+   "median_test_roi": -0.1946
   },
   {
    "group": "elo_value",
@@ -936,61 +936,61 @@
    "median_roi": -0.1116,
    "best_roi": -0.039,
    "share_profitable": 0.0,
-   "median_test_roi": -0.2509
+   "median_test_roi": -0.2356
   },
   {
    "group": "fatigue",
    "strategies": 36,
    "qualified": 36,
-   "median_roi": -0.077,
+   "median_roi": -0.0773,
    "best_roi": 0.0228,
    "share_profitable": 0.0278,
-   "median_test_roi": -0.1057
+   "median_test_roi": -0.105
   },
   {
    "group": "form_streak",
    "strategies": 54,
    "qualified": 54,
-   "median_roi": -0.0548,
-   "best_roi": 0.024,
+   "median_roi": -0.055,
+   "best_roi": 0.0206,
    "share_profitable": 0.037,
-   "median_test_roi": -0.0998
+   "median_test_roi": -0.0946
   },
   {
    "group": "format",
    "strategies": 48,
    "qualified": 44,
-   "median_roi": -0.045,
-   "best_roi": 0.0319,
+   "median_roi": -0.0454,
+   "best_roi": 0.031,
    "share_profitable": 0.0455,
-   "median_test_roi": -0.0484
+   "median_test_roi": -0.051
   },
   {
    "group": "head_to_head",
    "strategies": 18,
    "qualified": 18,
-   "median_roi": -0.0983,
-   "best_roi": -0.0152,
+   "median_roi": -0.0989,
+   "best_roi": -0.0167,
    "share_profitable": 0.0,
-   "median_test_roi": -0.0965
+   "median_test_roi": -0.1055
   },
   {
    "group": "line_move",
    "strategies": 144,
    "qualified": 144,
-   "median_roi": -0.0652,
-   "best_roi": 0.0649,
-   "share_profitable": 0.1319,
-   "median_test_roi": -0.0822
+   "median_roi": -0.0622,
+   "best_roi": 0.0622,
+   "share_profitable": 0.1181,
+   "median_test_roi": -0.0881
   },
   {
    "group": "price_band",
    "strategies": 288,
    "qualified": 288,
    "median_roi": -0.0505,
-   "best_roi": 0.0288,
-   "share_profitable": 0.1806,
-   "median_test_roi": -0.0431
+   "best_roi": 0.0282,
+   "share_profitable": 0.1771,
+   "median_test_roi": -0.0432
   },
   {
    "group": "session",
@@ -1005,19 +1005,19 @@
    "group": "tier",
    "strategies": 48,
    "qualified": 48,
-   "median_roi": -0.0506,
+   "median_roi": -0.044,
    "best_roi": 0.1556,
    "share_profitable": 0.1042,
-   "median_test_roi": -0.0168
+   "median_test_roi": -0.016
   },
   {
    "group": "tight_spread",
    "strategies": 48,
    "qualified": 48,
-   "median_roi": -0.086,
-   "best_roi": 0.0165,
+   "median_roi": -0.0856,
+   "best_roi": 0.0154,
    "share_profitable": 0.125,
-   "median_test_roi": -0.0091
+   "median_test_roi": -0.0126
   }
  ],
  "by_venue": [
@@ -1025,28 +1025,28 @@
    "group": "best",
    "strategies": 515,
    "qualified": 510,
-   "median_roi": -0.0674,
-   "best_roi": 0.0649,
+   "median_roi": -0.068,
+   "best_roi": 0.0622,
    "share_profitable": 0.0588,
-   "median_test_roi": -0.0765
+   "median_test_roi": -0.0721
   },
   {
    "group": "kalshi",
    "strategies": 490,
    "qualified": 490,
-   "median_roi": -0.143,
-   "best_roi": 0.0237,
+   "median_roi": -0.1432,
+   "best_roi": 0.0223,
    "share_profitable": 0.0612,
-   "median_test_roi": -0.0984
+   "median_test_roi": -0.0958
   },
   {
    "group": "polymarket",
    "strategies": 442,
    "qualified": 442,
-   "median_roi": -0.0675,
+   "median_roi": -0.0674,
    "best_roi": 0.1556,
-   "share_profitable": 0.0701,
-   "median_test_roi": -0.0665
+   "share_profitable": 0.0588,
+   "median_test_roi": -0.0633
   }
  ],
  "by_checkpoint": [
@@ -1054,37 +1054,37 @@
    "group": "T-0",
    "strategies": 475,
    "qualified": 474,
-   "median_roi": -0.0751,
-   "best_roi": 0.0649,
-   "share_profitable": 0.0759,
-   "median_test_roi": -0.0804
+   "median_roi": -0.0745,
+   "best_roi": 0.0622,
+   "share_profitable": 0.0675,
+   "median_test_roi": -0.083
   },
   {
    "group": "T-1h",
    "strategies": 465,
    "qualified": 465,
-   "median_roi": -0.0906,
+   "median_roi": -0.0905,
    "best_roi": 0.0315,
    "share_profitable": 0.0387,
-   "median_test_roi": -0.083
+   "median_test_roi": -0.0865
   },
   {
    "group": "T-24h",
    "strategies": 114,
    "qualified": 110,
-   "median_roi": -0.0258,
+   "median_roi": -0.0278,
    "best_roi": 0.1556,
-   "share_profitable": 0.2636,
-   "median_test_roi": -0.0258
+   "share_profitable": 0.2545,
+   "median_test_roi": -0.0229
   },
   {
    "group": "T-6h",
    "strategies": 393,
    "qualified": 393,
-   "median_roi": -0.0775,
-   "best_roi": 0.024,
+   "median_roi": -0.0774,
+   "best_roi": 0.0228,
    "share_profitable": 0.0204,
-   "median_test_roi": -0.0668
+   "median_test_roi": -0.0629
   }
  ],
  "by_stake": [
@@ -1092,19 +1092,19 @@
    "group": "fixed_win",
    "strategies": 96,
    "qualified": 96,
-   "median_roi": -0.0479,
-   "best_roi": 0.0271,
+   "median_roi": -0.0467,
+   "best_roi": 0.0265,
    "share_profitable": 0.1771,
-   "median_test_roi": -0.0639
+   "median_test_roi": -0.0629
   },
   {
    "group": "flat",
    "strategies": 865,
    "qualified": 862,
-   "median_roi": -0.0689,
+   "median_roi": -0.0685,
    "best_roi": 0.1556,
-   "share_profitable": 0.0534,
-   "median_test_roi": -0.0814
+   "share_profitable": 0.0499,
+   "median_test_roi": -0.084
   },
   {
    "group": "kelly",
@@ -1113,16 +1113,16 @@
    "median_roi": -0.1334,
    "best_roi": -0.0479,
    "share_profitable": 0.0,
-   "median_test_roi": -0.6446
+   "median_test_roi": -0.613
   },
   {
    "group": "pct",
    "strategies": 216,
    "qualified": 214,
-   "median_roi": -0.0587,
-   "best_roi": 0.04,
-   "share_profitable": 0.1308,
-   "median_test_roi": -0.0605
+   "median_roi": -0.0586,
+   "best_roi": 0.0365,
+   "share_profitable": 0.1215,
+   "median_test_roi": -0.0595
   }
  ],
  "irregularities": [
